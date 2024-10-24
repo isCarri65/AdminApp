@@ -1,9 +1,10 @@
+import { Home } from "./components/screens/Home/Home";
 
 function App() {
   return (
     <>
       <div>
-        <h1>Scrum Master</h1>
+        <Home />
       </div>
     </>
   );
