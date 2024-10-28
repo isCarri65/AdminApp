@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
+import SucursalReducer from '../slices/SucursalReducer/SucursalReducer'
 // ...
 
 export const store = configureStore({
   reducer: {
+    sucursal: SucursalReducer,
   },
 })
 
