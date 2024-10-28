@@ -34,7 +34,6 @@ cd tu-repositorio
 - npm install react-router-dom
 - npm install react-bootstrap bootstrap
 
-
 **Ejecución del proyecto**
 Para ejecutar el proyecto en modo de desarrollo:
 npm run dev
