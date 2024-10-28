@@ -1,5 +1,5 @@
 import { ErrorMessage, Field } from "formik";
-import "./textFildValue.css"; // Importación del archivo de estilos CSS
+// Importación del archivo de estilos CSS
 
 // Interfaz para los props del componente TextFieldValue
 interface props {

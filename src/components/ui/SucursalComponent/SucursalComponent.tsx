@@ -3,19 +3,24 @@ import { ModalCrearSucursal } from "../../modals/ModalCrearSucursal/ModalCrearSu
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { SucursalCard } from "../SucursalaCard/SucursalCard";
 import { useAppSelector } from "../../../Hooks/hooks";
+import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
+import { Button } from "react-bootstrap";
 interface ISucursalComponent {
   company: IEmpresa;
 }
 
 export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   const [openModal, setOpenModal] = useState(false);
-  const SucursalList : = useAppSelector((state)=> state.sucursal.sucursalList)
+  const SucursalList : ISucursal[] = useAppSelector((state)=> state.sucursal.sucursalList)
   const getSucursales = () =>{
 
   }
 
   return (
     <div style={{ backgroundColor: "#999", height: "100%", width: "100%" }}>
+      <div>
+        <Button onClick={()=> setOpenModal(true)}>Crear Sucursal</Button>
+      </div>
       <div
         style={{
           display: "grid",

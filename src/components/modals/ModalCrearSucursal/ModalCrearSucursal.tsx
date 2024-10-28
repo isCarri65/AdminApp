@@ -22,7 +22,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
   getSucursales,
 }) => {
   // Valores iniciales para el formulario
-  const sucursalService = new SucursalService()
+  //const sucursalService = new SucursalService()
   const initialValues: ICreateSucursal | IUpdateSucursal= {
     nombre: "",
     horarioApertura: "",
@@ -92,9 +92,11 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
             onSubmit={async (values: ICreateSucursal) => {
               // Enviar los datos al servidor al enviar el formulario
               if (sucursalActivo) {
-                await sucursalService.put(sucursalActivo?.id, values);
+                console.log(values)
+                //await sucursalService.put(sucursalActivo?.id, values);
               } else {
-                await sucursalService.post(values);
+               // await sucursalService.post(values);
+               console.log(values)
               }
               // Obtener las personas actualizadas y cerrar el modal
               getSucursales();
