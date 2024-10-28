@@ -1,12 +1,11 @@
-import { Home } from "./components/screens/Home/Home";
+import MainMenu from './components/MainMenu';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <>
-      <div>
-        <Home />
-      </div>
-    </>
+    <div className="App">
+      <MainMenu />
+    </div>
   );
 }
 
