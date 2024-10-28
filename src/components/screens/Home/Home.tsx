@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { SucursalComponent } from "../../ui/SucursalComponent/SucursalComponent";
+import { ModalCreateBranch } from "../../modals/ModalCrearSucursal/ModalCrearSucursal";
 
 export const Home = () => {
   const name = "Empresa 1";
@@ -10,7 +12,7 @@ export const Home = () => {
           height: "100vh",
         }}
       >
-        <div
+        <header
           className=" d-flex justify-content-center align-items-center flex-column"
           style={{ height: "20vh" }}
         >
@@ -18,10 +20,10 @@ export const Home = () => {
             <h1>Sistema de Gestión de Empresas</h1>
           </div>
           <div>Empresas varias</div>
-        </div>
-        <div style={{ height: "80vh" }}>
+        </header>
+        <body style={{ height: "80vh" }}>
           <SucursalComponent company={name} />
-        </div>
+        </body>
       </div>
     </>
   );
