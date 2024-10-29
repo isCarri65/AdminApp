@@ -20,7 +20,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   const sucursalService = new SucursalService()
 
   const getSucursales = async() => {
-    await sucursalService.getAllSucursalesByEmpresa(1).then((sucursalesDatos) =>{
+    await sucursalService.getAllSucursalesByEmpresa(company.id).then((sucursalesDatos) =>{
       dispatch(setSucursalList({ sucursalList: sucursalesDatos }));
     })
     

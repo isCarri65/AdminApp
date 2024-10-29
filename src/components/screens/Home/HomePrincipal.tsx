@@ -1,5 +1,5 @@
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import './styles/MainMenu.css';
+import '../../styles/MainMenu.css';
 
 const MainMenu = () => {
   return (
@@ -32,7 +32,7 @@ const MainMenu = () => {
 
 const navigateToCompany = (index: number) => {
   // Redirige a la página de la empresa correspondiente
-  window.location.href = `/empresa${index + 1}`;
+  window.location.href = `/sucursales/${index + 1}`;
 };
 
 export default MainMenu;
