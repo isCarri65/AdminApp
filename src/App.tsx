@@ -1,12 +1,12 @@
-import { Home } from "./components/screens/Home/Home";
+import MainMenu from "./components/screens/Home/HomePrincipal";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { AppRouter } from "./routes/AppRouter";
 
 function App() {
   return (
-    <>
-      <div>
-        <Home />
-      </div>
-    </>
+    <div className="App">
+      <AppRouter />
+    </div>
   );
 }
 
