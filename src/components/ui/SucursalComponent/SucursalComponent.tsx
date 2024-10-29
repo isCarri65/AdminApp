@@ -20,10 +20,8 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   const sucursalService = new SucursalService("http://190.221.207.224:8090/sucursales")
 
   const getSucursales = async() => {
-    console.log(company.sucursales);
     await sucursalService.getAllSucursalesByEmpresa(1).then((sucursalesDatos) =>{
       dispatch(setSucursalList({ sucursalList: sucursalesDatos }));
-      console.log("Hello2");
     })
     
   }
@@ -36,20 +34,22 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   useEffect(()=>{
     getSucursales();
   }, [])
+  console.log(sucursales)
 
-  //const sucursales : ISucursal[] = useAppSelector((state)=> state.sucursal.sucursalList)
-
-  console.log(company.sucursales)
 
   return (
     <div style={{ backgroundColor: "#999", height: "100%", width: "100%", padding:"20px 50px"}}>
-      <div>
+      <div className="d-flex align-item-center justify-content-center">
+        <p>Sucursales de: {company.nombre}</p>
+        <p>{}</p>
+      </div>
+      <div className="p-3">
         <Button onClick={()=> setOpenModal(true)}>Crear Sucursal</Button>
       </div>
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: "repeat(4, 1fr)",
           gap: "1rem",
         }}
       >
