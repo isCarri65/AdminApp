@@ -1,5 +1,3 @@
-// Importamos el tipo de dato ISucursal y la clase BackendClient
-
 import { ISucursal } from "../types/dtos/sucursal/ISucursal";
 import { BackendClient } from "./BackendClient";
 
