@@ -17,7 +17,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
 
   const dispatch = useAppDispatch()
   const dataSucursal = useAppSelector((state) => state.sucursal.sucursalList)
-  const sucursalService = new SucursalService("http://190.221.207.224:8090/sucursales")
+  const sucursalService = new SucursalService()
 
   const getSucursales = async() => {
     await sucursalService.getAllSucursalesByEmpresa(1).then((sucursalesDatos) =>{
