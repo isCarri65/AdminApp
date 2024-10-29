@@ -7,6 +7,7 @@ interface ISucursalCard {
 
 export const SucursalCard: FC<ISucursalCard> = ({sucursal}) => {
   return (
+    <>
     <Card style={{ width: "18rem" }}>
       <Card.Img variant="top" src={sucursal.logo} />
       <Card.Body>
@@ -17,5 +18,6 @@ export const SucursalCard: FC<ISucursalCard> = ({sucursal}) => {
         <Button variant="primary">Go somewhere</Button>
       </Card.Body>
     </Card>
+    </>
   );
 };

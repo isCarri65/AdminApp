@@ -17,6 +17,9 @@ const initialState: IinitialState = {
 interface PayloadSetSucursal {
   sucursal: IUpdateSucursal; 
 }
+interface PayloadSetSucursalList {
+  sucursalList: ISucursal[]; 
+}
 
 
 const SucursalReducer = createSlice({
@@ -30,8 +33,8 @@ const SucursalReducer = createSlice({
   removeSucursalActivo(state) {
     state.sucursalActivo = null; // Eliminamos el elemento activo estableciéndolo como null
   },
-  setSucursalList(state, action:PayloadAction<ISucursal[]>){
-    state.sucursalList = action.payload
+  setSucursalList(state, action: PayloadAction<PayloadSetSucursalList>){
+    state.sucursalList = action.payload.sucursalList
   }
   },
 })
