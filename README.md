@@ -4,11 +4,11 @@ proyecto final programacion
 **React + TypeScript + Vite**
 
 **Integrantes:**
--Tiago Miceli
--Ismael Carrillo
--Guillermo Ledesma
--Matias Jofré
--Jeremias De Miguel
+- Tiago Miceli
+- Ismael Carrillo
+- Guillermo Ledesma
+- Matias Jofré
+- Jeremias De Miguel
 
 
 **Antes de comenzar, asegúrate de tener instalado:**
