@@ -30,7 +30,7 @@ cd tu-repositorio
 **Instala las dependencias:**
 - npm install
 - npm install react-redux
-- npm install @reduxjs/tolkit
+- npm install @reduxjs/toolkit
 - npm install react-router-dom
 - npm install react-bootstrap bootstrap
 
