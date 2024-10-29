@@ -12,14 +12,13 @@ import { IUpdateSucursal } from "../../../types/dtos/sucursal/IUpdateSucursal";
 interface IModalCrearSucursal {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
-  getSucursales: () => void;
+  getSucursales?: () => void;
 }
 
 // Definición del componente ModalPersona
 export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
   openModal,
   setOpenModal,
-  getSucursales,
 }) => {
   // Valores iniciales para el formulario
   //const sucursalService = new SucursalService()
@@ -99,7 +98,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                console.log(values)
               }
               // Obtener las personas actualizadas y cerrar el modal
-              getSucursales();
+              
               handleClose();
             }}
           >

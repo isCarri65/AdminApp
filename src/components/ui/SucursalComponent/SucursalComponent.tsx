@@ -1,23 +1,48 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ModalCrearSucursal } from "../../modals/ModalCrearSucursal/ModalCrearSucursal";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { SucursalCard } from "../SucursalaCard/SucursalCard";
-import { useAppSelector } from "../../../Hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import { Button } from "react-bootstrap";
+import { setSucursalList } from "../../../redux/slices/SucursalReducer/SucursalReducer";
+import { SucursalService } from "../../../service/SurcusalService";
 interface ISucursalComponent {
   company: IEmpresa;
 }
 
 export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   const [openModal, setOpenModal] = useState(false);
-  const SucursalList : ISucursal[] = useAppSelector((state)=> state.sucursal.sucursalList)
-  const getSucursales = () =>{
+  const [sucursales, setSucursales] = useState<ISucursal[]>([])
 
+  const dispatch = useAppDispatch()
+  const dataSucursal = useAppSelector((state) => state.sucursal.sucursalList)
+  const sucursalService = new SucursalService("http://190.221.207.224:8090/sucursales")
+
+  const getSucursales = async() => {
+    console.log(company.sucursales);
+    await sucursalService.getAllSucursalesByEmpresa(1).then((sucursalesDatos) =>{
+      dispatch(setSucursalList({ sucursalList: sucursalesDatos }));
+      console.log("Hello2");
+    })
+    
   }
 
+  useEffect(() => {
+    console.log("componente")
+    setSucursales(dataSucursal)
+  }, [dataSucursal]);
+
+  useEffect(()=>{
+    getSucursales();
+  }, [])
+
+  //const sucursales : ISucursal[] = useAppSelector((state)=> state.sucursal.sucursalList)
+
+  console.log(company.sucursales)
+
   return (
-    <div style={{ backgroundColor: "#999", height: "100%", width: "100%" }}>
+    <div style={{ backgroundColor: "#999", height: "100%", width: "100%", padding:"20px 50px"}}>
       <div>
         <Button onClick={()=> setOpenModal(true)}>Crear Sucursal</Button>
       </div>
@@ -28,11 +53,13 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
           gap: "1rem",
         }}
       >
-        {company.sucursales.map((sucursal) => (
-          <SucursalCard sucursal={sucursal} />
+        {sucursales.map((elem:ISucursal,  i: number) => (
+          
+          <SucursalCard sucursal={elem} key={i}/>
         ))}
       </div>
-      <ModalCrearSucursal openModal={openModal} setOpenModal={setOpenModal} getSucursales={getSucursales} />
+      
+      <ModalCrearSucursal openModal={openModal} setOpenModal={setOpenModal} />
     </div>
   );
 };
