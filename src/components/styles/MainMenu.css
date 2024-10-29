@@ -38,29 +38,29 @@
     border-radius: 50%;
     background-color: #888;
   }
-  /* Estilo para el header */
+
 .header {
   background-color: #d3d3d3;
-  padding: 20px; /* Aumenta el padding para hacerlo más grande */
+  padding: 20px; 
   text-align: center;
-  font-size: 2rem; /* Aumenta el tamaño del texto */
+  font-size: 2rem; 
   font-weight: bold;
 }
 
-/* Contenedor para centrar los cards */
+
 .company-cards-container {
   display: flex;
-  justify-content: center; /* Centra los elementos horizontalmente */
-  align-items: center; /* Centra los elementos verticalmente */
-  min-height: 80vh; /* Ajusta el alto para centrar mejor */
-  gap: 30px; /* Espacio entre los cards */
+  justify-content: center; 
+  align-items: center; 
+  min-height: 80vh; 
+  gap: 30px; 
   margin-top: 30px;
 }
 
-/* Estilo de cada card */
+
 .company-card {
-  width: 500px; /* Ancho de los cuadros de cada empresa */
-  height: 500px; /* Alto de los cuadros */
+  width: 500px; 
+  height: 500px; 
   display: flex;
   flex-direction: column;
   align-items: center;
