@@ -1,7 +1,13 @@
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import '../../styles/MainMenu.css';
 
-const MainMenu = () => {
+import { useNavigate } from 'react-router-dom';
+
+export const HomePrincipal = () => {
+
+  const navigate = useNavigate()
+
+
   return (
     <Container fluid className="main-menu">
       <header className="main-header">
@@ -18,7 +24,9 @@ const MainMenu = () => {
                   <div className="square"></div>
                   <div className="circle"></div>
                 </div>
-                <Button variant="primary" className="company-button" onClick={() => navigateToCompany()}>
+                <Button variant="primary" className="company-button" onClick={ () => {
+                  navigate(`/HomeSecundario/${index+1}`) 
+                  }}>
                   Ir a {empresa}
                 </Button>
               </Card.Body>
@@ -30,9 +38,5 @@ const MainMenu = () => {
   );
 };
 
-const navigateToCompany = () => {
-  // Redirige a la página de la empresa correspondiente
-  window.location.href = `/HomeSecundario`;
-};
 
-export default MainMenu;
+

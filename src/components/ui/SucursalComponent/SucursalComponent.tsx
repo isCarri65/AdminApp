@@ -38,7 +38,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
 
 
   return (
-    <div style={{ backgroundColor: "#999", height: "100%", width: "100%", padding:"20px 50px"}}>
+    <div style={{ backgroundColor: "#ffe", height: "100%", width: "100%", padding:"20px 50px"}}>
       <div className="d-flex align-item-center justify-content-center">
         <p>Sucursales de: {company.nombre}</p>
         <p>{}</p>
@@ -51,6 +51,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
           gap: "1rem",
+          height: "100%"
         }}
       >
         {sucursales.map((elem:ISucursal,  i: number) => (

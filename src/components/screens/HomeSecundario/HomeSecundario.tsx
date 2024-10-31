@@ -1,41 +1,46 @@
 
-import { useParams } from "react-router-dom";
+
 import { SucursalComponent } from "../../ui/SucursalComponent/SucursalComponent";
 import { EmpresaService } from "../../../service/EmpresaService";
 import { useEffect, useState } from "react";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setEmpresaActiva, setEmpresaList } from "../../../redux/slices/CompanySlices/EmpresaSlice";
+import { useParams } from "react-router-dom";
 
 export const Home = () => {
-  
   const {id} = useParams()
   const [empresas, setEmpresas] = useState<IEmpresa[]>([])
+  const [empresaA, setEmpresaA ] = useState<IEmpresa| null>(null)
   const dispatch = useAppDispatch()
-  const idEmpresa = id ? Number.parseInt(id) : -1
+  const empresaAc = useAppSelector((state)=> state.empresa.empresaActiva)
   const empresaList = useAppSelector((state)=>state.empresa.empresasList)
 
+
   const empresaService = new EmpresaService()
-  const getEmpresaActiva = async ()=>{
-    await empresaService.getById(idEmpresa).then((empresa)=>{
-      if(empresa){
-      dispatch(setEmpresaActiva(empresa))
-      }
+  const getEmpresaActiva = async ()=> {
+    if (id){
+    await empresaService.getById(Number.parseInt(id)).then((emp) => {
+      if (emp) dispatch(setEmpresaActiva(emp))
     })
+    }
   }
   const getEmpresas = async ()=>{
-    await  empresaService.getAll().then((datos)=>{
+    await  empresaService.getAllEmpresas().then((datos)=>{
       dispatch(setEmpresaList(datos))
     })
   }
   useEffect(()=>{
+    console.log("Montar Componente")
     getEmpresas()
     getEmpresaActiva()
   }, [])
   useEffect(()=>{
     setEmpresas(empresaList)
   }, [empresaList])
- const empresaActiva = useAppSelector((state)=>state.empresa.empresaActiva)
+  useEffect(()=>{
+    setEmpresaA(empresaAc)
+  }, [empresaAc])
 
   return (
     <>
@@ -46,17 +51,17 @@ export const Home = () => {
       >
         <header
           className=" d-flex justify-content-center align-items-center flex-column"
-          style={{ height: "20vh" }}
+          style={{ height: "20vh",  backgroundColor: "#999" }}
         >
           <div>
             <h1>Sistema de Gestión de Empresas</h1>
           </div>
           <div>Empresas varias</div>
         </header>
-        <div style={{ height: "80vh" }}>
-          {empresaActiva?
-          <SucursalComponent company={empresaActiva} />
-          : <p>Cargando sistema</p>
+        <div style={{ height: "100%" }}>
+          {empresaA?
+          <SucursalComponent company={empresaA} />
+          : <p>NO se ha elegido ninguna empresa</p>
           }
         </div>
       </div>

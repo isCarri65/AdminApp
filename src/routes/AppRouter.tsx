@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import MainMenu from "../components/screens/Home/HomePrincipal";
 import { Home } from "../components/screens/HomeSecundario/HomeSecundario";
+import { HomePrincipal } from "../components/screens/HomePrincipal/HomePrincipal";
 
 export const AppRouter = () => {
   return (
@@ -9,9 +9,9 @@ export const AppRouter = () => {
 
       {/* Definición de las rutas */}
       <Routes>
-        {/* Ruta para la pantalla de personas */}
-        <Route path="/" element={<MainMenu />} />
-        <Route path="/sucursales/:id" element={<Home />} />
+        {/* Rutas */}
+        <Route path="/" element={<HomePrincipal />} />
+        <Route path="/HomeSecundario/:id" element={<Home />} />
       </Routes>
     </>
   );

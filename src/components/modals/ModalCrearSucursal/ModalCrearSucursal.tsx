@@ -3,7 +3,6 @@ import { FC } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { ICreateSucursal } from "../../../types/dtos/sucursal/ICreateSucursal";
 import * as Yup from "yup";
 import TextFieldValue from "../../ui/TextFieldValue/TextFielValue";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
@@ -17,6 +16,23 @@ interface IModalCrearSucursal {
   getSucursales?: () => void;
 }
 
+interface IinitialValues {
+  nombre: string;
+  horarioApertura: string;
+  horarioCierre: string;
+  esCasaMatriz: boolean;
+  latitud: number;
+  longitud: number;
+  calle: string;
+  numero: number;
+  cp: number;
+  piso: number;
+  nroDpto: number;
+  idLocalidad: number;
+  idEmpresa: number;
+  logo: string | null;
+}
+
 // Definición del componente ModalPersona
 export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
   openModal,
@@ -24,21 +40,19 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
 }) => {
   // Valores iniciales para el formulario
   //const sucursalService = new SucursalService()
-  const initialValues: ICreateSucursal = {
+  const initialValues: IinitialValues = {
     nombre: "",
     horarioApertura: "",
     horarioCierre: "",
     esCasaMatriz: false,
     latitud: 0,
     longitud: 0,
-    domicilio: {
-      calle: "",
-      numero: 0,
-      cp: 0,
-      piso: 0,
-      nroDpto: 0,
-      idLocalidad: 0,
-    },
+    calle: "",
+    numero: 0,
+    cp: 0,
+    piso: 0,
+    nroDpto: 0,
+    idLocalidad: 0,
     idEmpresa: 0,
     logo: "",
   };
@@ -50,7 +64,26 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
     setOpenModal(false);
     dispatch(removeSucursalActivo());
   };
-  
+
+  const crearInitialValues = (objOrigen: ISucursal): IinitialValues =>{
+      const objDestino: IinitialValues = {
+        nombre: objOrigen.nombre,
+        horarioApertura: objOrigen.horarioApertura,
+        horarioCierre: objOrigen.horarioCierre,
+        esCasaMatriz: objOrigen.esCasaMatriz,
+        latitud: objOrigen.latitud,
+        longitud: objOrigen.longitud,
+        calle: objOrigen.domicilio.calle,
+        numero: objOrigen.domicilio.numero,
+        cp: objOrigen.domicilio.cp,
+        piso: objOrigen.domicilio.piso,
+        nroDpto: objOrigen.domicilio.nroDpto,
+        idLocalidad: objOrigen.domicilio.localidad.id,
+        idEmpresa: objOrigen.empresa.id,
+        logo: objOrigen.logo ? objOrigen.logo : null,
+      };
+      return objDestino
+  } 
 
 
   return (
@@ -80,10 +113,10 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
               horarioApertura: Yup.string().required("Campo requerido"),
               horarioCierre: Yup.string().required("Campo requerido"),
               latitud: Yup.number().required("Campo requerido"),
-              longitud: Yup.string().required("Campo requerido"),
+              longitud: Yup.number().required("Campo requerido"),
               pais: Yup.number().required("Campo requerido"),
               provincia: Yup.number().required("Campo requerido"),
-              Localidad: Yup.number().required("Campo requerido"),
+              localidad: Yup.number().required("Campo requerido"),
               calle: Yup.string().required("Campo requerido"),
               numero: Yup.number().required("Campo requerido"),
               cp: Yup.number().required("Campo requerido"),
@@ -91,9 +124,9 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
               nroDpto: Yup.number().required("Campo requerido"),
               logo: Yup.string().required("Campo requerido"),
             })}
-            initialValues={ sucursalActivo ? sucursalActivo : initialValues}
+            initialValues={ sucursalActivo ? crearInitialValues(sucursalActivo): initialValues}
             enableReinitialize={true}
-            onSubmit={ async (values: ICreateSucursal | ISucursal) => {
+            onSubmit={ async (values: IinitialValues) => {
               // Enviar los datos al servidor al enviar el formulario
               if (sucursalActivo) {
                 const updateSucursal: IUpdateSucursal = {
@@ -106,11 +139,11 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                   longitud: values.longitud,
                   domicilio: {
                     id: sucursalActivo.domicilio.id,
-                    calle: values.domicilio.calle,
-                    numero: values.domicilio.numero,
-                    cp: values.domicilio.cp,
-                    piso: values.domicilio.piso,
-                    nroDpto: values.domicilio.nroDpto,
+                    calle: values.calle,
+                    numero: values.numero,
+                    cp: values.cp,
+                    piso: values.piso,
+                    nroDpto: values.nroDpto,
                     idLocalidad: 1,
                   },
                   idEmpresa: sucursalActivo.id,
@@ -120,7 +153,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                 };
                 await sucursalService.updateSucursal(sucursalActivo.id, updateSucursal);
               } else {
-                await sucursalService.createSucursal(initialValues)
+                //await sucursalService.createSucursal(initialValues)
               }
               // Obtener las personas actualizadas y cerrar el modal
               
@@ -151,6 +184,18 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                       name="horarioCierre"
                       type="time"
                       placeholder="00-00-00"
+                    />
+                    <TextFieldValue
+                      label="Latitud:"
+                      name="latitud"
+                      type="number"
+                      placeholder="ej. 1111"
+                    />
+                    <TextFieldValue
+                      label="Longitud:"
+                      name="longitud"
+                      type="number"
+                      placeholder=""
                     />
                     <div>
                     <label
@@ -187,6 +232,42 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                       name="localidad"
                       type="optons"
                       placeholder="Localidad"
+                    />
+                    <TextFieldValue
+                      label="Calle:"
+                      name="calle"
+                      type="string"
+                      placeholder="ej. calle nueva"
+                    />
+                    <TextFieldValue
+                      label="Nro de calle:"
+                      name="numero"
+                      type="number"
+                      placeholder="1111"
+                    />
+                    <TextFieldValue
+                      label="Código Póstal:"
+                      name="cp"
+                      type="number"
+                      placeholder=""
+                    />
+                    <TextFieldValue
+                      label="Piso:"
+                      name="piso"
+                      type="number"
+                      placeholder=""
+                    />
+                    <TextFieldValue
+                      label="Nro departamento"
+                      name="nroDpto"
+                      type="number"
+                      placeholder=""
+                    />
+                    <TextFieldValue
+                      label="Código Póstal:"
+                      name="cp"
+                      type="number"
+                      placeholder=""
                     />
                   </div>
                   {/* Botón para enviar el formulario */}

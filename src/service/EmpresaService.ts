@@ -9,7 +9,7 @@ export class EmpresaService extends BackendClient<IEmpresa> {
 
   // Obtener todas las empresas
   async getAllEmpresas(): Promise<IEmpresa[]> {
-    const response = await fetch(`${this.baseUrl}/`);
+    const response = await fetch(`${this.baseUrl}`);
     const data = await response.json();
     return data as IEmpresa[];
   }

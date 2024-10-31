@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { IUpdateSucursal } from "../../../types/dtos/sucursal/IUpdateSucursal";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 
 // Define a type for the slice state
 interface IinitialState {
   sucursalList: ISucursal[]
-  sucursalActivo: IUpdateSucursal| ISucursal | null;
+  sucursalActivo: ISucursal | null;
 }
 
 // Define the initial state using that type
