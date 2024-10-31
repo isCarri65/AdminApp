@@ -1,4 +1,6 @@
+import { ICreateSucursal } from "../types/dtos/sucursal/ICreateSucursal";
 import { ISucursal } from "../types/dtos/sucursal/ISucursal";
+import { IUpdateSucursal } from "../types/dtos/sucursal/IUpdateSucursal";
 import { BackendClient } from "./BackendClient";
 
 // Clase SucursalService que extiende BackendClient para interactuar con la API de sucursales
@@ -22,7 +24,7 @@ export class SucursalService extends BackendClient<ISucursal> {
   }
 
   // Crear Sucursal
-  async createSucursal(data: ISucursal): Promise<ISucursal> {
+  async createSucursal(data: ICreateSucursal): Promise<ISucursal> {
     const response = await fetch(`${this.baseUrl}/create`, {
       method: "POST",
       headers: {
@@ -35,7 +37,7 @@ export class SucursalService extends BackendClient<ISucursal> {
   }
 
   // Editar Sucursal
-  async updateSucursal(idSucursal: number, data: ISucursal): Promise<ISucursal> {
+  async updateSucursal(idSucursal: number, data: IUpdateSucursal): Promise<ISucursal> {
     const response = await fetch(`${this.baseUrl}/update/${idSucursal}`, {
       method: "PUT",
       headers: {

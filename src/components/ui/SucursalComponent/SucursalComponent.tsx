@@ -55,7 +55,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
       >
         {sucursales.map((elem:ISucursal,  i: number) => (
           
-          <SucursalCard sucursal={elem} key={i}/>
+          <SucursalCard sucursal={elem} setOpenModal={setOpenModal} key={i}/>
         ))}
       </div>
       
