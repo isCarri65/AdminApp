@@ -22,8 +22,9 @@ export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal }) => {
         <Card.Img variant="top" src={sucursal.logo} />
         <Card.Body>
           <Card.Title>{sucursal.nombre}</Card.Title>
-          <Card.Text>
-            {sucursal.domicilio.localidad.nombre},{sucursal.domicilio.calle}
+          <Card.Text className="pt-4">
+            <p style={{fontWeight: "600", textDecoration: "underline"}}>Direccion: </p>
+            {sucursal.domicilio.localidad.nombre}, {sucursal.domicilio.calle} {sucursal.domicilio.numero}
           </Card.Text>
           
           <Button variant="primary" onClick={handleOpenModal}>

@@ -9,6 +9,8 @@ import { removeSucursalActivo } from "../../../redux/slices/SucursalReducer/Sucu
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import { SucursalService } from "../../../service/SurcusalService";
 import { IUpdateSucursal } from "../../../types/dtos/sucursal/IUpdateSucursal";
+import { ICreateSucursal } from "../../../types/dtos/sucursal/ICreateSucursal";
+import { useParams } from "react-router-dom";
 interface IModalCrearSucursal {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
@@ -32,14 +34,14 @@ interface IinitialValues {
   logo: string | null;
 }
 
+
 // Definición del componente ModalPersona
 export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
   openModal,
   setOpenModal,
   getSucursales
 }) => {
-  // Valores iniciales para el formulario
-  //const sucursalService = new SucursalService()
+  
   const initialValues: IinitialValues = {
     nombre: "",
     horarioApertura: "",
@@ -59,6 +61,8 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
   const sucursalActivo = useAppSelector((state) => state.sucursal.sucursalActivo);
   const dispatch = useAppDispatch();
   const sucursalService = new SucursalService()
+  const {id} = useParams()
+
   // Función para cerrar el modal
   const handleClose = () => {
     setOpenModal(false);
@@ -124,6 +128,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
             enableReinitialize={false}
             onSubmit={ async (values: IinitialValues) => {
               console.log("Ramirez")
+              if(id){
               try {
               if (sucursalActivo) {
                 const updateSucursal: IUpdateSucursal = {
@@ -144,16 +149,35 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                     nroDpto: values.nroDpto,
                     idLocalidad: 1,
                   },
-                  idEmpresa: sucursalActivo.id,
+                  idEmpresa: Number.parseInt(id),
                   logo: values.logo? values.logo : null,
                   categorias: sucursalActivo.categorias
-                };
-                console.log("Editar Sucursal")
+                }
                 const resultado = await sucursalService.updateSucursal(sucursalActivo.id, updateSucursal);
                 console.log(resultado)
+                
               } else {
                 console.log("Crear Sucursal")
-                //await sucursalService.createSucursal(initialValues)
+                const sucursalCreate : ICreateSucursal = {
+                  nombre: values.nombre,
+                  horarioApertura: values.horarioApertura,
+                  horarioCierre: values.horarioCierre,
+                  esCasaMatriz: true,
+                  latitud: values.latitud,
+                  longitud: values.longitud,
+                  domicilio: {
+                    calle: values.calle,
+                    numero: values.numero,
+                    cp: values.cp,
+                    piso: values.piso,
+                    nroDpto: values.nroDpto,
+                    idLocalidad: 1,
+                  },
+                  idEmpresa: Number.parseInt(id),
+                  logo: values.logo? values.logo : null,
+                  
+                }
+                await sucursalService.createSucursal(sucursalCreate)
               }
               getSucursales()
               handleClose()
@@ -161,6 +185,9 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
             console.error("Error al enviar los datos:", error);
             // Podrías mostrar una notificación de error aquí si lo deseas
           }
+        } else {
+          console.log("ID de empresa no valido")
+        }
             }}
           >
             {() => (
@@ -179,14 +206,14 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                       label="Horario de apertura:"
                       name="horarioApertura"
                       type="time"
-                      placeholder="00-00-00"
+                      placeholder="00-00"
                     />
 
                     <TextFieldValue
                       label="Horario de cierre:"
                       name="horarioCierre"
                       type="time"
-                      placeholder="00-00-00"
+                      placeholder="00-00"
                     />
                     <TextFieldValue
                       label="Latitud:"
@@ -217,25 +244,18 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                       <option value="2">Australia</option>
                       <option value="3">Argelia</option>
                     </Field>
-
-                    <TextFieldValue
-                      label="Pais:"
-                      name="pais"
-                      type="text"
-                      placeholder="Pais"
-                    />
-                    <TextFieldValue
-                      label="Provincia:"
-                      name="provincia"
-                      type="text"
-                      placeholder="Provincia"
-                    />
-                    <TextFieldValue
-                      label="=Localidad:"
-                      name="localidad"
-                      type="optons"
-                      placeholder="Localidad"
-                    />
+                    <Field as="select" name="provincia">
+                      <option value="">Selecciona una provincia</option>
+                      <option value="1">Argentina</option>
+                      <option value="2">Australia</option>
+                      <option value="3">Argelia</option>
+                    </Field>
+                    <Field as="select" name="localidad">
+                      <option value="">Selecciona una localidad</option>
+                      <option value="1">Argentina</option>
+                      <option value="2">Australia</option>
+                      <option value="3">Argelia</option>
+                    </Field>
                     <TextFieldValue
                       label="Calle:"
                       name="calle"
@@ -263,12 +283,6 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                     <TextFieldValue
                       label="Nro departamento"
                       name="nroDpto"
-                      type="number"
-                      placeholder=""
-                    />
-                    <TextFieldValue
-                      label="Código Póstal:"
-                      name="cp"
                       type="number"
                       placeholder=""
                     />
