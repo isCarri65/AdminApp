@@ -4,11 +4,11 @@ proyecto final programacion
 **React + TypeScript + Vite**
 
 **Integrantes:**
--Tiago Miceli
--Ismael Carrillo
--Guillermo Ledesma
--Matias Jofré
--Jeremias De Miguel
+- Tiago Miceli
+- Ismael Carrillo
+- Guillermo Ledesma
+- Matias Jofré
+- Jeremias De Miguel
 
 
 **Antes de comenzar, asegúrate de tener instalado:**
@@ -30,10 +30,9 @@ cd tu-repositorio
 **Instala las dependencias:**
 - npm install
 - npm install react-redux
-- npm install @reduxjs/tolkit
+- npm install @reduxjs/toolkit
 - npm install react-router-dom
 - npm install react-bootstrap bootstrap
-
 
 **Ejecución del proyecto**
 Para ejecutar el proyecto en modo de desarrollo:
