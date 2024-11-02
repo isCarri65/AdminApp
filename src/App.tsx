@@ -1,4 +1,4 @@
-import MainMenu from "./components/screens/HomePrincipal/HomePrincipal";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AppRouter } from "./routes/AppRouter";
 

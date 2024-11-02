@@ -60,7 +60,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
         ))}
       </div>
       
-      <ModalCrearSucursal openModal={openModal} setOpenModal={setOpenModal} />
+      <ModalCrearSucursal openModal={openModal} setOpenModal={setOpenModal} getSucursales={getSucursales}/>
     </div>
   );
 };

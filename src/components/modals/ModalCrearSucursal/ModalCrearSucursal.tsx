@@ -1,7 +1,6 @@
-import { Field, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import { FC } from "react";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import * as Yup from "yup";
 import TextFieldValue from "../../ui/TextFieldValue/TextFielValue";
@@ -13,7 +12,7 @@ import { IUpdateSucursal } from "../../../types/dtos/sucursal/IUpdateSucursal";
 interface IModalCrearSucursal {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
-  getSucursales?: () => void;
+  getSucursales: () => void;
 }
 
 interface IinitialValues {
@@ -37,6 +36,7 @@ interface IinitialValues {
 export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
   openModal,
   setOpenModal,
+  getSucursales
 }) => {
   // Valores iniciales para el formulario
   //const sucursalService = new SucursalService()
@@ -114,27 +114,25 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
               horarioCierre: Yup.string().required("Campo requerido"),
               latitud: Yup.number().required("Campo requerido"),
               longitud: Yup.number().required("Campo requerido"),
-              pais: Yup.number().required("Campo requerido"),
-              provincia: Yup.number().required("Campo requerido"),
-              localidad: Yup.number().required("Campo requerido"),
               calle: Yup.string().required("Campo requerido"),
               numero: Yup.number().required("Campo requerido"),
               cp: Yup.number().required("Campo requerido"),
               piso: Yup.number().required("Campo requerido"),
               nroDpto: Yup.number().required("Campo requerido"),
-              logo: Yup.string().required("Campo requerido"),
             })}
             initialValues={ sucursalActivo ? crearInitialValues(sucursalActivo): initialValues}
-            enableReinitialize={true}
+            enableReinitialize={false}
             onSubmit={ async (values: IinitialValues) => {
-              // Enviar los datos al servidor al enviar el formulario
+              console.log("Ramirez")
+              try {
               if (sucursalActivo) {
                 const updateSucursal: IUpdateSucursal = {
                   id: sucursalActivo.id,
                   nombre: values.nombre,
+                  eliminado: false,
                   horarioApertura: values.horarioApertura,
                   horarioCierre: values.horarioCierre,
-                  esCasaMatriz: false,
+                  esCasaMatriz: true,
                   latitud: values.latitud,
                   longitud: values.longitud,
                   domicilio: {
@@ -148,16 +146,21 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                   },
                   idEmpresa: sucursalActivo.id,
                   logo: values.logo? values.logo : null,
-                  eliminado: false,
                   categorias: sucursalActivo.categorias
                 };
-                await sucursalService.updateSucursal(sucursalActivo.id, updateSucursal);
+                console.log("Editar Sucursal")
+                const resultado = await sucursalService.updateSucursal(sucursalActivo.id, updateSucursal);
+                console.log(resultado)
               } else {
+                console.log("Crear Sucursal")
                 //await sucursalService.createSucursal(initialValues)
               }
-              // Obtener las personas actualizadas y cerrar el modal
-              
-              handleClose();
+              getSucursales()
+              handleClose()
+          } catch (error) {
+            console.error("Error al enviar los datos:", error);
+            // Podrías mostrar una notificación de error aquí si lo deseas
+          }
             }}
           >
             {() => (

@@ -45,6 +45,7 @@ export class SucursalService extends BackendClient<ISucursal> {
       },
       body: JSON.stringify(data),
     });
+    console.log("respuesta del response: ", response.status)
     const updatedData = await response.json();
     return updatedData as ISucursal;
   }

@@ -1,11 +1,9 @@
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import '../../styles/MainMenu.css';
 
-import { useNavigate } from 'react-router-dom';
 
 export const HomePrincipal = () => {
 
-  const navigate = useNavigate()
 
 
   return (
@@ -25,7 +23,7 @@ export const HomePrincipal = () => {
                   <div className="circle"></div>
                 </div>
                 <Button variant="primary" className="company-button" onClick={ () => {
-                  navigate(`/HomeSecundario/${index+1}`) 
+                  window.location.href = `/HomeSecundario/${index+1}`
                   }}>
                   Ir a {empresa}
                 </Button>
