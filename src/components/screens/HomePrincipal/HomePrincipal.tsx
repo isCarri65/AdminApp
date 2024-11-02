@@ -1,7 +1,11 @@
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import '../../styles/MainMenu.css';
 
-const MainMenu = () => {
+
+export const HomePrincipal = () => {
+
+
+
   return (
     <Container fluid className="main-menu">
       <header className="main-header">
@@ -18,7 +22,9 @@ const MainMenu = () => {
                   <div className="square"></div>
                   <div className="circle"></div>
                 </div>
-                <Button variant="primary" className="company-button" onClick={() => navigateToCompany(index)}>
+                <Button variant="primary" className="company-button" onClick={ () => {
+                  window.location.href = `/HomeSecundario/${index+1}`
+                  }}>
                   Ir a {empresa}
                 </Button>
               </Card.Body>
@@ -30,9 +36,5 @@ const MainMenu = () => {
   );
 };
 
-const navigateToCompany = (index: number) => {
-  // Redirige a la página de la empresa correspondiente
-  window.location.href = `/sucursales/${index + 1}`;
-};
 
-export default MainMenu;
+
