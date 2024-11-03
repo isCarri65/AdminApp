@@ -7,6 +7,7 @@ import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setEmpresaActiva, setEmpresaList } from "../../../redux/slices/CompanySlices/EmpresaSlice";
 import { useParams } from "react-router-dom";
+import styles from "./HomeSecundario.module.css"
 
 export const Home = () => {
   const {id} = useParams()
@@ -46,19 +47,15 @@ export const Home = () => {
     <>
       <div
         style={{
-          height: "100vh",
         }}
       >
-        <header
-          className=" d-flex justify-content-center align-items-center flex-column"
-          style={{ height: "20vh",  backgroundColor: "#999" }}
-        >
+        <header className={`${styles.headerC} d-flex justify-content-center align-items-center flex-column`}>
           <div>
             <h1>Sistema de Gestión de Empresas</h1>
           </div>
           <div>Empresas varias</div>
         </header>
-        <div style={{ height: "100%" }}>
+        <div >
           {empresaA?
           <SucursalComponent company={empresaA} />
           : <p>NO se ha elegido ninguna empresa</p>
