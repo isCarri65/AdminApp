@@ -7,6 +7,7 @@ import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import { Button } from "react-bootstrap";
 import { setSucursalList } from "../../../redux/slices/SucursalReducer/SucursalReducer";
 import { SucursalService } from "../../../service/SurcusalService";
+import styles from "./SucursalComponent.module.css"
 interface ISucursalComponent {
   company: IEmpresa;
 }
@@ -50,13 +51,14 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "1rem",
+          gap: "2rem",
           height: "100%"
         }}
       >
         {sucursales.map((elem:ISucursal,  i: number) => (
-          
+          <div className={styles.cardContainer}>
           <SucursalCard sucursal={elem} setOpenModal={setOpenModal} key={i}/>
+          </div>
         ))}
       </div>
       

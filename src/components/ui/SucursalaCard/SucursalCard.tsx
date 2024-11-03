@@ -18,8 +18,8 @@ export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal }) => {
   };
   return (
     <>
-      <Card>
-        <Card.Img variant="top" src={sucursal.logo} />
+      <Card style={{height: "100%"}}>
+        <Card.Img style={{height: "200px", objectFit:"cover"}} variant="top" src={sucursal.logo} />
         <Card.Body>
           <Card.Title>{sucursal.nombre}</Card.Title>
           <Card.Text className="pt-4">
