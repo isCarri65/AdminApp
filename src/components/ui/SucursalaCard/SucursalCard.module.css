@@ -1,0 +1,15 @@
+.cardTitle {
+  font-weight: 600;
+  text-align: center;
+}
+.cardContainer {
+  height: 100%;
+  padding: 10px;
+  background-color: #d8d8d8;
+  }
+
+.cardImg {
+  height: 40%;
+  object-fit: cover;
+
+}

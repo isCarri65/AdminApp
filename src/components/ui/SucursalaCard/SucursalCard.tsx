@@ -3,6 +3,7 @@ import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import { FC } from "react";
 import { useAppDispatch } from "../../../Hooks/hooks";
 import { setSucursalActivo } from "../../../redux/slices/SucursalReducer/SucursalReducer";
+import styles from "./SucursalCard.module.css"
 interface ISucursalCard {
   sucursal: ISucursal;
   setOpenModal: (state: boolean) => void;
@@ -18,10 +19,10 @@ export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal }) => {
   };
   return (
     <>
-      <Card style={{height: "100%"}}>
-        <Card.Img style={{height: "200px", objectFit:"cover"}} variant="top" src={sucursal.logo} />
+      <Card className={styles.cardContainer}>
+      <Card.Title className={`mx-auto ${styles.cardTitle}`}>{sucursal.nombre.toUpperCase()}</Card.Title>
+        <Card.Img className={styles.cardImg} variant="top" src={sucursal.logo ? sucursal.logo: "../../../Pictures/Empty_img.png"} />
         <Card.Body>
-          <Card.Title>{sucursal.nombre}</Card.Title>
           <Card.Text className="pt-4">
             <p style={{fontWeight: "600", textDecoration: "underline"}}>Direccion: </p>
             {sucursal.domicilio.localidad.nombre}, {sucursal.domicilio.calle} {sucursal.domicilio.numero}
