@@ -5,9 +5,11 @@
   min-height: 400px;
   min-width: 250px;
   max-width: 300px;
+  box-shadow: 0 0 15px #333;
 }
 
 .sucursalesContainer {
+  padding-top: 1rem;
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 2rem;
@@ -25,6 +27,17 @@
 .titleContainer p {
   font-weight: 600;
   font-size: 1.4rem;
+}
+
+.buttonModal {
+  background-color: #828690;
+  color: #fff;
+  border: solid 1px #756070
+}
+.buttonModal:hover {
+  background-color: #756070;
+  border: solid 1px #756070
+
 }
 
 /* Desde 590px, cambiar a 2 columnas */

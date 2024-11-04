@@ -6,6 +6,13 @@
   height: 100%;
   padding: 10px;
   background-color: #d8d8d8;
+  
+  transition: 0.2s ease-in;
+  }
+  .cardContainer:hover{
+    cursor: pointer;
+    transform: scale(1.02);
+    filter: grayscale(60%);
   }
 
 .cardImg {
