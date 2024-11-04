@@ -50,7 +50,7 @@ export const Home = () => {
         }}
       >
         <header className={`${styles.headerC} d-flex justify-content-center align-items-center flex-column`}>
-          <div>
+          <div className={styles.title}>
             <h1>Sistema de Gestión de Empresas</h1>
           </div>
           <div>Empresas varias</div>

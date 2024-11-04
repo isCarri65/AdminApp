@@ -50,11 +50,15 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
         <p>Sucursales de: {company.nombre.toUpperCase()}</p>
       </div>
       <div className="p-3">
-        <Button onClick={() => setOpenModal(true)}>Crear Sucursal</Button>
+        <Button
+          className={styles.buttonModal}
+          onClick={() => setOpenModal(true)}
+        >
+          
+          Crear Sucursal
+        </Button>
       </div>
-      <div className={styles.sucursalesContainer}
-        
-      >
+      <div className={styles.sucursalesContainer}>
         {sucursales.map((elem: ISucursal, i: number) => (
           <div className={styles.cardContainer}>
             <SucursalCard sucursal={elem} setOpenModal={setOpenModal} key={i} />

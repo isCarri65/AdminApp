@@ -1,9 +1,7 @@
-import { Field, Form, Formik } from "formik";
+import { Formik } from "formik";
 import { FC } from "react";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import * as Yup from "yup";
-import TextFieldValue from "../../TextFieldValue/TextFielValue";
 import { useAppDispatch, useAppSelector } from "../../../../Hooks/hooks";
 import { removeSucursalActivo } from "../../../../redux/slices/SucursalReducer/SucursalReducer";
 import { ISucursal } from "../../../../types/dtos/sucursal/ISucursal";
@@ -11,6 +9,8 @@ import { SucursalService } from "../../../../service/SurcusalService";
 import { IUpdateSucursal } from "../../../../types/dtos/sucursal/IUpdateSucursal";
 import { ICreateSucursal } from "../../../../types/dtos/sucursal/ICreateSucursal";
 import { useParams } from "react-router-dom";
+import { SucursalFormInputs } from "../../SucursalFormInputs/SucursalFormInputs";
+import styles from "./ModalCrearSucursal.module.css"
 interface IModalCrearSucursal {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
@@ -90,9 +90,9 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
   };
 
   return (
-    <div>
+    <div >
       {/* Componente Modal de React Bootstrap */}
-      <Modal
+      <Modal className={styles.modal}
         id={"modal"}
         show={openModal}
         onHide={handleClose}
@@ -100,15 +100,15 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header closeButton>
+        <Modal.Header className={styles.modalHeader} closeButton>
           {/* Título del modal dependiendo de si se está editando o añadiendo una persona */}
           {sucursalActivo ? (
-            <Modal.Title>Editar una sucursal:</Modal.Title>
+            <Modal.Title className={`${styles.title} mx-auto`}>Editar una sucursal</Modal.Title>
           ) : (
-            <Modal.Title>Añadir una sucursal:</Modal.Title>
+            <Modal.Title className={styles.title}>Crear una sucursal</Modal.Title>
           )}
-        </Modal.Header>
-        <Modal.Body>
+        </Modal.Header  >
+        <Modal.Body  className={styles.modalBody}>
           {/* Componente Formik para el formulario */}
           <Formik
             validationSchema={Yup.object({
@@ -197,109 +197,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
             {() => (
               <>
                 {/* Formulario */}
-                <Form autoComplete="off" className="form-obraAlta">
-                  <div className="container_Form_Ingredientes">
-                    {/* Campos del formulario */}
-                    <TextFieldValue
-                      label="Nombre:"
-                      name="nombre"
-                      type="text"
-                      placeholder="ej. Asus"
-                    />
-                    <TextFieldValue
-                      label="Horario de apertura:"
-                      name="horarioApertura"
-                      type="time"
-                      placeholder="00-00"
-                    />
-
-                    <TextFieldValue
-                      label="Horario de cierre:"
-                      name="horarioCierre"
-                      type="time"
-                      placeholder="00-00"
-                    />
-                    <TextFieldValue
-                      label="Latitud:"
-                      name="latitud"
-                      type="number"
-                      placeholder="ej. 1111"
-                    />
-                    <TextFieldValue
-                      label="Longitud:"
-                      name="longitud"
-                      type="number"
-                      placeholder=""
-                    />
-                    <div>
-                      <label
-                        htmlFor="pais"
-                        style={{
-                          color: "black",
-                          fontFamily: "sans-serif",
-                          fontSize: "14px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Pais:{" "}
-                      </label>
-                    </div>
-                    <Field as="select" name="pais">
-                      <option value="">Selecciona un pais</option>
-                      <option value="1">Argentina</option>
-                      <option value="2">Australia</option>
-                      <option value="3">Argelia</option>
-                    </Field>
-                    <Field as="select" name="provincia">
-                      <option value="">Selecciona una provincia</option>
-                      <option value="1">Argentina</option>
-                      <option value="2">Australia</option>
-                      <option value="3">Argelia</option>
-                    </Field>
-                    <Field as="select" name="localidad">
-                      <option value="">Selecciona una localidad</option>
-                      <option value="1">Argentina</option>
-                      <option value="2">Australia</option>
-                      <option value="3">Argelia</option>
-                    </Field>
-                    <TextFieldValue
-                      label="Calle:"
-                      name="calle"
-                      type="string"
-                      placeholder="ej. calle nueva"
-                    />
-                    <TextFieldValue
-                      label="Nro de calle:"
-                      name="numero"
-                      type="number"
-                      placeholder="1111"
-                    />
-                    <TextFieldValue
-                      label="Código Póstal:"
-                      name="cp"
-                      type="number"
-                      placeholder=""
-                    />
-                    <TextFieldValue
-                      label="Piso:"
-                      name="piso"
-                      type="number"
-                      placeholder=""
-                    />
-                    <TextFieldValue
-                      label="Nro departamento"
-                      name="nroDpto"
-                      type="number"
-                      placeholder=""
-                    />
-                  </div>
-                  {/* Botón para enviar el formulario */}
-                  <div className="d-flex justify-content-end">
-                    <Button variant="success" type="submit">
-                      Enviar
-                    </Button>
-                  </div>
-                </Form>
+                <SucursalFormInputs />
               </>
             )}
           </Formik>

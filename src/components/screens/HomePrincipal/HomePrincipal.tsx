@@ -1,5 +1,5 @@
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import '../../styles/MainMenu.css';
+import './MainMenu.css';
 
 
 export const HomePrincipal = () => {
