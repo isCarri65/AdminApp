@@ -1,51 +1,70 @@
-import { Field, Formik } from "formik";
-import { FC, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { Formik } from "formik";
+import { FC } from "react";
 import Modal from "react-bootstrap/Modal";
-import { ICreateSucursal } from "../../../types/dtos/sucursal/ICreateSucursal";
 import * as Yup from "yup";
-import TextFieldValue from "../../ui/TextFieldValue/TextFielValue";
-
-interface IModalCrearEmpresa {
+import { useAppDispatch, useAppSelector } from "../../../../Hooks/hooks";
+import { removeSucursalActivo } from "../../../../redux/slices/SucursalReducer/SucursalReducer";
+import styles from "./ModalCreateCompany.module.css"
+import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
+import { ICreateEmpresaDto } from "../../../../types/dtos/empresa/ICreateEmpresaDto";
+import { EmpresaService } from "../../../../service/EmpresaService";
+import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
+import { IUpdateEmpresaDto } from "../../../../types/dtos/empresa/IUpdateEmpresaDto";
+import { CompanyFormInputs } from "../../CompanyFormInputs/CompanyFormInputs";
+interface IModalCreateCompany {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
+  getEmpresas: () => void;
 }
 
-export const ModalCreateCompany: FC<IModalCrearEmpresa> = ({
+interface IinitialValues {
+  nombre: string;
+  razonSocial: string
+  cuit: number;
+  logo: string | null;
+}
+
+// Definición del componente ModalPersona
+export const ModalCreateCompany: FC<IModalCreateCompany> = ({
   openModal,
   setOpenModal,
-}) =>{
-  const initialValues: ICreateSucursal | IUpdateSucursal= {
+  getEmpresas,
+}) => {
+  const initialValues: ICreateEmpresaDto = {
     nombre: "",
-    horarioApertura: "",
-    horarioCierre: "",
-    esCasaMatriz: false,
-    latitud: 0,
-    longitud: 0,
-    domicilio: {
-      calle: "",
-      numero: 0,
-      cp: 0,
-      piso: 0,
-      nroDpto: 0,
-      idLocalidad: 0,
-    },
-    idEmpresa: 0,
-    logo: "",
-  };
+    razonSocial:"",
+    cuit: 0,
+    logo: null,
 
+  };
+  const empresaActiva = useAppSelector(
+    (state) => state.empresa.empresaActiva
+  );
+  const dispatch = useAppDispatch();
+  const empresaService = new EmpresaService();
+  const imageActivo = useAppSelector((state)=>state.image.imageStringActivo)
 
   // Función para cerrar el modal
   const handleClose = () => {
     setOpenModal(false);
+    dispatch(removeSucursalActivo());
+    dispatch(removeImageActivo())
+  };
 
+  const crearInitialValues = (objOrigen: IEmpresa): IinitialValues => {
+    const objDestino: IinitialValues = {
+      nombre: objOrigen.nombre,
+      razonSocial: objOrigen.razonSocial,
+      cuit: objOrigen.cuit,
+      logo: objOrigen.logo ? objOrigen.logo : null,
+    };
+    return objDestino;
   };
 
   return (
-    <div>
+    <div >
       {/* Componente Modal de React Bootstrap */}
-      <Modal
+      <Modal className={styles.modal}
         id={"modal"}
         show={openModal}
         onHide={handleClose}
@@ -53,70 +72,66 @@ export const ModalCreateCompany: FC<IModalCrearEmpresa> = ({
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header closeButton>
-            <Modal.Title>Crear una Empresa:</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <Modal.Header className={styles.modalHeader} closeButton>
+          {/* Título del modal dependiendo de si se está editando o añadiendo una persona */}
+          {empresaActiva ? (
+            <Modal.Title className={`${styles.title} mx-auto`}>Editar Empresa</Modal.Title>
+          ) : (
+            <Modal.Title className={styles.title}>Crear EMpresa</Modal.Title>
+          )}
+        </Modal.Header  >
+        <Modal.Body  className={styles.modalBody}>
           {/* Componente Formik para el formulario */}
           <Formik
             validationSchema={Yup.object({
               nombre: Yup.string().required("Campo requerido"),
-              categoria: Yup.string().required("Campo requerido"),
-              responsable: Yup.string().required("Campo requerido"),
-              telefono: Yup.number().required("Campo requerido"),
-              ubicacion: Yup.string().required("Campo requerido"),
+              razonSocial: Yup.string().required("Campo requerido"),
+              cuit: Yup.string().required("Campo requerido"),
             })}
-            initialValues={initialValues}
-            enableReinitialize={true}
-            onSubmit={async (values: ICreateSucursal) => {
-              handleClose();
+            initialValues={
+              empresaActiva
+                ? crearInitialValues(empresaActiva)
+                : initialValues
+            }
+            enableReinitialize={false}
+            onSubmit={async (values: IinitialValues) => {
+              console.log("Ramirez");
+                try {
+                  if (empresaActiva) {
+                    const updateEmpresa: IUpdateEmpresaDto = {
+                      id: empresaActiva.id,
+                      nombre: values.nombre,
+                      razonSocial: values.razonSocial,
+                      cuit: values.cuit,
+                      logo: imageActivo,
+                    };
+                    const resultado = await empresaService.updateEmpresa(
+                      empresaActiva.id,
+                      updateEmpresa
+                    );
+                    console.log(resultado);
+                  } else {
+                    console.log("Crear Sucursal");
+                    const empresaCreate: ICreateEmpresaDto = {
+                      nombre: values.nombre,
+                      razonSocial: values.razonSocial,
+                      cuit: values.cuit,
+                      logo: imageActivo,
+                    };
+                    await empresaService.createEmpresa(empresaCreate);
+                  }
+                  getEmpresas();
+                  handleClose();
+                } catch (error) {
+                  console.error("Error al enviar los datos:", error);
+                  // Podrías mostrar una notificación de error aquí si lo deseas
+                }
             }}
           >
             {() => (
               <>
                 {/* Formulario */}
-                <Form autoComplete="off" className="form-obraAlta">
-                  <div className="container_Form_Ingredientes">
-                    {/* Campos del formulario */}
-                    <TextFieldValue
-                      label="Nombre:"
-                      name="nombre"
-                      type="text"
-                      placeholder="ej. Asus"
-                    />
-                    <TextFieldValue
-                      label="Categoria"
-                      name="categoria"
-                      type="text"
-                      placeholder="Categoria"
-                    />
-
-                    <TextFieldValue
-                      label="Responsable"
-                      name="responsable"
-                      type="text"
-                      placeholder="Dueño de la empresa / responsable"
-                    />
-                    <TextFieldValue
-                      label="Telefono"
-                      name="telefono"
-                      type="tel"
-                      placeholder="Numero celular"
-                    />
-                    <TextFieldValue
-                      label="Ubicacion:"
-                      name="Ubicacion"
-                      type="text"
-                      placeholder="example 123, barrio, departamento, pais"
-                    />
-                  </div>
-                  {/* Botón para enviar el formulario */}
-                  <div className="d-flex justify-content-end">
-                    <Button variant="success" type="submit">
-                      Enviar
-                    </Button>
-                  </div>
-                </Form>
+                <CompanyFormInputs />
               </>
             )}
           </Formik>
@@ -124,4 +139,4 @@ export const ModalCreateCompany: FC<IModalCrearEmpresa> = ({
       </Modal>
     </div>
   );
-}
+};

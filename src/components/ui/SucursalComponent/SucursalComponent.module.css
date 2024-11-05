@@ -36,8 +36,14 @@
 }
 .buttonModal:hover {
   background-color: #756070;
-  border: solid 1px #756070
+  border: solid 1px #756070;
 
+}
+.buttonModal:active {
+  
+  background-color: #756070 !important;
+  border: solid 1px #6e5c6a !important;
+  transform: scale(0.98);
 }
 
 /* Desde 590px, cambiar a 2 columnas */

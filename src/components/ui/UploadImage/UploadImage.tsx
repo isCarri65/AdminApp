@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import noImage from "../../../assets/images/noImage.jpeg";
 import { IImagen } from "../../../types/IImagen";
 import { ImageService } from "../../../service/ImageService";
+import { useAppDispatch } from "../../../Hooks/hooks";
+import { removeImageActivo, setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
 
 // Definimos la interfaz de las propiedades que recibirá el componente UploadImage
 interface IUploadImage {
@@ -24,6 +26,7 @@ export const UploadImage: FC<IUploadImage> = ({
 }) => {
   // Instanciamos el servicio para manejar las imágenes
   const imageService = new ImageService("images");
+  const dispatch = useAppDispatch()
 
   // Función para manejar el cambio de archivo en el input de carga de imágenes
   const handleFileChange = async (
@@ -50,6 +53,7 @@ export const UploadImage: FC<IUploadImage> = ({
         // Si setImage está definido, actualizamos la URL de la imagen cargada
         if (setImage) {
           setImage(data);
+          dispatch(setImageStringActivo(data))
         }
 
         // Si setImageObjeto está definido, actualizamos el objeto de imagen con la URL y el nombre del archivo
@@ -78,6 +82,7 @@ export const UploadImage: FC<IUploadImage> = ({
         .deleteImgItems(elementActive?.id, imageObjeto.url, typeElement)
         .then(() => {
           setImageObjeto(null); // Eliminamos el objeto de imagen
+          dispatch(removeImageActivo())
         });
     }
     // Si existe solo la URL de la imagen

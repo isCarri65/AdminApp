@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setEmpresaActiva, setEmpresaList } from "../../../redux/slices/CompanySlices/EmpresaSlice";
 import { useParams } from "react-router-dom";
 import styles from "./HomeSecundario.module.css"
+import { NavBar } from "../navBar/NavBar";
 
 export const Home = () => {
   const {id} = useParams()
@@ -15,7 +16,7 @@ export const Home = () => {
   const [empresaA, setEmpresaA ] = useState<IEmpresa| null>(null)
   const dispatch = useAppDispatch()
   const empresaAc = useAppSelector((state)=> state.empresa.empresaActiva)
-  const empresaList = useAppSelector((state)=>state.empresa.empresasList)
+  const empresaList = useAppSelector((state)=>state.empresa.empresaList)
 
 
   const empresaService = new EmpresaService()
@@ -50,10 +51,7 @@ export const Home = () => {
         }}
       >
         <header className={`${styles.headerC} d-flex justify-content-center align-items-center flex-column`}>
-          <div className={styles.title}>
-            <h1>Sistema de Gestión de Empresas</h1>
-          </div>
-          <div>Empresas varias</div>
+          <NavBar getEmpresas={getEmpresas}/>
         </header>
         <div >
           {empresaA?
