@@ -44,3 +44,16 @@
 .customSelect::placeholder {
   color: #999; /* Color del texto de marcador */
 }
+.buttonSubmit{
+  background-color: #756070 
+}
+.buttonSubmit:hover {
+  background-color: #756070 !important;
+  border: solid 1px #756070 !important;
+
+}
+.buttonSubmit:active{
+  background-color: #756070 !important;
+  border: solid 1px #6e5c6a !important;
+  transform: scale(0.98);
+}

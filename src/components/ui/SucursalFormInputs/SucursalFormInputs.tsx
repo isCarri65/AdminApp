@@ -2,11 +2,29 @@ import { Field, Form } from "formik";
 import TextFieldValue from "../TextFieldValue/TextFielValue";
 import { Button } from "react-bootstrap";
 import styles from "./SucursalFormInputs.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UploadImage } from "../UploadImage/UploadImage";
+import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
+import { setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
 
 export const SucursalFormInputs = () => {
   const [image, setImage] = useState<string | null>(null);
+  const dispatch = useAppDispatch()
+  const sucursalActivo = useAppSelector(
+    (state) => state.sucursal.sucursalActivo
+  );
+  useEffect(() => {
+    if (sucursalActivo) {
+      if (sucursalActivo.logo) {
+        setImage(sucursalActivo.logo);
+        dispatch(setImageStringActivo(sucursalActivo.logo))
+      }
+    }
+  }, []);
+  useEffect(() =>{
+    console.log("Se ingreso una imagen")
+
+  }, [image])
   return (
     <Form autoComplete="off" className="form-obraAlta">
       <div className="container_Form_Ingredientes">
@@ -60,7 +78,11 @@ export const SucursalFormInputs = () => {
               <label className={styles.selectLabel} htmlFor="pais">
                 Provincia:
               </label>
-              <Field as="select" name="provincia" className={styles.customSelect}>
+              <Field
+                as="select"
+                name="provincia"
+                className={styles.customSelect}
+              >
                 <option value="">Selecciona una provincia</option>
                 <option value="1">Argentina</option>
                 <option value="2">Peru</option>
@@ -70,7 +92,11 @@ export const SucursalFormInputs = () => {
               <label className={styles.selectLabel} htmlFor="pais">
                 Localidad:
               </label>
-              <Field as="select" name="localidad" className={styles.customSelect}>
+              <Field
+                as="select"
+                name="localidad"
+                className={styles.customSelect}
+              >
                 <option value="">Selecciona una localidad</option>
                 <option value="1">Argentina</option>
                 <option value="2">Peru</option>
@@ -115,7 +141,7 @@ export const SucursalFormInputs = () => {
       </div>
       {/* Botón para enviar el formulario */}
       <div className="d-flex justify-content-end">
-        <Button variant="success" type="submit">
+        <Button className={styles.buttonSubmit} variant="success" type="submit">
           Enviar
         </Button>
       </div>

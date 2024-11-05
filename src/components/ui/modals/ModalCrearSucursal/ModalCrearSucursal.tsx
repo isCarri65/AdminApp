@@ -11,6 +11,7 @@ import { ICreateSucursal } from "../../../../types/dtos/sucursal/ICreateSucursal
 import { useParams } from "react-router-dom";
 import { SucursalFormInputs } from "../../SucursalFormInputs/SucursalFormInputs";
 import styles from "./ModalCrearSucursal.module.css"
+import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
 interface IModalCrearSucursal {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
@@ -62,11 +63,13 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
   const dispatch = useAppDispatch();
   const sucursalService = new SucursalService();
   const { id } = useParams();
+  const imageActivo = useAppSelector((state)=>state.image.imageStringActivo)
 
   // Función para cerrar el modal
   const handleClose = () => {
     setOpenModal(false);
     dispatch(removeSucursalActivo());
+    dispatch(removeImageActivo())
   };
 
   const crearInitialValues = (objOrigen: ISucursal): IinitialValues => {
@@ -153,7 +156,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                         idLocalidad: 1,
                       },
                       idEmpresa: Number.parseInt(id),
-                      logo: values.logo ? values.logo : null,
+                      logo: imageActivo,
                       categorias: sucursalActivo.categorias,
                     };
                     const resultado = await sucursalService.updateSucursal(
@@ -179,7 +182,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                         idLocalidad: 1,
                       },
                       idEmpresa: Number.parseInt(id),
-                      logo: values.logo ? values.logo : null,
+                      logo: imageActivo,
                     };
                     await sucursalService.createSucursal(sucursalCreate);
                   }
