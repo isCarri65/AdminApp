@@ -1,52 +1,127 @@
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
+import { Field, Formik } from "formik";
+import { FC, useState } from "react";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import { ICreateSucursal } from "../../../types/dtos/sucursal/ICreateSucursal";
+import * as Yup from "yup";
+import TextFieldValue from "../../ui/TextFieldValue/TextFielValue";
 
-export const ModalCreateCompany = () =>{
-  const [show, setShow] = useState(false);
+interface IModalCrearEmpresa {
+  openModal: boolean;
+  setOpenModal: (state: boolean) => void;
+}
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+export const ModalCreateCompany: FC<IModalCrearEmpresa> = ({
+  openModal,
+  setOpenModal,
+}) =>{
+  const initialValues: ICreateSucursal | IUpdateSucursal= {
+    nombre: "",
+    horarioApertura: "",
+    horarioCierre: "",
+    esCasaMatriz: false,
+    latitud: 0,
+    longitud: 0,
+    domicilio: {
+      calle: "",
+      numero: 0,
+      cp: 0,
+      piso: 0,
+      nroDpto: 0,
+      idLocalidad: 0,
+    },
+    idEmpresa: 0,
+    logo: "",
+  };
+
+
+  // Función para cerrar el modal
+  const handleClose = () => {
+    setOpenModal(false);
+
+  };
 
   return (
-    <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
-      <Modal show={show} onHide={handleClose}>
+    <div>
+      {/* Componente Modal de React Bootstrap */}
+      <Modal
+        id={"modal"}
+        show={openModal}
+        onHide={handleClose}
+        size={"lg"}
+        backdrop="static"
+        keyboard={false}
+      >
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Crear una Empresa:</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="name@example.com"
-                autoFocus
-              />
-            </Form.Group>
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
-            >
-              <Form.Label>Example textarea</Form.Label>
-              <Form.Control as="textarea" rows={3} />
-            </Form.Group>
-          </Form>
+          {/* Componente Formik para el formulario */}
+          <Formik
+            validationSchema={Yup.object({
+              nombre: Yup.string().required("Campo requerido"),
+              categoria: Yup.string().required("Campo requerido"),
+              responsable: Yup.string().required("Campo requerido"),
+              telefono: Yup.number().required("Campo requerido"),
+              ubicacion: Yup.string().required("Campo requerido"),
+            })}
+            initialValues={initialValues}
+            enableReinitialize={true}
+            onSubmit={async (values: ICreateSucursal) => {
+              handleClose();
+            }}
+          >
+            {() => (
+              <>
+                {/* Formulario */}
+                <Form autoComplete="off" className="form-obraAlta">
+                  <div className="container_Form_Ingredientes">
+                    {/* Campos del formulario */}
+                    <TextFieldValue
+                      label="Nombre:"
+                      name="nombre"
+                      type="text"
+                      placeholder="ej. Asus"
+                    />
+                    <TextFieldValue
+                      label="Categoria"
+                      name="categoria"
+                      type="text"
+                      placeholder="Categoria"
+                    />
+
+                    <TextFieldValue
+                      label="Responsable"
+                      name="responsable"
+                      type="text"
+                      placeholder="Dueño de la empresa / responsable"
+                    />
+                    <TextFieldValue
+                      label="Telefono"
+                      name="telefono"
+                      type="tel"
+                      placeholder="Numero celular"
+                    />
+                    <TextFieldValue
+                      label="Ubicacion:"
+                      name="Ubicacion"
+                      type="text"
+                      placeholder="example 123, barrio, departamento, pais"
+                    />
+                  </div>
+                  {/* Botón para enviar el formulario */}
+                  <div className="d-flex justify-content-end">
+                    <Button variant="success" type="submit">
+                      Enviar
+                    </Button>
+                  </div>
+                </Form>
+              </>
+            )}
+          </Formik>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 }

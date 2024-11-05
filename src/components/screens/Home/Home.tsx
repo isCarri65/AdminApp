@@ -1,8 +1,8 @@
-
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 import { IDomicilio } from "../../../types/IDomicilio";
 import { SucursalComponent } from "../../ui/SucursalComponent/SucursalComponent";
+import { NavBar } from "../navBar/NavBar";
 
 export const Home = () => {
 
@@ -66,13 +66,9 @@ const sucursal4 : ISucursal= {
         }}
       >
         <header
-          className=" d-flex justify-content-center align-items-center flex-column"
           style={{ height: "20vh" }}
         >
-          <div>
-            <h1>Sistema de Gestión de Empresas</h1>
-          </div>
-          <div>Empresas varias</div>
+          <NavBar></NavBar>
         </header>
         <div style={{ height: "80vh" }}>
           <SucursalComponent company={empresa1} />

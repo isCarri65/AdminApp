@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import SucursalReducer from '../slices/SucursalReducer/SucursalReducer'
+import EmpresaReducer from '../slices/CompanyReducer/CompanyReducer'
+
 // ...
 
 export const store = configureStore({
   reducer: {
     sucursal: SucursalReducer,
+    empresa: EmpresaReducer
   },
 })
 
