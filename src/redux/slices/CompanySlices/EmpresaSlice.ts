@@ -3,11 +3,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IEmpresa } from '../../../types/dtos/empresa/IEmpresa';
 
 interface IinitialState{
-  empresasList: IEmpresa[],
+  empresaList: IEmpresa[],
   empresaActiva: IEmpresa | null,
 }
 const initialState: IinitialState = {
-  empresasList: [],
+  empresaList: [],
   empresaActiva: null,
 }
 const EmpresaSlice = createSlice({
@@ -15,7 +15,7 @@ const EmpresaSlice = createSlice({
   initialState,
   reducers: {
     setEmpresaList(state, action:PayloadAction<IEmpresa[]>){
-      state.empresasList = action.payload
+      state.empresaList = action.payload
     },
 
     setEmpresaActiva(state, action: PayloadAction<IEmpresa>) {

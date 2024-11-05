@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, FC } from "react"
 import { useLocation } from "react-router-dom"
 import "./navBar.css"
 import Button from 'react-bootstrap/Button';
 import { NavBarCompany } from "../../ui/navBar/NavBarCompany";
-import { ModalCreateCompany } from "../../modals/ModalCreateCompany/ModalCreateCompany";
+import { ModalCreateCompany } from "../../ui/modals/ModalCreateCompany/ModalCreateCompany";
 
-export const NavBar = ()=>{
+interface INavBar {
+    getEmpresas: ()=>void,
+}
+export const NavBar: FC<INavBar>= ({getEmpresas} )=>{
+    
     const location = useLocation();
     const [navBarEmpresa, setNavBarEmpresa] = useState(false); 
     const [openModal, setOpenModal] = useState(false);
@@ -33,9 +37,9 @@ export const NavBar = ()=>{
             <span className="material-symbols-outlined">add</span>
             Agregar Empresa</Button>
             </div>  
-            <NavBarCompany></NavBarCompany>
+            <NavBarCompany getEmpresas={getEmpresas} />
             </div>  
-      <ModalCreateCompany openModal={openModal} setOpenModal={setOpenModal} />
+      <ModalCreateCompany openModal={openModal} setOpenModal={setOpenModal} getEmpresas={getEmpresas} />
         </div>
 
     )

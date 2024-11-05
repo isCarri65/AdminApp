@@ -10,7 +10,7 @@ import { IUpdateSucursal } from "../../../../types/dtos/sucursal/IUpdateSucursal
 import { ICreateSucursal } from "../../../../types/dtos/sucursal/ICreateSucursal";
 import { useParams } from "react-router-dom";
 import { SucursalFormInputs } from "../../SucursalFormInputs/SucursalFormInputs";
-import styles from "./ModalCrearSucursal.module.css"
+import styles from "./ModalCreateSucursal.module.css"
 import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
 interface IModalCrearSucursal {
   openModal: boolean;

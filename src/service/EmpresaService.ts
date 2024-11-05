@@ -1,4 +1,6 @@
+import { ICreateEmpresaDto } from "../types/dtos/empresa/ICreateEmpresaDto";
 import { IEmpresa } from "../types/dtos/empresa/IEmpresa";
+import { IUpdateEmpresaDto } from "../types/dtos/empresa/IUpdateEmpresaDto";
 import { BackendClient } from "./BackendClient";
 
 
@@ -15,7 +17,7 @@ export class EmpresaService extends BackendClient<IEmpresa> {
   }
 
   // Crear Empresa
-  async createEmpresa(data: IEmpresa): Promise<IEmpresa> {
+  async createEmpresa(data: ICreateEmpresaDto): Promise<IEmpresa> {
     const response = await fetch(`${this.baseUrl}`, {
       method: "POST",
       headers: {
@@ -28,7 +30,7 @@ export class EmpresaService extends BackendClient<IEmpresa> {
   }
 
   // Editar Empresa
-  async updateEmpresa(idEmpresa: number, data: IEmpresa): Promise<IEmpresa> {
+  async updateEmpresa(idEmpresa: number, data: IUpdateEmpresaDto): Promise<IEmpresa> {
     const response = await fetch(`${this.baseUrl}/${idEmpresa}`, {
       method: "PUT",
       headers: {
