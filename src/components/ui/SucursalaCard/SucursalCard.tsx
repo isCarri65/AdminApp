@@ -7,12 +7,12 @@ import styles from "./SucursalCard.module.css";
 interface ISucursalCard {
   sucursal: ISucursal;
   setOpenModal: (state: boolean) => void;
-  getsucursales?: () => void;
 }
 
 export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal }) => {
   const distpach = useAppDispatch();
-  const handleOpenModal = () => {
+  const handleOpenModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     distpach(setSucursalActivo({ sucursalActivo: sucursal }));
     setOpenModal(true);
   };

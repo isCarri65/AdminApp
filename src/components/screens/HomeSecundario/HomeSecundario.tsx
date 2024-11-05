@@ -13,9 +13,9 @@ import { NavBar } from "../navBar/NavBar";
 export const Home = () => {
   const {id} = useParams()
   const [empresas, setEmpresas] = useState<IEmpresa[]>([])
-  const [empresaA, setEmpresaA ] = useState<IEmpresa| null>(null)
+  const [empresaActiva, setEmpresaA ] = useState<IEmpresa| null>(null)
   const dispatch = useAppDispatch()
-  const empresaAc = useAppSelector((state)=> state.empresa.empresaActiva)
+  const stateEmpresaActiva = useAppSelector((state)=> state.empresa.empresaActiva)
   const empresaList = useAppSelector((state)=>state.empresa.empresaList)
 
 
@@ -41,8 +41,8 @@ export const Home = () => {
     setEmpresas(empresaList)
   }, [empresaList])
   useEffect(()=>{
-    setEmpresaA(empresaAc)
-  }, [empresaAc])
+    setEmpresaA(stateEmpresaActiva)
+  }, [stateEmpresaActiva])
 
   return (
     <>
@@ -54,8 +54,8 @@ export const Home = () => {
           <NavBar getEmpresas={getEmpresas}/>
         </header>
         <div >
-          {empresaA?
-          <SucursalComponent company={empresaA} />
+          {empresaActiva?
+          <SucursalComponent company={empresaActiva} />
           : <p>NO se ha elegido ninguna empresa</p>
           }
         </div>

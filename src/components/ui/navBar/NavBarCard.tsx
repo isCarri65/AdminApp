@@ -8,7 +8,7 @@ interface IEmpresaCard {
 export const NavBarCard: FC<IEmpresaCard> = ({empresa}) => {
   return (
     <Card style={{ width: "18rem" }}>
-
+      
     </Card>
   );
 };

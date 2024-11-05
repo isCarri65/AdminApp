@@ -1,7 +1,6 @@
 .cardTitle {
   font-weight: 600;
-  height: 50px;
-  width: 250px;
+  height: 3rem;
   text-align: center;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -13,6 +12,7 @@
 }
 .cardContainer {
   height: 400px;
+  width: 100%;
   padding: 8px;
   background-color: #d8d8d8;
   
@@ -32,6 +32,7 @@
 .cardImg {
   object-fit: cover;
   height: 100%;
+  filter: brightness(0.85) grayscale(40%);
 
 }
 .cardBody {

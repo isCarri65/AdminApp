@@ -35,20 +35,20 @@ export const CompanyFormInputs = () => {
               label="Nombre:"
               name="nombre"
               type="text"
-              placeholder=""
+              placeholder="ej. nombre"
             />
             <TextFieldValue
               label="Razon Social:"
               name="razonSocial"
               type="text"
-              placeholder=""
+              placeholder="ej. bar de bebidas"
             />
 
             <TextFieldValue
               label="Cuit:"
               name="cuit"
               type="text"
-              placeholder=""
+              placeholder="ej. cuit"
             />
             <UploadImage image={image} setImage={setImage} />
           </div>
