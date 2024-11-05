@@ -36,7 +36,7 @@ export const HomePrincipal = () => {
 
   const handleCardCompany = (empresa: IEmpresa)=>{
     dispatch(setEmpresaActiva(empresa))
-    navigate(`/HomeSecundario/:${empresa.id}`)
+    navigate(`/HomeSecundario/${empresa.id}`)
   }
   return (
     <div  className={styles.mainContainer}>
