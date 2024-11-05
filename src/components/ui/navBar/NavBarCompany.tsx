@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { FC, useEffect, useState } from "react";
@@ -14,88 +14,75 @@ interface INavBarCompany {
 }
 
 export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
-  
-const {id} = useParams()
+  const { id } = useParams();
   const dispatch = useAppDispatch();
-  const [empresas, setEmpresas] = useState<IEmpresa[]>([])
-  const [empresaA, setEmpresaA ] = useState<IEmpresa| null>(null)
-  const empresaAc = useAppSelector((state)=> state.empresa.empresaActiva)
-  const empresaList = useAppSelector((state)=>state.empresa.empresaList)
+  const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
+  const [empresaA, setEmpresaA] = useState<IEmpresa | null>(null);
+  const empresaAc = useAppSelector((state) => state.empresa.empresaActiva);
+  const empresaList = useAppSelector((state) => state.empresa.empresaList);
+  const navigate = useNavigate();
 
-
-  const empresaService = new EmpresaService()
-  const getEmpresaActiva = async ()=> {
-    if (id){
-    await empresaService.getById(Number.parseInt(id)).then((emp) => {
-      if (emp) dispatch(setEmpresaActiva(emp))
-    })
+  const empresaService = new EmpresaService();
+  const getEmpresaActiva = async () => {
+    if (id) {
+      await empresaService.getById(Number.parseInt(id)).then((emp) => {
+        if (emp) dispatch(setEmpresaActiva(emp));
+      });
     }
-  }
-  useEffect(()=>{
-    console.log("Montar Componente")
-    getEmpresas()
-    getEmpresaActiva()
-  }, [])
-  useEffect(()=>{
-    setEmpresas(empresaList)
-  }, [empresaList])
-  useEffect(()=>{
-    setEmpresaA(empresaAc)
-  }, [empresaAc])
+  };
+  useEffect(() => {
+    getEmpresas();
+    getEmpresaActiva();
+  }, []);
+  useEffect(() => {
+    setEmpresas(empresaList);
+  }, [empresaList]);
+  useEffect(() => {
+    setEmpresaA(empresaAc);
+  }, [empresaAc]);
 
   const handleHover = () => {
-    if(empresaA){
-        dispatch(setEmpresaActiva(empresaA));
+    if (empresaA) {
+      dispatch(setEmpresaActiva(empresaA));
     }
-    
   };
 
   return (
-    <div className="navBar_cards_nombres_container"
-    style={{fontSize: "1.5rem"}}>
+    <div className="navBar_cards_nombres_container">
       <div className="navBar_swiper">
         <Swiper
           modules={[Pagination]}
           spaceBetween={10}
           slidesPerView={3}
-          onSlideChange={() => console.log("")}
-          onSwiper={(swiper) => console.log(swiper)}
           pagination={{
             el: ".pagination",
             clickable: true,
           }}
-        >{empresas.map((empresa, index) => 
+        >
+          {empresas.map((empresa, index) => (
             <SwiperSlide key={index}>
               <div
                 onClick={() => handleHover()}
                 key={index}
                 className={` ${
-                  empresaA ? (
-                    empresaA.id === empresa.id
-                    ? "navBar_cards_nombres_container_icons_hover"
+                  empresaA
+                    ? empresaA.id === empresa.id
+                      ? "navBar_cards_nombres_container_icons_hover"
+                      : "navBar_cards_nombres_container_icons"
                     : "navBar_cards_nombres_container_icons"
-                  ) : (
-                     "navBar_cards_nombres_container_icons"
-                  )
                 }`}
               >
-                <Link
-                  to={`/${empresa.id}`}
-                  className="link__class__decortaion"
-                >
+                <Link to={`HomeSecundario/${empresa.id}`} className="link__class__decortaion">
                   <div className="navBar_cards_nombres">{empresa.nombre}</div>
                 </Link>
                 <div className="navBar_icons">
-                  <Link
-                    to={`/${empresa.nombre}/edit`}
-                    className="link__class__decortaion"
-                  >
+                  <Link to={`/${empresa.nombre}/edit`} className="link__class__decortaion">
                     <span className="material-symbols-outlined">edit</span>
                   </Link>
                 </div>
               </div>
             </SwiperSlide>
-          )}
+          ))}
         </Swiper>
         {/* {EmpresaList.map((empresa, index) => (
             <div onClick={()=>handleHover(empresa.id)} key={index} className={` ${selectedCompanyId === empresa.id ? "navBar_cards_nombres_container_icons_hover" : "navBar_cards_nombres_container_icons"}`}>
