@@ -1,12 +1,11 @@
-import MainMenu from './components/MainMenu';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import ProductTable from './components/screens/Productos/ProductTable/ProductTable';
 
-function App() {
-  return (
-    <div className="App">
-      <MainMenu />
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <div className="App">
+            <ProductTable />
+        </div>
+    );
+};
 
 export default App;
