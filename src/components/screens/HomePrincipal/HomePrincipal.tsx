@@ -7,6 +7,7 @@ import { IEmpresa } from '../../../types/dtos/empresa/IEmpresa';
 import { useNavigate } from 'react-router-dom';
 import { ModalCreateCompany } from '../../ui/modals/ModalCreateCompany/ModalCreateCompany';
 import styles from "./HomePrincipal.module.css"
+import { Button } from 'react-bootstrap';
 
 
 export const HomePrincipal = () => {
@@ -49,6 +50,10 @@ export const HomePrincipal = () => {
         width: "100%",
         padding: "20px 80px",
       }}>
+      <Button
+          className={styles.buttonModal}
+          onClick={() => setOpenModal(true)}
+        >Crear Empresa</Button>
       <div className={styles.containerCompanys} >
         {empresas.map((empresa, index) => (
           <div className={styles.cardContainer} onClick={()=> handleCardCompany(empresa)}>

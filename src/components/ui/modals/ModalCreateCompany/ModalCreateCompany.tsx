@@ -11,6 +11,7 @@ import { EmpresaService } from "../../../../service/EmpresaService";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 import { IUpdateEmpresaDto } from "../../../../types/dtos/empresa/IUpdateEmpresaDto";
 import { CompanyFormInputs } from "../../CompanyFormInputs/CompanyFormInputs";
+import { removeEmpresaActiva } from "../../../../redux/slices/CompanySlices/EmpresaSlice";
 interface IModalCreateCompany {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
@@ -46,9 +47,10 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
 
   // Función para cerrar el modal
   const handleClose = () => {
-    setOpenModal(false);
-    dispatch(removeSucursalActivo());
+    dispatch(removeEmpresaActiva());
     dispatch(removeImageActivo())
+    
+    setOpenModal(false);
   };
 
   const crearInitialValues = (objOrigen: IEmpresa): IinitialValues => {
@@ -77,7 +79,7 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
           {empresaActiva ? (
             <Modal.Title className={`${styles.title} mx-auto`}>Editar Empresa</Modal.Title>
           ) : (
-            <Modal.Title className={styles.title}>Crear EMpresa</Modal.Title>
+            <Modal.Title className={styles.title}>Crear Empresa</Modal.Title>
           )}
         </Modal.Header  >
         <Modal.Body  className={styles.modalBody}>

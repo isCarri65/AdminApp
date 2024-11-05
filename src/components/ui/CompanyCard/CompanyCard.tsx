@@ -2,6 +2,8 @@ import React from 'react';
 import { Card, Button} from 'react-bootstrap';
 import { IEmpresa } from '../../../types/dtos/empresa/IEmpresa';
 import styles from "./CompanyCard.module.css"
+import { useAppDispatch } from '../../../Hooks/hooks';
+import { setEmpresaActiva } from '../../../redux/slices/CompanySlices/EmpresaSlice';
 
 
 interface CompanyCardProps {
@@ -10,8 +12,10 @@ interface CompanyCardProps {
 }
 
 const CompanyCard: React.FC<CompanyCardProps> = ({ company, setOpenModal }) => {
+  const dispatch = useAppDispatch()
   const handleOpenModal = (event: React.MouseEvent<HTMLButtonElement>)=>{
     event.stopPropagation()
+    dispatch(setEmpresaActiva(company))
     setOpenModal(true)
   }
 
