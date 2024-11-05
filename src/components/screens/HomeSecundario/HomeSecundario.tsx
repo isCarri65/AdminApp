@@ -7,14 +7,16 @@ import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setEmpresaActiva, setEmpresaList } from "../../../redux/slices/CompanySlices/EmpresaSlice";
 import { useParams } from "react-router-dom";
+import styles from "./HomeSecundario.module.css"
+import { NavBar } from "../navBar/NavBar";
 
 export const Home = () => {
   const {id} = useParams()
   const [empresas, setEmpresas] = useState<IEmpresa[]>([])
-  const [empresaA, setEmpresaA ] = useState<IEmpresa| null>(null)
+  const [empresaActiva, setEmpresaA ] = useState<IEmpresa| null>(null)
   const dispatch = useAppDispatch()
-  const empresaAc = useAppSelector((state)=> state.empresa.empresaActiva)
-  const empresaList = useAppSelector((state)=>state.empresa.empresasList)
+  const stateEmpresaActiva = useAppSelector((state)=> state.empresa.empresaActiva)
+  const empresaList = useAppSelector((state)=>state.empresa.empresaList)
 
 
   const empresaService = new EmpresaService()
@@ -39,28 +41,21 @@ export const Home = () => {
     setEmpresas(empresaList)
   }, [empresaList])
   useEffect(()=>{
-    setEmpresaA(empresaAc)
-  }, [empresaAc])
+    setEmpresaA(stateEmpresaActiva)
+  }, [stateEmpresaActiva])
 
   return (
     <>
       <div
         style={{
-          height: "100vh",
         }}
       >
-        <header
-          className=" d-flex justify-content-center align-items-center flex-column"
-          style={{ height: "20vh",  backgroundColor: "#999" }}
-        >
-          <div>
-            <h1>Sistema de Gestión de Empresas</h1>
-          </div>
-          <div>Empresas varias</div>
+        <header className={`${styles.headerC} d-flex justify-content-center align-items-center flex-column`}>
+          <NavBar getEmpresas={getEmpresas}/>
         </header>
-        <div style={{ height: "100%" }}>
-          {empresaA?
-          <SucursalComponent company={empresaA} />
+        <div >
+          {empresaActiva?
+          <SucursalComponent company={empresaActiva} />
           : <p>NO se ha elegido ninguna empresa</p>
           }
         </div>
