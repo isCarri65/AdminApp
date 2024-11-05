@@ -8,11 +8,13 @@ import { Button } from "react-bootstrap";
 import { setSucursalList } from "../../../redux/slices/SucursalReducer/SucursalReducer";
 import { SucursalService } from "../../../service/SurcusalService";
 import styles from "./SucursalComponent.module.css";
+import { useParams } from "react-router-dom";
 interface ISucursalComponent {
   company: IEmpresa;
 }
 
 export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
+  const { id } = useParams();
   const [openModal, setOpenModal] = useState(false);
   const [sucursales, setSucursales] = useState<ISucursal[]>([]);
 
@@ -21,11 +23,9 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   const sucursalService = new SucursalService();
 
   const getSucursales = async () => {
-    await sucursalService
-      .getAllSucursalesByEmpresa(company.id)
-      .then((sucursalesDatos) => {
-        dispatch(setSucursalList({ sucursalList: sucursalesDatos }));
-      });
+    await sucursalService.getAllSucursalesByEmpresa(company.id).then((sucursalesDatos) => {
+      dispatch(setSucursalList({ sucursalList: sucursalesDatos }));
+    });
   };
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
 
   useEffect(() => {
     getSucursales();
-  }, []);
+  }, [id]);
   console.log(sucursales);
 
   return (
@@ -50,11 +50,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
         <p>Sucursales de: {company.nombre.toUpperCase()}</p>
       </div>
       <div className="p-3">
-        <Button
-          className={styles.buttonModal}
-          onClick={() => setOpenModal(true)}
-        >
-          
+        <Button className={styles.buttonModal} onClick={() => setOpenModal(true)}>
           Crear Sucursal
         </Button>
       </div>
