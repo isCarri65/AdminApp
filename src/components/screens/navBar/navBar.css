@@ -1,0 +1,95 @@
+/*  ---------- Utils ----------   */
+.display_none{
+    display: none;
+}
+
+
+
+
+/*  ---------- NavBar ----------   */
+
+.main_navBar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(128, 128, 128, 0.393);
+    height: 100%;
+    width: 100%;
+}
+.main_tittle{
+    font-size: 7vh;
+}
+
+
+.navBar_empresa{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+}
+
+.add_company_NavBar{
+    position: absolute;
+    left: 0;
+    margin: 5px;
+    border-radius: 15px;
+    background-color: #888690;
+    color: white;
+}
+
+
+.navBar_cards_nombres_container{
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 25px;
+}
+.navBar_swiper{
+    overflow-x: hidden;
+    margin-top: 25px;
+    width: 90vw;
+}
+
+.navBar_cards_nombres_container_icons{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+    background-color: rgba(93, 90, 136, 1); 
+    color: black;
+    margin-right: 50px;
+}
+.link__class__decortaion{
+    color: inherit;
+    text-decoration: none;
+    font-size: 2rem;
+    
+}
+
+.material-symbols-outlined{
+    font-size: 2rem;
+}
+.navBar_cards_nombres{
+    background-color: transparent;
+    text-align: center; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+.navBar_cards_nombres_container_icons_hover{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    transform: scale(1.16);
+    border-radius: 20px;
+    background-color: #888690; 
+    color: white;
+    margin-right: 50px;
+}
+.sucursal_tittle{
+    font-size: 6vh;
+}
