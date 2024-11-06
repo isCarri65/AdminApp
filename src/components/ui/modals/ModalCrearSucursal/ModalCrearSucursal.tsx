@@ -197,7 +197,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
               }
             }}
           >
-            {() => (
+            {({ setValues}) => (
               <>
                 {/* Formulario */}
                 <SucursalFormInputs />

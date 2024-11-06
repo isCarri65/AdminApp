@@ -13,6 +13,8 @@ export const SucursalFormInputs = () => {
   const sucursalActivo = useAppSelector(
     (state) => state.sucursal.sucursalActivo
   );
+const paisesServices = Paises
+
   useEffect(() => {
     if (sucursalActivo) {
       if (sucursalActivo.logo) {
@@ -21,10 +23,11 @@ export const SucursalFormInputs = () => {
       }
     }
   }, []);
+
   useEffect(() =>{
     console.log("Se ingreso una imagen")
-
   }, [image])
+  
   return (
     <Form autoComplete="off" className="form-obraAlta">
       <div className="container_Form_Ingredientes">
@@ -69,9 +72,7 @@ export const SucursalFormInputs = () => {
                 Pais:
               </label>
               <Field as="select" name="pais" className={styles.customSelect}>
-                <option value="">Selecciona un pais</option>
-                <option value="1">Argentina</option>
-                <option value="2">Peru</option>
+                {}
               </Field>
             </div>
             <div className={styles.selectContainer}>
