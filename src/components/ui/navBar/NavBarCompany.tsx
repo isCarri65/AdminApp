@@ -33,7 +33,7 @@ export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
   useEffect(() => {
     getEmpresas();
     getEmpresaActiva();
-  }, []);
+  }, [id]);
   useEffect(() => {
     setEmpresas(empresaList);
   }, [empresaList]);
@@ -41,10 +41,13 @@ export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
     setEmpresaA(empresaAc);
   }, [empresaAc]);
 
-  const handleHover = () => {
-    if (empresaA) {
-      dispatch(setEmpresaActiva(empresaA));
+  const handleHover = async (id: number) => {
+    const empresa = await empresaService.getById(id);
+    if (empresa) {
+      dispatch(setEmpresaActiva(empresa));
+      setEmpresaA(empresaA);
     }
+    navigate(`/HomeSecundario/${id}`);
   };
 
   return (
@@ -62,7 +65,7 @@ export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
           {empresas.map((empresa, index) => (
             <SwiperSlide key={index}>
               <div
-                onClick={() => handleHover()}
+                onClick={() => handleHover(empresa.id)}
                 key={index}
                 className={` ${
                   empresaA
@@ -72,9 +75,11 @@ export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
                     : "navBar_cards_nombres_container_icons"
                 }`}
               >
-                <Link to={`HomeSecundario/${empresa.id}`} className="link__class__decortaion">
+                <div className="navBar_cards_nombres link__class__decortaion">{empresa.nombre}</div>
+
+                {/* <Link to={`HomeSecundario/${empresa.id}`} className="link__class__decortaion">
                   <div className="navBar_cards_nombres">{empresa.nombre}</div>
-                </Link>
+                </Link> */}
                 <div className="navBar_icons">
                   <Link to={`/${empresa.nombre}/edit`} className="link__class__decortaion">
                     <span className="material-symbols-outlined">edit</span>
@@ -84,19 +89,6 @@ export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
             </SwiperSlide>
           ))}
         </Swiper>
-        {/* {EmpresaList.map((empresa, index) => (
-            <div onClick={()=>handleHover(empresa.id)} key={index} className={` ${selectedCompanyId === empresa.id ? "navBar_cards_nombres_container_icons_hover" : "navBar_cards_nombres_container_icons"}`}>
-            <Link to={`/${empresa.nombre}`} className="link__class__decortaion" >
-            <div className="navBar_cards_nombres" >{empresa.nombre}</div>
-            </Link>
-            <div className="navBar_icons">
-            <Link to={`/${empresa.nombre}/edit`} className="link__class__decortaion">
-            <span className="material-symbols-outlined">edit</span>
-            </Link>
-            </div>
-            </div>
-            
-            ))} */}
       </div>
     </div>
   );

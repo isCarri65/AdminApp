@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Home } from "../components/screens/HomeSecundario/HomeSecundario";
 import { HomePrincipal } from "../components/screens/HomePrincipal/HomePrincipal";
+import { NavBarSide } from "../components/screens/navBarSide/NavBarSide";
 import ProductTable from "../components/screens/ProductTable/ProductTable";
 
 export const AppRouter = () => {
@@ -14,6 +15,8 @@ export const AppRouter = () => {
         <Route path="/" element={<HomePrincipal />} />
         <Route path="/HomeSecundario/:id" element={<Home />} />
         <Route path="/HomeSecundario/sucursal/:id" element={<ProductTable />} />
+         {/*Aux */}
+        <Route path="/navBarSide" element={<NavBarSide />} />
       </Routes>
     </>
   );
