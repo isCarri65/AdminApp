@@ -8,13 +8,14 @@ import { Button } from "react-bootstrap";
 import { setSucursalList } from "../../../redux/slices/SucursalReducer/SucursalReducer";
 import { SucursalService } from "../../../service/SurcusalService";
 import styles from "./SucursalComponent.module.css";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 interface ISucursalComponent {
   company: IEmpresa;
 }
 
 export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   const { id } = useParams();
+  const location = useLocation();
   const [openModal, setOpenModal] = useState(false);
   const [sucursales, setSucursales] = useState<ISucursal[]>([]);
 
@@ -23,20 +24,19 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   const sucursalService = new SucursalService();
 
   const getSucursales = async () => {
+    setSucursales([]);
     await sucursalService.getAllSucursalesByEmpresa(company.id).then((sucursalesDatos) => {
       dispatch(setSucursalList({ sucursalList: sucursalesDatos }));
     });
   };
 
   useEffect(() => {
-    console.log("componente");
-    setSucursales(dataSucursal);
-  }, [dataSucursal]);
+    getSucursales();
+  }, [id, location.pathname]);
 
   useEffect(() => {
-    getSucursales();
-  }, [id]);
-  console.log(sucursales);
+    setSucursales(dataSucursal);
+  }, [dataSucursal]);
 
   return (
     <div
