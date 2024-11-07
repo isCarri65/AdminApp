@@ -16,6 +16,8 @@ interface ISucursalComponent {
 export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   const { id } = useParams();
   const location = useLocation();
+  const BASEURL = "http://localhost:8090/";
+  console.log(BASEURL + "/sucursal")
   const [openModal, setOpenModal] = useState(false);
   const [sucursales, setSucursales] = useState<ISucursal[]>([]);
 

@@ -1,10 +1,11 @@
 import { ILocalidad } from "../types/ILocalidad";
 import { BackendClient } from "./BackendClient";
+import { BASEURL } from "./Baseurl";
 
 
 export class LocalidadesService extends BackendClient<ILocalidad> {
     constructor() {
-        super("http://190.221.207.224:8090/localidades");
+        super(BASEURL + "/localidades");
     }
 
     // Obtener localidades por ID de provincia

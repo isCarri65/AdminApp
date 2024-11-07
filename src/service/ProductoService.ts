@@ -2,10 +2,11 @@ import { BackendClient } from "./BackendClient";
 import { IProductos } from "../types/dtos/productos/IProductos";
 import { ICreateProducto } from "../types/dtos/productos/ICreateProducto";
 import { IUpdateProducto } from "../types/dtos/productos/IUpdateProducto";
+import { BASEURL } from "./Baseurl";
 
 export class ProductService extends BackendClient<IProductos> {
     constructor() {
-        super("http://190.221.207.224:8090/articulos");
+        super(BASEURL + "/articulos");
     }
 
     // Crear producto

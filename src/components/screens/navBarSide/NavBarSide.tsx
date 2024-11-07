@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 //StyleComponents
 import { Container, Content, ClosedSideBar, OpenSideBar } from "./styles";
 

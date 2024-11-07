@@ -2,10 +2,11 @@ import { BackendClient } from "./BackendClient";
 import { ICategorias } from "../types/dtos/categorias/ICategorias";
 import { ICreateCategoria } from "../types/dtos/categorias/ICreateCategoria";
 import { IUpdateCategoria } from "../types/dtos/categorias/IUpdateCategoria";
+import { BASEURL } from "./Baseurl";
 
 export class CategoriaService extends BackendClient<ICategorias> {
     constructor() {
-        super("http://190.221.207.224:8090/categorias");
+        super(BASEURL + "/categoria");
     }
 
     // Crear categoría

@@ -1,0 +1,16 @@
+/* CrearProducto.css */
+.image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .preview-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+  }
+  
