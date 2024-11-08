@@ -100,10 +100,12 @@ export const UploadImage: FC<IUploadImage> = ({
         border: "1px solid #9d9d9d",
         borderRadius: ".4rem",
         padding: ".4rem",
-        height: "120px",
+        height: "155px",
         display: "flex",
+        flexWrap: "wrap",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "center",
+        flexDirection: "column",
       }}
     >
       {/* Si hay una imagen cargada, mostramos la vista con la imagen y el botón para eliminarla */}
@@ -114,10 +116,11 @@ export const UploadImage: FC<IUploadImage> = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: "column",
             padding: ".4rem",
           }}
         >
-          <div style={{ width: "10vw" }}>
+          <div style={{width: "100%" }}>
             <Button
               onClick={handleDeleteImagen} // Ejecuta la función de eliminación de imagen
               variant="outlined"
@@ -135,6 +138,7 @@ export const UploadImage: FC<IUploadImage> = ({
               borderRadius: ".4rem",
               height: "10vh",
               objectFit: "fill",
+              marginTop: "10px"
             }}
           />
         </div>

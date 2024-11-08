@@ -13,4 +13,9 @@ export class ProvinciaService extends BackendClient<IProvincia> {
         const data = await response.json();
         return data as IProvincia[];
     }
+    async getAllProvincias(): Promise<IProvincia[]> {
+        const response = await fetch(`${this.baseUrl}`);
+        const data = await response.json();
+        return data as IProvincia[];
+      }
 }

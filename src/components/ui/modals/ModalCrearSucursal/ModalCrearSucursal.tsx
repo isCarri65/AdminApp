@@ -8,7 +8,6 @@ import { ISucursal } from "../../../../types/dtos/sucursal/ISucursal";
 import { SucursalService } from "../../../../service/SurcusalService";
 import { IUpdateSucursal } from "../../../../types/dtos/sucursal/IUpdateSucursal";
 import { ICreateSucursal } from "../../../../types/dtos/sucursal/ICreateSucursal";
-import { useParams } from "react-router-dom";
 import { SucursalFormInputs } from "../../SucursalFormInputs/SucursalFormInputs";
 import styles from "./ModalCreateSucursal.module.css"
 import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
@@ -30,8 +29,9 @@ interface IinitialValues {
   cp: number;
   piso: number;
   nroDpto: number;
-  idLocalidad: number;
-  idEmpresa: number;
+  pais: string;
+  provincia: string;
+  localidad: string;
   logo: string | null;
 }
 
@@ -53,16 +53,17 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
     cp: 0,
     piso: 0,
     nroDpto: 0,
-    idLocalidad: 0,
-    idEmpresa: 0,
+    pais: "",
+    provincia: "",
+    localidad: "",
     logo: "",
   };
+  const empresaActiva = useAppSelector((state)=>state.empresa.empresaActiva)
   const sucursalActivo = useAppSelector(
     (state) => state.sucursal.sucursalActivo
   );
   const dispatch = useAppDispatch();
   const sucursalService = new SucursalService();
-  const { id } = useParams();
   const imageActivo = useAppSelector((state)=>state.image.imageStringActivo)
 
   // Función para cerrar el modal
@@ -85,8 +86,9 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
       cp: objOrigen.domicilio.cp,
       piso: objOrigen.domicilio.piso,
       nroDpto: objOrigen.domicilio.nroDpto,
-      idLocalidad: objOrigen.domicilio.localidad.id,
-      idEmpresa: objOrigen.empresa.id,
+      localidad: objOrigen.domicilio.localidad.nombre,
+      provincia: objOrigen.domicilio.localidad.provincia.nombre,
+      pais: objOrigen.domicilio.localidad.provincia.pais.nombre,
       logo: objOrigen.logo ? objOrigen.logo : null,
     };
     return objDestino;
@@ -125,6 +127,9 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
               cp: Yup.number().required("Campo requerido"),
               piso: Yup.number().required("Campo requerido"),
               nroDpto: Yup.number().required("Campo requerido"),
+              pais: Yup.string().required("Campo requerido"),
+              provincia: Yup.string().required("Campo requerido"),
+              localidad: Yup.string().required("Campo requerido"),
             })}
             initialValues={
               sucursalActivo
@@ -133,8 +138,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
             }
             enableReinitialize={false}
             onSubmit={async (values: IinitialValues) => {
-              console.log("Ramirez");
-              if (id) {
+              if (empresaActiva) {
                 try {
                   if (sucursalActivo) {
                     const updateSucursal: IUpdateSucursal = {
@@ -153,12 +157,13 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                         cp: values.cp,
                         piso: values.piso,
                         nroDpto: values.nroDpto,
-                        idLocalidad: 1,
+                        idLocalidad: Number.parseInt(values.localidad),
                       },
-                      idEmpresa: Number.parseInt(id),
+                      idEmpresa: empresaActiva.id,
                       logo: imageActivo,
                       categorias: sucursalActivo.categorias,
                     };
+                    console.log(values.localidad)
                     const resultado = await sucursalService.updateSucursal(
                       sucursalActivo.id,
                       updateSucursal
@@ -179,9 +184,9 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                         cp: values.cp,
                         piso: values.piso,
                         nroDpto: values.nroDpto,
-                        idLocalidad: 1,
+                        idLocalidad: Number.parseInt(values.localidad),
                       },
-                      idEmpresa: Number.parseInt(id),
+                      idEmpresa: empresaActiva.id,
                       logo: imageActivo,
                     };
                     await sucursalService.createSucursal(sucursalCreate);
