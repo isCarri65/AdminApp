@@ -3,7 +3,6 @@ import { FC } from "react";
 import Modal from "react-bootstrap/Modal";
 import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../../../Hooks/hooks";
-import { removeSucursalActivo } from "../../../../redux/slices/SucursalReducer/SucursalReducer";
 import styles from "./ModalCreateCompany.module.css"
 import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
 import { ICreateEmpresaDto } from "../../../../types/dtos/empresa/ICreateEmpresaDto";
@@ -31,7 +30,7 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
   setOpenModal,
   getEmpresas,
 }) => {
-  const initialValues: ICreateEmpresaDto = {
+  const initialValues: IinitialValues = {
     nombre: "",
     razonSocial:"",
     cuit: 0,

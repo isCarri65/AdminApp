@@ -1,4 +1,4 @@
-import { Button, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { FC } from "react";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 interface IEmpresaCard {

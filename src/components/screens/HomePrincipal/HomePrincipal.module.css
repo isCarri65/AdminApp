@@ -5,12 +5,13 @@
   width: 100%;
   min-height: 400px;
   min-width: 250px;
-  max-width: 300px;
+  max-width: 400px;
   box-shadow: 0 0 15px #333;
 }
 
+
 .containerCompanys {
-  padding-top: 1rem;
+  padding-top: 1.5rem;
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 2rem;
@@ -58,22 +59,15 @@
 }
 
 /* Desde 590px, cambiar a 2 columnas */
-@media (min-width: 590px) {
+@media (min-width: 600px) {
   .containerCompanys {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* Desde 850px (590 + 260), cambiar a 3 columnas */
-@media (min-width: 850px) {
+@media (min-width: 1000px) {
   .containerCompanys {
     grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Desde 1110px (850 + 260), cambiar a 4 columnas */
-@media (min-width: 1110px) {
-  .containerCompanys {
-    grid-template-columns: repeat(4, 1fr);
   }
 }

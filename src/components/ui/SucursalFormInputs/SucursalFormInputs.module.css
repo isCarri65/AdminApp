@@ -1,7 +1,7 @@
 .containerInputs {
-  display: flex;
-  flex-direction: row;
+  display: grid;
   gap: 1.5rem;
+  grid-template-columns: repeat(3,1fr);
 }
 .selectLabel {
   color: #000000;
@@ -12,33 +12,39 @@
 }
 .selectContainer{
   margin: 8px 0px 0px;
+  position: relative;
 }
 
 .section1 {
-  width: 34%;
+  width: 32%;
 }
 .section2{
   width: 34%;
 }
 .section3{
-  width: 100px;
+  width: 33%;
 }
 .customSelect {
-  width: 100%; /* Haz que la select ocupe todo el ancho del contenedor */
-  padding: 6px; /* Espacio interno */
+  width: 100%;
+  max-width: 250px; 
+  padding: 6px;
   border: solid 1.6px #828690;
   border-radius: 0.5px;
-  background-color: #fff; /* Fondo blanco */
-  appearance: none; /* Elimina el estilo predeterminado del navegador */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  color: #333; /* Color de texto */
+  background-color: #fff; 
+  color: #444; /* Color de texto */
   margin-bottom: 16px;
+  padding-right: 30px;
+  appearance: none;
 }
 
+.customSelect:hover{
+  cursor: pointer;
+}
+
+
 .customSelect:focus {
-  outline: none; /* Elimina el contorno al hacer foco */
-  border-color: #999; /* Color de borde más oscuro al hacer foco */
+  outline: none;
+  box-shadow: 0 0 0 4px #ccc;
 }
 
 .customSelect::placeholder {
@@ -56,4 +62,34 @@
   background-color: #756070 !important;
   border: solid 1px #6e5c6a !important;
   transform: scale(0.98);
+}
+
+
+.icon {
+  position: absolute;
+  right: 10px;
+  top: 50px;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none; /* Hace que el icono no sea clicable */
+  transition: transform 0.3s ease;
+}
+
+.icon.open {
+  transform: translateY(-50%) rotate(180deg); /* Rotar el icono 180 grados */
+}
+
+.disabledInput {
+  background-color: #f0f0f0; /* Cambia el color de fondo */
+  color: #888; /* Cambia el color del texto */
+  border-color: #d0d0d0; /* Cambia el color del borde */
+  cursor: none;
+}
+.disabledInput:hover{
+  cursor: default;
+}
+
+.disabledInput + .icon {
+  color: #d0d0d0;
+  cursor: not-allowed
 }
