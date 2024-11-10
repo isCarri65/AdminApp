@@ -8,18 +8,25 @@ import { setEmpresaActiva } from "../../../redux/slices/CompanySlices/EmpresaSli
 interface CompanyCardProps {
   company: IEmpresa;
   setOpenModal: (state: boolean) => void;
+  setOpenModalInfo: (state: boolean) => void;
 }
 
-const CompanyCard: React.FC<CompanyCardProps> = ({ company, setOpenModal }) => {
+const CompanyCard: React.FC<CompanyCardProps> = ({ company, setOpenModal, setOpenModalInfo }) => {
   const dispatch = useAppDispatch();
   const handleOpenModal = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     dispatch(setEmpresaActiva(company));
     setOpenModal(true);
   };
+  const handleShowInfo = (event: React.MouseEvent<HTMLButtonElement>)=> {
+    event.stopPropagation()
+    setEmpresaActiva(company)
+    console.log(company)
+    setOpenModalInfo(true)
+  }
 
   return (
-    <Card className="company-card">
+    <Card className={styles.cardContainer} >
       <Card.Body className={styles.cardBody}>
         <div className={styles.imgContainer}>
           <Card.Img
@@ -31,7 +38,7 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ company, setOpenModal }) => {
           />
         </div>
         <div className={styles.titleContainer}>
-        <Card.Title className={styles.cardaTitle}>{company.nombre}</Card.Title>
+        <Card.Title className={styles.cardTitle}>{company.nombre}</Card.Title>
         </div>
         <Button
           className={styles.buttonEdit}
@@ -40,6 +47,13 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ company, setOpenModal }) => {
         >
           <span className="material-symbols-outlined">edit</span>
         </Button>
+        <Button
+            className={styles.buttonShowInfo}
+            onClick={handleShowInfo}
+          >
+            <span className="material-symbols-outlined">visibility</span>
+        </Button>
+        
       </Card.Body>
     </Card>
   );

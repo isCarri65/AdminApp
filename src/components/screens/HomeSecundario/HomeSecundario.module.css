@@ -8,3 +8,10 @@
    font-weight: 700;
    font-size: 2rem;
 }
+
+.openModalInfo {
+   display: flex;
+ }
+ .closeModalInfo {
+   display: none;
+ }

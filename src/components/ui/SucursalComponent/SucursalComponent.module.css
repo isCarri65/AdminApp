@@ -19,6 +19,7 @@
     align-content: center;
     align-items: center;
     justify-items: center;
+    z-index: 12000;
 
 }
 
@@ -67,3 +68,4 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+

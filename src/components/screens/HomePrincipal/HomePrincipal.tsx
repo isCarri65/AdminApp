@@ -8,15 +8,17 @@ import { useNavigate } from 'react-router-dom';
 import { ModalCreateCompany } from '../../ui/modals/ModalCreateCompany/ModalCreateCompany';
 import styles from "./HomePrincipal.module.css"
 import { Button } from 'react-bootstrap';
+import { CompanyModalInfo } from '../../ui/modals/CompanyModalInfo/CompanyModalInfo';
 
 
 export const HomePrincipal = () => {
 
-  const navigate = useNavigate()
-  const [empresas, setEmpresas] = useState<IEmpresa[]>([])
+  const navigate = useNavigate();
+  const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
   const [openModal, setOpenModal] = useState(false)
   const dispatch = useAppDispatch()
   const empresaList = useAppSelector((state)=>state.empresa.empresaList)
+  const [openModalInfo, setOpenModalInfo] = useState(false)
 
 
   const empresaService = new EmpresaService()
@@ -56,13 +58,18 @@ export const HomePrincipal = () => {
         >Crear Empresa</Button>
       <div className={styles.containerCompanys} >
         {empresas.map((empresa, index) => (
-          <div className={styles.cardContainer} onClick={()=> handleCardCompany(empresa)}>
-          <CompanyCard setOpenModal={setOpenModal} company={empresa} key={index}/>
+          <div  onClick={()=> handleCardCompany(empresa)}>
+          <CompanyCard setOpenModal={setOpenModal} company={empresa} setOpenModalInfo={setOpenModalInfo} key={index}/>
           </div>
         ))}
       </div>
       </div>
       <ModalCreateCompany getEmpresas={getEmpresas} setOpenModal={setOpenModal} openModal={openModal} />
+      <div
+        className={openModalInfo ? styles.openModalInfo : styles.closeModalInfo}
+      >
+        <CompanyModalInfo setOpenModalInfo={setOpenModalInfo} />
+      </div>
     </div>
   );
 };

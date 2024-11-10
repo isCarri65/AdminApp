@@ -11,13 +11,11 @@ import styles from "./SucursalComponent.module.css";
 import { useLocation, useParams } from "react-router-dom";
 interface ISucursalComponent {
   company: IEmpresa;
+  setOpenModalInfo: (state: boolean)=> void;
 }
 
-export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
-  const { id } = useParams();
-  const location = useLocation();
-  const BASEURL = "http://localhost:8090/";
-  console.log(BASEURL + "/sucursal")
+export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModalInfo }) => {
+
   const [openModal, setOpenModal] = useState(false);
   const [sucursales, setSucursales] = useState<ISucursal[]>([]);
 
@@ -37,8 +35,8 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   }, [id, location.pathname]);
 
   useEffect(() => {
-    setSucursales(dataSucursal);
-  }, [dataSucursal]);
+    getSucursales();
+  }, []);
 
   return (
     <div
@@ -52,14 +50,22 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
         <p>Sucursales de: {company.nombre.toUpperCase()}</p>
       </div>
       <div className="p-3">
-        <Button className={styles.buttonModal} onClick={() => setOpenModal(true)}>
+        <Button
+          className={styles.buttonModal}
+          onClick={() => setOpenModal(true)}
+        >
           Crear Sucursal
         </Button>
       </div>
       <div className={styles.sucursalesContainer}>
         {sucursales.map((elem: ISucursal, i: number) => (
           <div className={styles.cardContainer}>
-            <SucursalCard sucursal={elem} setOpenModal={setOpenModal} key={i} />
+            <SucursalCard
+              sucursal={elem}
+              setOpenModal={setOpenModal}
+              setOpenModalInfo={setOpenModalInfo}
+              key={i}
+            />
           </div>
         ))}
       </div>
@@ -69,6 +75,6 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
         setOpenModal={setOpenModal}
         getSucursales={getSucursales}
       />
-    </div>
-  );
+      
+    </div>)
 };

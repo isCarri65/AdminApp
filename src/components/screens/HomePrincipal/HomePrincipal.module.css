@@ -27,7 +27,7 @@
 }
 .headerC{
   height: 20vh;
-  background-color: #d8d8d8 
+  background-color: #dcc;
  }
        
 .title h1 { 
@@ -70,4 +70,10 @@
   .containerCompanys {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+.openModalInfo {
+  display: flex;
+}
+.closeModalInfo {
+  display: none;
 }
