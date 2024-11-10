@@ -58,7 +58,7 @@ export const HomePrincipal = () => {
         >Crear Empresa</Button>
       <div className={styles.containerCompanys} >
         {empresas.map((empresa, index) => (
-          <div  onClick={()=> handleCardCompany(empresa)}>
+          <div  onClick={()=> handleCardCompany(empresa)} key={index}>
           <CompanyCard setOpenModal={setOpenModal} company={empresa} setOpenModalInfo={setOpenModalInfo} key={index}/>
           </div>
         ))}

@@ -50,7 +50,6 @@
 .cardImg {
   object-fit: unset;
   height: 100%;
-  filter: brightness(0.85) grayscale(40%);
   width: 100%;
 }
 .buttonEdit{

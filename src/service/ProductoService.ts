@@ -2,11 +2,10 @@ import { BackendClient } from "./BackendClient";
 import { IProductos } from "../types/dtos/productos/IProductos";
 import { ICreateProducto } from "../types/dtos/productos/ICreateProducto";
 import { IUpdateProducto } from "../types/dtos/productos/IUpdateProducto";
-import { BASEURL } from "./Baseurl";
-
+const API_URL:string = import.meta.env.VITE_URL_API
 export class ProductService extends BackendClient<IProductos> {
     constructor() {
-        super(BASEURL + "/articulos");
+        super(API_URL + "/articulos");
     }
 
     // Crear producto

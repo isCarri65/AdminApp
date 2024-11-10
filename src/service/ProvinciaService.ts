@@ -1,10 +1,10 @@
 import { IProvincia } from "../types/IProvincia";
 import { BackendClient } from "./BackendClient";
-import { BASEURL } from "./Baseurl";
+const API_URL:string = import.meta.env.VITE_URL_API
 
 export class ProvinciaService extends BackendClient<IProvincia> {
     constructor() {
-        super(BASEURL + "/provincias");
+        super(API_URL + "/provincias");
     }
 
     // Obtener provincias por ID de país

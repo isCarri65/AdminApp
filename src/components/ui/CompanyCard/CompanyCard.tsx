@@ -20,8 +20,7 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ company, setOpenModal, setOpe
   };
   const handleShowInfo = (event: React.MouseEvent<HTMLButtonElement>)=> {
     event.stopPropagation()
-    setEmpresaActiva(company)
-    console.log(company)
+    dispatch(setEmpresaActiva(company))
     setOpenModalInfo(true)
   }
 

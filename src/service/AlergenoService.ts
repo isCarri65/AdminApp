@@ -2,11 +2,10 @@ import { BackendClient } from "./BackendClient";
 import { IAlergenos } from "../types/dtos/alergenos/IAlergenos";
 import { ICreateAlergeno } from "../types/dtos/alergenos/ICreateAlergeno";
 import { IUpdateAlergeno } from "../types/dtos/alergenos/IUpdateAlergeno";
-import { BASEURL } from "./Baseurl";
-
+const API_URL:string = import.meta.env.VITE_URL_API
 export class AlergenoService extends BackendClient<IAlergenos> {
     constructor() {
-      super(BASEURL + "/alergenos");
+      super(API_URL + "/alergenos");
     }
   
     // Obtener todos los alergenos

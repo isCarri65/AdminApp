@@ -1,11 +1,11 @@
 import { ILocalidad } from "../types/ILocalidad";
 import { BackendClient } from "./BackendClient";
-import { BASEURL } from "./Baseurl";
 
+const API_URL:string = import.meta.env.VITE_URL_API
 
 export class LocalidadesService extends BackendClient<ILocalidad> {
     constructor() {
-        super(BASEURL + "/localidades");
+        super(API_URL + "/localidades");
     }
 
     // Obtener localidades por ID de provincia

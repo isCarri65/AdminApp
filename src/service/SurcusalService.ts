@@ -2,13 +2,13 @@ import { ICreateSucursal } from "../types/dtos/sucursal/ICreateSucursal";
 import { ISucursal } from "../types/dtos/sucursal/ISucursal";
 import { IUpdateSucursal } from "../types/dtos/sucursal/IUpdateSucursal";
 import { BackendClient } from "./BackendClient";
-import { BASEURL } from "./Baseurl";
+const API_URL:string = import.meta.env.VITE_URL_API
 
 
 // Clase SucursalService que extiende BackendClient para interactuar con la API de sucursales
 export class SucursalService extends BackendClient<ISucursal> {
   constructor() {
-    super(BASEURL + "/sucursales");
+    super(API_URL + "/sucursales");
   }
 
   // Obtener todas las sucursales de una empresa

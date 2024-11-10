@@ -1,15 +1,22 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "./CompanyModalInfo.module.css"
-
 import noImage from "../../../../assets/images/noImage.jpeg";
 import { useAppSelector } from "../../../../Hooks/hooks";
+import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 
 interface IPropsCompanyModalInfo {
   setOpenModalInfo: (valor: boolean) => void;
 }
 
 export const CompanyModalInfo: FC<IPropsCompanyModalInfo> = ({setOpenModalInfo }) => {
-  const empresaActiva = useAppSelector((state)=> state.empresa.empresaActiva)
+  const StateEmpresaActiva = useAppSelector((state)=> state.empresa.empresaActiva)
+  const [empresaActiva, setEmpresaActiva] = useState<IEmpresa|null>(null)
+
+  useEffect(()=>{
+    console.log("cambio de empresa Activa en modal info")
+    setEmpresaActiva(StateEmpresaActiva)
+  },[StateEmpresaActiva])
+  
   return (
     <div className={styles.modalOverlay} onClick={()=> setOpenModalInfo(false)}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>

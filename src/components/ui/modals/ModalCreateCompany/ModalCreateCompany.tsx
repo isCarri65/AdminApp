@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../../../Hooks/hooks";
@@ -51,6 +51,9 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
     
     setOpenModal(false);
   };
+  useEffect(()=>{
+    console.log("Cambio de empresa Activa modal crear empresa")
+  }, [empresaActiva])
 
   const crearInitialValues = (objOrigen: IEmpresa): IinitialValues => {
     const objDestino: IinitialValues = {
