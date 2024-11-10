@@ -1,9 +1,7 @@
 import { FC } from "react";
 import styles from "./SucursalModalInfo.module.css"
-
 import noImage from "../../../../assets/images/noImage.jpeg";
 import { useAppSelector } from "../../../../Hooks/hooks";
-
 interface IPropsSucursalModalInfo {
   setOpenModalInfo: (valor: boolean) => void;
 }

@@ -8,7 +8,6 @@ import { Button } from "react-bootstrap";
 import { setSucursalList } from "../../../redux/slices/SucursalReducer/SucursalReducer";
 import { SucursalService } from "../../../service/SurcusalService";
 import styles from "./SucursalComponent.module.css";
-import { useLocation, useParams } from "react-router-dom";
 interface ISucursalComponent {
   company: IEmpresa;
   setOpenModalInfo: (state: boolean)=> void;
@@ -32,7 +31,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
 
   useEffect(() => {
     getSucursales();
-  }, [id, location.pathname]);
+  }, [dataSucursal]);
 
   useEffect(() => {
     getSucursales();
