@@ -9,6 +9,7 @@ import { setEmpresaActiva, setEmpresaList } from "../../../redux/slices/CompanyS
 import { useParams } from "react-router-dom";
 import styles from "./HomeSecundario.module.css"
 import { NavBar } from "../navBar/NavBar";
+import { SucursalModalInfo } from "../../ui/modals/SucursalModalInfo/SucursalModalInfo";
 
 export const Home = () => {
   const {id} = useParams()
@@ -17,6 +18,7 @@ export const Home = () => {
   const dispatch = useAppDispatch()
   const stateEmpresaActiva = useAppSelector((state)=> state.empresa.empresaActiva)
   const empresaList = useAppSelector((state)=>state.empresa.empresaList)
+  const [openModalInfo, setOpenModalInfo] = useState(false);
 
 
   const empresaService = new EmpresaService()
@@ -55,10 +57,16 @@ export const Home = () => {
         </header>
         <div >
           {empresaActiva?
-          <SucursalComponent company={empresaActiva} />
+          <SucursalComponent company={empresaActiva} setOpenModalInfo={setOpenModalInfo} />
           : <p>NO se ha elegido ninguna empresa</p>
           }
         </div>
+
+      </div>
+      <div
+        className={openModalInfo ? styles.openModalInfo : styles.closeModalInfo}
+      >
+        <SucursalModalInfo setOpenModalInfo={setOpenModalInfo} />
       </div>
     </>
   );

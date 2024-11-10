@@ -10,9 +10,10 @@ import { SucursalService } from "../../../service/SurcusalService";
 import styles from "./SucursalComponent.module.css";
 interface ISucursalComponent {
   company: IEmpresa;
+  setOpenModalInfo: (state: boolean)=> void;
 }
 
-export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
+export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModalInfo }) => {
   const [openModal, setOpenModal] = useState(false);
   const [sucursales, setSucursales] = useState<ISucursal[]>([]);
 
@@ -36,7 +37,6 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
   useEffect(() => {
     getSucursales();
   }, []);
-  console.log(sucursales);
 
   return (
     <div
@@ -54,14 +54,18 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
           className={styles.buttonModal}
           onClick={() => setOpenModal(true)}
         >
-          
           Crear Sucursal
         </Button>
       </div>
       <div className={styles.sucursalesContainer}>
         {sucursales.map((elem: ISucursal, i: number) => (
           <div className={styles.cardContainer}>
-            <SucursalCard sucursal={elem} setOpenModal={setOpenModal} key={i} />
+            <SucursalCard
+              sucursal={elem}
+              setOpenModal={setOpenModal}
+              setOpenModalInfo={setOpenModalInfo}
+              key={i}
+            />
           </div>
         ))}
       </div>
@@ -71,6 +75,6 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company }) => {
         setOpenModal={setOpenModal}
         getSucursales={getSucursales}
       />
-    </div>
-  );
+      
+    </div>)
 };

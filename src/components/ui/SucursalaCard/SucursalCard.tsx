@@ -7,15 +7,53 @@ import styles from "./SucursalCard.module.css";
 interface ISucursalCard {
   sucursal: ISucursal;
   setOpenModal: (state: boolean) => void;
+  setOpenModalInfo: (state: boolean) => void;
 }
 
-export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal }) => {
+export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal, setOpenModalInfo }) => {
   const distpach = useAppDispatch();
+
   const handleOpenModal = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation()
+    event.stopPropagation();
     distpach(setSucursalActivo({ sucursalActivo: sucursal }));
     setOpenModal(true);
   };
+  /*
+  const handleDeleteSucursal = () => {
+    Swal.fire({
+      title: "Estas seguro?",
+      text: "No sera posible revertir esto",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await sucursalService.delete(sucursal.id);
+
+          Swal.fire({
+            
+        title: "Eliminado",
+        text: "operación completada",
+        icon: "success"
+          });
+        } catch (error) {
+          console.error(error);
+        }
+        setOpenModal(false);
+      } else {
+        setOpenModal(false);
+      }
+    });
+  };*/
+
+  const handleShowInfo = (event: React.MouseEvent<HTMLButtonElement>)=>{
+    event.stopPropagation()
+    distpach(setSucursalActivo({sucursalActivo: sucursal}))
+    setOpenModalInfo(true)
+  }
   return (
     <>
       <Card className={styles.cardContainer}>
@@ -46,8 +84,23 @@ export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal }) => {
           >
             <span className="material-symbols-outlined">edit</span>
           </Button>
+            {/*
+          <Button
+            className={styles.buttonDelete}
+            variant="primary"
+            onClick={handleDeleteSucursal}
+          >
+            <span className="material-symbols-outlined">delete</span>
+          </Button>*/}
+          <Button
+            className={styles.buttonShowInfo}
+            onClick={handleShowInfo}
+          >
+            <span className="material-symbols-outlined">visibility</span>
+          </Button>
         </Card.Body>
       </Card>
+      
     </>
   );
 };

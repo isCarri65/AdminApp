@@ -38,7 +38,16 @@
 .cardBody {
   height: 40%;
 }
-.buttonEdit{
+.buttonDelete{
+  
+  position: absolute;
+  left: 100px;
+  bottom: 8px;
+  background-color: #828690;
+  border: solid 1px #756070
+}
+
+.buttonEdit {
   position: absolute;
   bottom: 8px;
   background-color: #828690;
@@ -54,4 +63,17 @@
   background-color: #756070 !important;
   border: solid 1px #6e5c6a !important;
   transform: scale(0.98);
+}
+.buttonShowInfo {
+  
+  position: absolute;
+  bottom: 8px;
+  left: 90px;
+  background-color: #828690;
+  border: solid 1px #756070
+}
+.buttonShowInfo:hover {
+  background-color: #756070;
+  border: solid 1px #756070
+
 }
