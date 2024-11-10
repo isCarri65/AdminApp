@@ -6,7 +6,7 @@ import { BackendClient } from "./BackendClient";
 
 export class EmpresaService extends BackendClient<IEmpresa> {
   constructor() {
-    super("http://190.221.207.224:8090/empresas");
+    super("http://localhost:8090/empresas");
   }
 
   // Obtener todas las empresas

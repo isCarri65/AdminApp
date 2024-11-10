@@ -2,10 +2,11 @@ import { BackendClient } from "./BackendClient";
 import { IAlergenos } from "../types/dtos/alergenos/IAlergenos";
 import { ICreateAlergeno } from "../types/dtos/alergenos/ICreateAlergeno";
 import { IUpdateAlergeno } from "../types/dtos/alergenos/IUpdateAlergeno";
+import { BASEURL } from "./Baseurl";
 
 export class AlergenoService extends BackendClient<IAlergenos> {
     constructor() {
-      super("http://190.221.207.224:8090/alergenos");
+      super(BASEURL + "/alergenos");
     }
   
     // Obtener todos los alergenos

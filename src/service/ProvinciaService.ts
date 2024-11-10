@@ -1,9 +1,10 @@
 import { IProvincia } from "../types/IProvincia";
 import { BackendClient } from "./BackendClient";
+import { BASEURL } from "./Baseurl";
 
 export class ProvinciaService extends BackendClient<IProvincia> {
     constructor() {
-        super("http://190.221.207.224:8090/provincias");
+        super(BASEURL + "/provincias");
     }
 
     // Obtener provincias por ID de país

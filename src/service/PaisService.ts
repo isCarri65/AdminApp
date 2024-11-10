@@ -1,10 +1,11 @@
 import { IPais } from "../types/IPais";
 import { BackendClient } from "./BackendClient";
+import { BASEURL } from "./Baseurl";
 
 
 export class PaisService extends BackendClient<IPais> {
     constructor() {
-        super("http://190.221.207.224:8090/paises");
+        super(BASEURL + "/paises");
     }
 
     // Obtener todos los países
