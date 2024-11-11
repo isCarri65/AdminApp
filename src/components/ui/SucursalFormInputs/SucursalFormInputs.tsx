@@ -2,7 +2,7 @@ import { Field, FieldInputProps, FieldMetaProps, Form } from "formik";
 import TextFieldValue from "../TextFieldValue/TextFielValue";
 import { Button } from "react-bootstrap";
 import styles from "./SucursalFormInputs.module.css";
-import { ChangeEvent , useEffect, useState } from "react";
+import { ChangeEvent , FC, useEffect, useState } from "react";
 import { UploadImage } from "../UploadImage/UploadImage";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
@@ -12,9 +12,11 @@ import { LocalidadesService } from "../../../service/LocalidadService";
 import { IPais } from "../../../types/IPais";
 import { IProvincia } from "../../../types/IProvincia";
 import { ILocalidad } from "../../../types/ILocalidad";
+interface IPropsSucursaslFormInput {
+  setFieldValue: (campo: string, valor: string)=> void
+}
 
-
-export const SucursalFormInputs = () => {
+export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}) => {
   const [image, setImage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const sucursalActivo = useAppSelector(
@@ -66,6 +68,7 @@ export const SucursalFormInputs = () => {
       }
       setPaisActivo(sucursalActivo.domicilio.localidad.provincia.pais)
       setProvinciaActiva(sucursalActivo.domicilio.localidad.provincia)
+      setFieldValue("localidad", sucursalActivo.domicilio.localidad.id.toString())
     }
     getPaises();
     getProvincias();
@@ -161,7 +164,7 @@ export const SucursalFormInputs = () => {
                         Selecciona un Pais
                       </option>
                       {sucursalActivo && 
-                      <option value={sucursalActivo.domicilio.localidad.provincia.pais.id}>{sucursalActivo.domicilio.localidad.provincia.pais.nombre}</option>}
+                      <option value={sucursalActivo.domicilio.localidad.provincia.pais.id}> {sucursalActivo.domicilio.localidad.provincia.pais.nombre}</option>}
                       
                       {paisesList.map((pais) => (
                         <option

@@ -17,16 +17,13 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
 
   const [openModal, setOpenModal] = useState(false);
   const [sucursales, setSucursales] = useState<ISucursal[]>([]);
-  const [empresaActiva, setEmpresaA] = useState<IEmpresa | null>(null)
 
   const dispatch = useAppDispatch();
   const dataSucursal = useAppSelector((state) => state.sucursal.sucursalList);
   const sucursalService = new SucursalService();
-  const stateEmpresaActiva = useAppSelector((state)=> state.empresa.empresaActiva)
-
   const getSucursales = async () => {
-    if(empresaActiva){
-      await sucursalService.getAllSucursalesByEmpresa(empresaActiva.id).then((sucursalesDatos) => {
+    if(company){
+      await sucursalService.getAllSucursalesByEmpresa(company.id).then((sucursalesDatos) => {
         dispatch(setSucursalList({ sucursalList: sucursalesDatos }));
       });
     } else {
@@ -39,16 +36,13 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
     getSucursales();
   }, []);
 
-  useEffect(()=> {
-    setEmpresaA(stateEmpresaActiva)
-  },[stateEmpresaActiva])
-  useEffect(()=> {
-    getSucursales()
-  },[empresaActiva])
-
   useEffect(() => {
     setSucursales(dataSucursal)
   }, [dataSucursal]);
+
+  useEffect(() => {
+    getSucursales();
+  }, [company]);
 
   return (
     <div
@@ -71,7 +65,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
       </div>
       <div className={styles.sucursalesContainer}>
         {sucursales.map((elem: ISucursal, i: number) => (
-          <div className={styles.cardContainer}>
+          <div className={styles.cardContainer} key={i}>
             <SucursalCard
               sucursal={elem}
               setOpenModal={setOpenModal}

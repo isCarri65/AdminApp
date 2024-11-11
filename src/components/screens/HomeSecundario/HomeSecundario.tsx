@@ -13,11 +13,10 @@ import { SucursalModalInfo } from "../../ui/modals/SucursalModalInfo/SucursalMod
 
 export const Home = () => {
   const {id} = useParams()
-  const [empresas, setEmpresas] = useState<IEmpresa[]>([])
   const [empresaActiva, setEmpresaA ] = useState<IEmpresa| null>(null)
+  const [company, setCompany] = useState<IEmpresa|null>(null)
   const dispatch = useAppDispatch()
   const stateEmpresaActiva = useAppSelector((state)=> state.empresa.empresaActiva)
-  const empresaList = useAppSelector((state)=>state.empresa.empresaList)
   const [openModalInfo, setOpenModalInfo] = useState(false);
 
 
@@ -25,15 +24,26 @@ export const Home = () => {
   const getEmpresaActiva = async ()=> {
     if (id){
     await empresaService.getById(Number.parseInt(id)).then((emp) => {
-      if (emp) dispatch(setEmpresaActiva(emp))
+      if (emp) {
+        console.log(emp)
+        dispatch(setEmpresaActiva(emp))
+        setCompany(emp)
+      }
     })
+    } else {
+      console.log("id es nulo")
     }
+    console.log("Function", empresaActiva)
   }
   const getEmpresas = async ()=>{
     await  empresaService.getAllEmpresas().then((datos)=>{
       dispatch(setEmpresaList(datos))
     })
   }
+  const getSucursales = (empresa:IEmpresa)  => {
+    setCompany(empresa)
+  }
+
   useEffect(()=>{
     console.log("Montar Componente")
     getEmpresas()
@@ -41,11 +51,12 @@ export const Home = () => {
   }, [])
   
   useEffect(()=>{
-    setEmpresas(empresaList)
-  }, [empresaList])
-  useEffect(()=>{
     setEmpresaA(stateEmpresaActiva)
   }, [stateEmpresaActiva])
+
+  useEffect(()=>{
+    console.log(empresaActiva)
+  }, [empresaActiva])
 
   return (
     <>
@@ -54,11 +65,11 @@ export const Home = () => {
         }}
       >
         <header className={`${styles.headerC} d-flex justify-content-center align-items-center flex-column`}>
-          <NavBar getEmpresas={getEmpresas}/>
+          <NavBar getEmpresas={getEmpresas} getSucursales={getSucursales}/>
         </header>
         <div >
-          {empresaActiva?
-          <SucursalComponent company={empresaActiva} setOpenModalInfo={setOpenModalInfo} />
+          {company ?
+          <SucursalComponent company={company} setOpenModalInfo={setOpenModalInfo} />
           : <p>NO se ha elegido ninguna empresa</p>
           }
         </div>

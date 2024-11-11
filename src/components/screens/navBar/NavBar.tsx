@@ -4,11 +4,13 @@ import "./navBar.css"
 import Button from 'react-bootstrap/Button';
 import { NavBarCompany } from "../../ui/navBar/NavBarCompany";
 import { ModalCreateCompany } from "../../ui/modals/ModalCreateCompany/ModalCreateCompany";
+import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 
 interface INavBar {
     getEmpresas: ()=>void,
+    getSucursales: (empresa: IEmpresa)=>void,
 }
-export const NavBar: FC<INavBar>= ({getEmpresas} )=>{
+export const NavBar: FC<INavBar>= ({getEmpresas, getSucursales} )=>{
     
     const location = useLocation();
     const [navBarEmpresa, setNavBarEmpresa] = useState(false); 
@@ -37,7 +39,7 @@ export const NavBar: FC<INavBar>= ({getEmpresas} )=>{
             <span className="material-symbols-outlined">add</span>
             Agregar Empresa</Button>
             </div>  
-            <NavBarCompany getEmpresas={getEmpresas} />
+            <NavBarCompany getEmpresas={getEmpresas} getSucursales={getSucursales}/>
             </div>  
       <ModalCreateCompany openModal={openModal} setOpenModal={setOpenModal} getEmpresas={getEmpresas} />
         </div>

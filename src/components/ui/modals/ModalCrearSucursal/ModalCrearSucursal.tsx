@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../../../Hooks/hooks";
@@ -64,7 +64,8 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
   );
   const dispatch = useAppDispatch();
   const sucursalService = new SucursalService();
-  const imageActivo = useAppSelector((state)=>state.image.imageStringActivo)
+  const stateimageActivo = useAppSelector((state)=>state.image.imageStringActivo)
+  const [imageActivo, setImageActivo] = useState<string| null>(null)
 
   // Función para cerrar el modal
   const handleClose = () => {
@@ -93,6 +94,10 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
     };
     return objDestino;
   };
+
+  useEffect(()=>{
+    setImageActivo(stateimageActivo)
+  },[stateimageActivo])
 
   return (
     <div >
@@ -163,7 +168,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                       logo: imageActivo,
                       categorias: sucursalActivo.categorias,
                     };
-                    console.log(values.localidad)
+                    console.log(updateSucursal)
                     const resultado = await sucursalService.updateSucursal(
                       sucursalActivo.id,
                       updateSucursal
@@ -202,10 +207,10 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
               }
             }}
           >
-            {() => (
+            {({setFieldValue}) => (
               <>
                 {/* Formulario */}
-                <SucursalFormInputs />
+                <SucursalFormInputs setFieldValue={setFieldValue} />
               </>
             )}
           </Formik>

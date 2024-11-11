@@ -10,9 +10,10 @@ import { setEmpresaActiva } from "../../../redux/slices/CompanySlices/EmpresaSli
 
 interface INavBarCompany {
   getEmpresas: () => void;
+  getSucursales: (empresa: IEmpresa)=> void,
 }
 
-export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
+export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas, getSucursales}) => {
   const dispatch = useAppDispatch();
   const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
   const [empresaActiva, setEmpresaA] = useState<IEmpresa | null>(null);
@@ -35,6 +36,7 @@ export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
   const handleHover = async (empresa: IEmpresa) => {
     dispatch(setEmpresaActiva(empresa));
     setEmpresaA(empresa);
+    getSucursales(empresa)
   };
 
   return (

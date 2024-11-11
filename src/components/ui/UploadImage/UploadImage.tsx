@@ -89,6 +89,7 @@ export const UploadImage: FC<IUploadImage> = ({
     else if (image && setImage) {
       await imageService.deleteImgCloudinary(image).then(() => {
         setImage(null); // Eliminamos la URL de la imagen
+        dispatch(removeImageActivo())
       });
     }
   };
