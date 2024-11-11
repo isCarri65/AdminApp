@@ -39,6 +39,7 @@ export const Home = () => {
     getEmpresas()
     getEmpresaActiva()
   }, [])
+  
   useEffect(()=>{
     setEmpresas(empresaList)
   }, [empresaList])

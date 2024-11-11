@@ -8,6 +8,7 @@ interface IPropsSucursalModalInfo {
 
 export const SucursalModalInfo: FC<IPropsSucursalModalInfo> = ({setOpenModalInfo }) => {
   const sucursalActiva = useAppSelector((state)=> state.sucursal.sucursalActivo)
+ 
   return (
     <div className={styles.modalOverlay} onClick={()=> setOpenModalInfo(false)}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>

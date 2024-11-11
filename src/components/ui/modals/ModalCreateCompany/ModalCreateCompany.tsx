@@ -46,9 +46,8 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
 
   // Función para cerrar el modal
   const handleClose = () => {
-    dispatch(removeEmpresaActiva());
     dispatch(removeImageActivo())
-    
+    dispatch(removeEmpresaActiva())
     setOpenModal(false);
   };
   useEffect(()=>{

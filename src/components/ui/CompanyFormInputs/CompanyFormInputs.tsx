@@ -3,9 +3,9 @@ import TextFieldValue from "../TextFieldValue/TextFielValue";
 import { Button } from "react-bootstrap";
 import styles from "./CompanyFormInputs.module.css";
 import { useEffect, useState } from "react";
-import { UploadImage } from "../UploadImage/UploadImage";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
+import { UploadImageCompany } from "../UploadImage/UploadImageCompany";
 
 export const CompanyFormInputs = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -50,7 +50,7 @@ export const CompanyFormInputs = () => {
               type="text"
               placeholder="ej. cuit"
             />
-            <UploadImage image={image} setImage={setImage} />
+            <UploadImageCompany image={image} setImage={setImage} />
           </div>
         </div>
       </div>

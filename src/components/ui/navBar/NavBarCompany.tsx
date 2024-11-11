@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { FC, useEffect, useState } from "react";
@@ -7,47 +7,34 @@ import { Pagination } from "swiper/modules";
 import "../../screens/navBar/navBar.css";
 import "swiper/css";
 import { setEmpresaActiva } from "../../../redux/slices/CompanySlices/EmpresaSlice";
-import { EmpresaService } from "../../../service/EmpresaService";
 
 interface INavBarCompany {
   getEmpresas: () => void;
 }
 
 export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
-  const { id } = useParams();
   const dispatch = useAppDispatch();
   const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
-  const [empresaA, setEmpresaA] = useState<IEmpresa | null>(null);
-  const empresaAc = useAppSelector((state) => state.empresa.empresaActiva);
-  const empresaList = useAppSelector((state) => state.empresa.empresaList);
-  const navigate = useNavigate();
+  const [empresaActiva, setEmpresaA] = useState<IEmpresa | null>(null);
+  const stateEmpresaActiva = useAppSelector((state) => state.empresa.empresaActiva);
+  const stateEmpresaList = useAppSelector((state) => state.empresa.empresaList);
 
-  const empresaService = new EmpresaService();
-  const getEmpresaActiva = async () => {
-    if (id) {
-      await empresaService.getById(Number.parseInt(id)).then((emp) => {
-        if (emp) dispatch(setEmpresaActiva(emp));
-      });
-    }
-  };
   useEffect(() => {
     getEmpresas();
-    getEmpresaActiva();
-  }, [id]);
-  useEffect(() => {
-    setEmpresas(empresaList);
-  }, [empresaList]);
-  useEffect(() => {
-    setEmpresaA(empresaAc);
-  }, [empresaAc]);
+  }, []);
 
-  const handleHover = async (id: number) => {
-    const empresa = await empresaService.getById(id);
-    if (empresa) {
-      dispatch(setEmpresaActiva(empresa));
-      setEmpresaA(empresaA);
-    }
-    navigate(`/HomeSecundario/${id}`);
+  useEffect(() => {
+    setEmpresas(stateEmpresaList);
+  }, [stateEmpresaList]);
+
+
+  useEffect(() => {
+    setEmpresaA(stateEmpresaActiva);
+  }, [stateEmpresaActiva]);
+
+  const handleHover = async (empresa: IEmpresa) => {
+    dispatch(setEmpresaActiva(empresa));
+    setEmpresaA(empresa);
   };
 
   return (
@@ -65,11 +52,11 @@ export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
           {empresas.map((empresa, index) => (
             <SwiperSlide key={index}>
               <div
-                onClick={() => handleHover(empresa.id)}
+                onClick={() => handleHover(empresa)}
                 key={index}
                 className={` ${
-                  empresaA
-                    ? empresaA.id === empresa.id
+                  empresaActiva
+                    ? empresaActiva.id === empresa.id
                       ? "navBar_cards_nombres_container_icons_hover"
                       : "navBar_cards_nombres_container_icons"
                     : "navBar_cards_nombres_container_icons"

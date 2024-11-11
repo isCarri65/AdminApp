@@ -40,6 +40,9 @@ export const HomePrincipal = () => {
     dispatch(setEmpresaActiva(empresa))
     navigate(`/HomeSecundario/${empresa.id}`)
   }
+  const handleOpenModal = ()=>{
+    setOpenModal(true)
+  }
   return (
     <div  className={styles.mainContainer}>
       <div className={styles.headerC}>
@@ -54,7 +57,7 @@ export const HomePrincipal = () => {
       }}>
       <Button
           className={styles.buttonModal}
-          onClick={() => setOpenModal(true)}
+          onClick={handleOpenModal}
         >Crear Empresa</Button>
       <div className={styles.containerCompanys} >
         {empresas.map((empresa, index) => (
@@ -64,7 +67,7 @@ export const HomePrincipal = () => {
         ))}
       </div>
       </div>
-      <ModalCreateCompany getEmpresas={getEmpresas} setOpenModal={setOpenModal} openModal={openModal} />
+      <ModalCreateCompany getEmpresas={getEmpresas} setOpenModal={setOpenModal} openModal={openModal}/>
       <div
         className={openModalInfo ? styles.openModalInfo : styles.closeModalInfo}
       >
