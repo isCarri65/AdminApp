@@ -1,0 +1,39 @@
+.modal-content {
+  border: solid 3px #756070;
+}
+.modalHeader {
+  background-color: #828690;
+  border: solid 2px #756070;
+  border-bottom: none;
+  filter: brightness(1.1); /* Oscurece el elemento a la mitad del brillo */
+  text-align: center;
+  color: #fff;
+}
+.title {
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+}
+.modalBody {
+  background-color: #f8f8f8;
+  filter: brightness(1.1); /* Oscurece el elemento a la mitad del brillo */
+  border: 2px solid #756070;
+  border-top: none;
+  outline: none;
+}
+
+/*--------------------- BOTON ELIMINAR ------------------*/
+
+.buttonSubmit {
+  background-color: #756070;
+  font-size: 1.5em;
+}
+.buttonSubmit:hover {
+  background-color: #756070 !important;
+  border: solid 1px #756070 !important;
+}
+.buttonSubmit:active {
+  background-color: #756070 !important;
+  border: solid 1px #6e5c6a !important;
+  transform: scale(0.98);
+}

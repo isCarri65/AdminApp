@@ -3,4 +3,3 @@ export interface ICreateCategoria {
   idSucursales: number[];
   idCategoriaPadre: number | null;
 }
-

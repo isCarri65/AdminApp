@@ -1,7 +1,7 @@
-import { useEffect, useState, FC } from "react"
-import { useLocation } from "react-router-dom"
-import "./navBar.css"
-import Button from 'react-bootstrap/Button';
+import { useEffect, useState, FC } from "react";
+import { useLocation } from "react-router-dom";
+import "./navBar.css";
+import Button from "react-bootstrap/Button";
 import { NavBarCompany } from "../../ui/navBar/NavBarCompany";
 import { ModalCreateCompany } from "../../ui/modals/ModalCreateCompany/ModalCreateCompany";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
@@ -43,6 +43,13 @@ export const NavBar: FC<INavBar>= ({getEmpresas, getSucursales, company} )=>{
             </div>  
       <ModalCreateCompany openModal={openModal} setOpenModal={setOpenModal} getEmpresas={getEmpresas} />
         </div>
-
-    )
-}
+        <NavBarCompany getEmpresas={getEmpresas} />
+      </div>
+      <ModalCreateCompany
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        getEmpresas={getEmpresas}
+      />
+    </div>
+  );
+};

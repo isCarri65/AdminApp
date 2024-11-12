@@ -23,7 +23,7 @@ export const Content = styled.div`
 export const ClosedSideBar = styled.header`
   max-width: 60px;
   width: 100%;
-  height: 100%;
+  height: 10%;
   border-radius: 0 12px 12px 0;
 
   background: transparent;
