@@ -2,24 +2,25 @@ import { Button, Table } from "react-bootstrap";
 import "../ProductTable/ProductTable.css";
 import { NavBarSide } from "../navBarSide/NavBarSide";
 import { useState } from "react";
+import CrearProducto from "./CrearProducto";
 
 const ProductTable = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
 
   const toggleSideBar = () => {
     setIsSideBarOpen(!isSideBarOpen);
   };
+
+  const handleOpenModal = () => {
+    setShowModal(true); // Abrir el modal
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false); // Cerrar el modal
+  };
+
   const products = [
-    { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
-    { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
-    { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
-    { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
-    { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
-    { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
-    { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
-    { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
-    { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
-    { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
     { id: 1, name: "Articulo", price: "$10", description: "Desc", category: "Cat", enabled: true },
     // Agrega más productos o usa Redux para manejar el estado.
   ];
@@ -30,7 +31,7 @@ const ProductTable = () => {
         <div className="div_container_navbarProduct">
           <NavBarSide isOpen={isSideBarOpen} toggleMenu={toggleSideBar} />
           <h2 className="title_Product">Productos</h2>
-          <Button variant="primary" className="add-product-btn">
+          <Button variant="primary" className="add-product-btn" onClick={handleOpenModal}>
             Agregar Producto
           </Button>
         </div>
@@ -63,6 +64,9 @@ const ProductTable = () => {
           </tbody>
         </Table>
       </div>
+
+      {/* Modal para crear producto */}
+      <CrearProducto show={showModal} onHide={handleCloseModal} />
     </>
   );
 };
