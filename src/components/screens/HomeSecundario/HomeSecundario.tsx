@@ -4,8 +4,8 @@ import { SucursalComponent } from "../../ui/SucursalComponent/SucursalComponent"
 import { EmpresaService } from "../../../service/EmpresaService";
 import { useEffect, useState } from "react";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
-import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
-import { setEmpresaActiva, setEmpresaList } from "../../../redux/slices/CompanySlices/EmpresaSlice";
+import { useAppDispatch } from "../../../Hooks/hooks";
+import { setEmpresaList } from "../../../redux/slices/CompanySlices/EmpresaSlice";
 import { useParams } from "react-router-dom";
 import styles from "./HomeSecundario.module.css"
 import { NavBar } from "../navBar/NavBar";
@@ -13,10 +13,8 @@ import { SucursalModalInfo } from "../../ui/modals/SucursalModalInfo/SucursalMod
 
 export const Home = () => {
   const {id} = useParams()
-  const [empresaActiva, setEmpresaA ] = useState<IEmpresa| null>(null)
   const [company, setCompany] = useState<IEmpresa|null>(null)
   const dispatch = useAppDispatch()
-  const stateEmpresaActiva = useAppSelector((state)=> state.empresa.empresaActiva)
   const [openModalInfo, setOpenModalInfo] = useState(false);
 
 
@@ -25,15 +23,12 @@ export const Home = () => {
     if (id){
     await empresaService.getById(Number.parseInt(id)).then((emp) => {
       if (emp) {
-        console.log(emp)
-        dispatch(setEmpresaActiva(emp))
         setCompany(emp)
       }
     })
     } else {
       console.log("id es nulo")
     }
-    console.log("Function", empresaActiva)
   }
   const getEmpresas = async ()=>{
     await  empresaService.getAllEmpresas().then((datos)=>{
@@ -50,14 +45,7 @@ export const Home = () => {
     getEmpresaActiva()
   }, [])
   
-  useEffect(()=>{
-    setEmpresaA(stateEmpresaActiva)
-  }, [stateEmpresaActiva])
-
-  useEffect(()=>{
-    console.log(empresaActiva)
-  }, [empresaActiva])
-
+  
   return (
     <>
       <div
@@ -65,7 +53,7 @@ export const Home = () => {
         }}
       >
         <header className={`${styles.headerC} d-flex justify-content-center align-items-center flex-column`}>
-          <NavBar getEmpresas={getEmpresas} getSucursales={getSucursales}/>
+          <NavBar getEmpresas={getEmpresas} getSucursales={getSucursales} company={company}/>
         </header>
         <div >
           {company ?

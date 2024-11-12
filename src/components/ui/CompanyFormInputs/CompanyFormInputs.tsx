@@ -10,21 +10,17 @@ import { UploadImageCompany } from "../UploadImage/UploadImageCompany";
 export const CompanyFormInputs = () => {
   const [image, setImage] = useState<string | null>(null);
   const dispatch = useAppDispatch()
-  const empresaActiva = useAppSelector(
-    (state) => state.empresa.empresaActiva
+  const empresaModalActiva = useAppSelector(
+    (state) => state.empresa.empresaModalActiva
   );
   useEffect(() => {
-    if (empresaActiva) {
-      if (empresaActiva.logo) {
-        setImage(empresaActiva.logo);
-        dispatch(setImageStringActivo(empresaActiva.logo))
+    if (empresaModalActiva) {
+      if (empresaModalActiva.logo) {
+        setImage(empresaModalActiva.logo);
+        dispatch(setImageStringActivo(empresaModalActiva.logo))
       }
     }
   }, []);
-  useEffect(() =>{
-    console.log("Se ingreso una imagen")
-
-  }, [image])
   return (
     <Form autoComplete="off" className="form-obraAlta">
       <div className="container_Form_Ingredientes">
