@@ -1,0 +1,28 @@
+.selectContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.select {
+  padding: 10px;
+  padding-right: 30px; /* Espacio para el icono */
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  appearance: none; /* Oculta el icono nativo del select */
+  cursor: pointer;
+}
+
+.icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+  font-size: 16px;
+  pointer-events: none; /* Permite hacer clic en el select sin interferencia */
+}
+
+.rotate {
+  transform: translateY(-50%) rotate(180deg);
+}

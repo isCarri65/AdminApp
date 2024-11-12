@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import noImage from "../../../assets/images/noImage.jpeg";
 import { IImagen } from "../../../types/IImagen";
 import { ImageService } from "../../../service/ImageService";
-import { useAppDispatch } from "../../../Hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { removeImageActivo, setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
 
 // Definimos la interfaz de las propiedades que recibirá el componente UploadImage
@@ -17,7 +17,7 @@ interface IUploadImage {
 }
 
 // Componente funcional que permite subir y eliminar imágenes
-export const UploadImage: FC<IUploadImage> = ({
+export const UploadImageCompany: FC<IUploadImage> = ({
   image,
   setImage,
   imageObjeto,
@@ -26,7 +26,9 @@ export const UploadImage: FC<IUploadImage> = ({
 }) => {
   // Instanciamos el servicio para manejar las imágenes
   const imageService = new ImageService("images");
+  const empresaActiva = useAppSelector((state)=>state.empresa.empresaActiva)
   const dispatch = useAppDispatch()
+
 
   // Función para manejar el cambio de archivo en el input de carga de imágenes
   const handleFileChange = async (
@@ -72,14 +74,14 @@ export const UploadImage: FC<IUploadImage> = ({
   };
 
   // Objeto de ejemplo para identificar el elemento activo (simulado)
-  const elementActive = { id: 45 };
+ 
 
   // Función para manejar la eliminación de la imagen
   const handleDeleteImagen = async () => {
     // Si existe un objeto de imagen y la función para actualizarlo
-    if (imageObjeto && setImageObjeto && elementActive && typeElement) {
+    if (imageObjeto && setImageObjeto && empresaActiva && typeElement) {
       await imageService
-        .deleteImgItems(elementActive?.id, imageObjeto.url, typeElement)
+        .deleteImgItems(empresaActiva.id, imageObjeto.url, typeElement)
         .then(() => {
           setImageObjeto(null); // Eliminamos el objeto de imagen
           dispatch(removeImageActivo())
@@ -89,7 +91,6 @@ export const UploadImage: FC<IUploadImage> = ({
     else if (image && setImage) {
       await imageService.deleteImgCloudinary(image).then(() => {
         setImage(null); // Eliminamos la URL de la imagen
-        dispatch(removeImageActivo())
       });
     }
   };

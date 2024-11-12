@@ -1,9 +1,8 @@
 import { Formik } from "formik";
-import { FC } from "react";
+import { FC} from "react";
 import Modal from "react-bootstrap/Modal";
 import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../../../Hooks/hooks";
-import { removeSucursalActivo } from "../../../../redux/slices/SucursalReducer/SucursalReducer";
 import styles from "./ModalCreateCompany.module.css"
 import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
 import { ICreateEmpresaDto } from "../../../../types/dtos/empresa/ICreateEmpresaDto";
@@ -11,7 +10,7 @@ import { EmpresaService } from "../../../../service/EmpresaService";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
 import { IUpdateEmpresaDto } from "../../../../types/dtos/empresa/IUpdateEmpresaDto";
 import { CompanyFormInputs } from "../../CompanyFormInputs/CompanyFormInputs";
-import { removeEmpresaActiva } from "../../../../redux/slices/CompanySlices/EmpresaSlice";
+import { removeEmpresaModalActiva } from "../../../../redux/slices/CompanySlices/EmpresaSlice";
 interface IModalCreateCompany {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
@@ -31,28 +30,33 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
   setOpenModal,
   getEmpresas,
 }) => {
-  const initialValues: ICreateEmpresaDto = {
+  const initialValues: IinitialValues = {
     nombre: "",
     razonSocial:"",
     cuit: 0,
     logo: null,
 
   };
-  const empresaActiva = useAppSelector(
-    (state) => state.empresa.empresaActiva
+  const empresaModalActiva = useAppSelector(
+    (state) => state.empresa.empresaModalActiva
   );
   const dispatch = useAppDispatch();
   const empresaService = new EmpresaService();
   const imageActivo = useAppSelector((state)=>state.image.imageStringActivo)
+  //const [empresaModalActiva, setEmpresaModalActiva] = useState<IEmpresa|null>(null)
 
   // Función para cerrar el modal
   const handleClose = () => {
-    dispatch(removeEmpresaActiva());
     dispatch(removeImageActivo())
-    
+    dispatch(removeEmpresaModalActiva())
     setOpenModal(false);
   };
 
+  /*
+  useEffect(()=>{
+    setEmpresaModalActiva(stateEmpresaModalActiva)
+  }, [stateEmpresaModalActiva])
+  */
   const crearInitialValues = (objOrigen: IEmpresa): IinitialValues => {
     const objDestino: IinitialValues = {
       nombre: objOrigen.nombre,
@@ -60,6 +64,7 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
       cuit: objOrigen.cuit,
       logo: objOrigen.logo ? objOrigen.logo : null,
     };
+    console.log(objOrigen.logo)
     return objDestino;
   };
 
@@ -76,7 +81,7 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
       >
         <Modal.Header className={styles.modalHeader} closeButton>
           {/* Título del modal dependiendo de si se está editando o añadiendo una persona */}
-          {empresaActiva ? (
+          {empresaModalActiva ? (
             <Modal.Title className={`${styles.title} mx-auto`}>Editar Empresa</Modal.Title>
           ) : (
             <Modal.Title className={styles.title}>Crear Empresa</Modal.Title>
@@ -91,24 +96,24 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
               cuit: Yup.string().required("Campo requerido"),
             })}
             initialValues={
-              empresaActiva
-                ? crearInitialValues(empresaActiva)
+              empresaModalActiva
+                ? crearInitialValues(empresaModalActiva)
                 : initialValues
             }
             enableReinitialize={false}
             onSubmit={async (values: IinitialValues) => {
               console.log("Ramirez");
                 try {
-                  if (empresaActiva) {
+                  if (empresaModalActiva) {
                     const updateEmpresa: IUpdateEmpresaDto = {
-                      id: empresaActiva.id,
+                      id: empresaModalActiva.id,
                       nombre: values.nombre,
                       razonSocial: values.razonSocial,
                       cuit: values.cuit,
                       logo: imageActivo,
                     };
                     const resultado = await empresaService.updateEmpresa(
-                      empresaActiva.id,
+                      empresaModalActiva.id,
                       updateEmpresa
                     );
                     console.log(resultado);

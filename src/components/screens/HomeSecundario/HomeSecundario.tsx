@@ -4,27 +4,30 @@ import { SucursalComponent } from "../../ui/SucursalComponent/SucursalComponent"
 import { EmpresaService } from "../../../service/EmpresaService";
 import { useEffect, useState } from "react";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
-import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
-import { setEmpresaActiva, setEmpresaList } from "../../../redux/slices/CompanySlices/EmpresaSlice";
+import { useAppDispatch } from "../../../Hooks/hooks";
+import { setEmpresaList } from "../../../redux/slices/CompanySlices/EmpresaSlice";
 import { useParams } from "react-router-dom";
 import styles from "./HomeSecundario.module.css"
 import { NavBar } from "../navBar/NavBar";
+import { SucursalModalInfo } from "../../ui/modals/SucursalModalInfo/SucursalModalInfo";
 
 export const Home = () => {
   const {id} = useParams()
-  const [empresas, setEmpresas] = useState<IEmpresa[]>([])
-  const [empresaActiva, setEmpresaA ] = useState<IEmpresa| null>(null)
+  const [company, setCompany] = useState<IEmpresa|null>(null)
   const dispatch = useAppDispatch()
-  const stateEmpresaActiva = useAppSelector((state)=> state.empresa.empresaActiva)
-  const empresaList = useAppSelector((state)=>state.empresa.empresaList)
+  const [openModalInfo, setOpenModalInfo] = useState(false);
 
 
   const empresaService = new EmpresaService()
   const getEmpresaActiva = async ()=> {
     if (id){
     await empresaService.getById(Number.parseInt(id)).then((emp) => {
-      if (emp) dispatch(setEmpresaActiva(emp))
+      if (emp) {
+        setCompany(emp)
+      }
     })
+    } else {
+      console.log("id es nulo")
     }
   }
   const getEmpresas = async ()=>{
@@ -32,18 +35,17 @@ export const Home = () => {
       dispatch(setEmpresaList(datos))
     })
   }
+  const getSucursales = (empresa:IEmpresa)  => {
+    setCompany(empresa)
+  }
+
   useEffect(()=>{
     console.log("Montar Componente")
     getEmpresas()
     getEmpresaActiva()
   }, [])
-  useEffect(()=>{
-    setEmpresas(empresaList)
-  }, [empresaList])
-  useEffect(()=>{
-    setEmpresaA(stateEmpresaActiva)
-  }, [stateEmpresaActiva])
-
+  
+  
   return (
     <>
       <div
@@ -51,14 +53,20 @@ export const Home = () => {
         }}
       >
         <header className={`${styles.headerC} d-flex justify-content-center align-items-center flex-column`}>
-          <NavBar getEmpresas={getEmpresas}/>
+          <NavBar getEmpresas={getEmpresas} getSucursales={getSucursales} company={company}/>
         </header>
         <div >
-          {empresaActiva?
-          <SucursalComponent company={empresaActiva} />
+          {company ?
+          <SucursalComponent company={company} setOpenModalInfo={setOpenModalInfo} />
           : <p>NO se ha elegido ninguna empresa</p>
           }
         </div>
+
+      </div>
+      <div
+        className={openModalInfo ? styles.openModalInfo : styles.closeModalInfo}
+      >
+        <SucursalModalInfo setOpenModalInfo={setOpenModalInfo} />
       </div>
     </>
   );

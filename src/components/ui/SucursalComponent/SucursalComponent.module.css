@@ -19,6 +19,7 @@
     align-content: center;
     align-items: center;
     justify-items: center;
+    z-index: 12000;
 
 }
 
@@ -32,8 +33,14 @@
 
 .buttonModal {
   background-color: #828690;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
-  border: solid 1px #756070
+  height: 2.4rem;
+  border-radius: 5px;
+  border: solid 1px #756070;
+  font-size: 1rem;
 }
 .buttonModal:hover {
   background-color: #756070;
@@ -67,3 +74,4 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+

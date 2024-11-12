@@ -1,7 +1,8 @@
 .containerInputs {
   display: flex;
-  flex-direction: row;
-  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+
 }
 .selectLabel {
   color: #000000;

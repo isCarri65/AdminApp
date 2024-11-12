@@ -1,0 +1,28 @@
+.cardName {
+  font-size: 1.5rem;
+}
+.cardContainer { 
+  height: 2.2rem;
+  border-radius: 15px;
+}
+.iconEdit{
+  font-size: 1.6rem;
+  
+  transition: color 0.2s ease
+}
+.navBarIcons {
+  display: flex;
+  justify-content: space-around;
+  align-items:center;
+  width: 20%;
+}
+.iconEdit:hover {
+  cursor: pointer;
+  color: #aaa;
+}
+.openModalInfo {
+  display: flex;
+}
+.closeModalInfo {
+  display: none;
+}
