@@ -43,13 +43,5 @@ export const NavBar: FC<INavBar>= ({getEmpresas, getSucursales, company} )=>{
             </div>  
       <ModalCreateCompany openModal={openModal} setOpenModal={setOpenModal} getEmpresas={getEmpresas} />
         </div>
-        <NavBarCompany getEmpresas={getEmpresas} />
-      </div>
-      <ModalCreateCompany
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        getEmpresas={getEmpresas}
-      />
-    </div>
   );
 };
