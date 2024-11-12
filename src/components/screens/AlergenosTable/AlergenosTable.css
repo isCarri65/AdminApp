@@ -1,0 +1,19 @@
+.header_alergenosTable {
+  height: 9.2vh;
+  background-color: #d8d8d8;
+  margin-bottom: 30px;
+}
+
+.div_container_navbarAlergenos {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.title_Product {
+  font-size: 3em;
+}
+
+.shifted {
+  margin-left: 220px;
+}

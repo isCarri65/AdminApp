@@ -3,7 +3,7 @@ import { Container, Content, ClosedSideBar, OpenSideBar } from "./styles";
 
 //React icons
 import { FaBars } from "react-icons/fa";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 interface NavBarSideProps {
   isOpen: boolean;
@@ -44,7 +44,7 @@ export const NavBarSide: React.FC<NavBarSideProps> = ({ isOpen, toggleMenu }) =>
                   <Link to={`/HomeSecundario/sucursal/producto/${id}`} title="Producto">
                     <p>Productos</p>
                   </Link>
-                  <Link to={`/HomeSecundario/sucursal/alergenos/${id}`} title="Alergenos">
+                  <Link to={`/HomeSecundario/sucursal/alergeno/${id}`} title="Alergenos">
                     <p>Alergenos </p>
                   </Link>
                 </ul>
