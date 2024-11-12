@@ -1,38 +1,36 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import styles from "./CompanyModalInfo.module.css"
 import noImage from "../../../../assets/images/noImage.jpeg";
-import { useAppSelector } from "../../../../Hooks/hooks";
-import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
+import { useAppDispatch, useAppSelector } from "../../../../Hooks/hooks";
+import { removeEmpresaModalActiva } from "../../../../redux/slices/CompanySlices/EmpresaSlice";
 
 interface IPropsCompanyModalInfo {
   setOpenModalInfo: (valor: boolean) => void;
 }
 
 export const CompanyModalInfo: FC<IPropsCompanyModalInfo> = ({setOpenModalInfo }) => {
-  const StateEmpresaActiva = useAppSelector((state)=> state.empresa.empresaActiva)
-  const [empresaActiva, setEmpresaActiva] = useState<IEmpresa|null>(null)
-
-  useEffect(()=>{
-    console.log("cambio de empresa Activa en modal info")
-    setEmpresaActiva(StateEmpresaActiva)
-  },[StateEmpresaActiva])
-  
+  const empresaModalActiva = useAppSelector((state)=> state.empresa.empresaModalActiva)
+  const dispatch = useAppDispatch()
+  const closeOpenModalInfo = ()=> {
+    setOpenModalInfo(false);
+    dispatch(removeEmpresaModalActiva())
+  }
   return (
-    <div className={styles.modalOverlay} onClick={()=> setOpenModalInfo(false)}>
+    <div className={styles.modalOverlay} onClick={closeOpenModalInfo}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={()=>setOpenModalInfo(false)}>
+        <button className={styles.closeButton} onClick={closeOpenModalInfo}>
           &times;
         </button>
-        {empresaActiva ? ( 
+        {empresaModalActiva ? ( 
           <div>
-        <h2 className={styles.title}>{empresaActiva.nombre}</h2>
-        <p><strong>Razón Social:</strong> {empresaActiva.razonSocial}</p>
-        <p><strong>Cuil:</strong> {empresaActiva.cuit}</p>
+        <h2 className={styles.title}>{empresaModalActiva.nombre}</h2>
+        <p><strong>Razón Social:</strong> {empresaModalActiva.razonSocial}</p>
+        <p><strong>Cuil:</strong> {empresaModalActiva.cuit}</p>
         <div  className={styles.logoContainer}>
         <p><strong>Logo:</strong></p>
-        { empresaActiva.logo ? (
+        { empresaModalActiva.logo ? (
           <div>
-            <img className={styles.img} src={empresaActiva.logo} alt={`${empresaActiva.nombre} logo`}/>
+            <img className={styles.img} src={empresaModalActiva.logo} alt={`${empresaModalActiva.nombre} logo`}/>
          </div>
         ):(
           <div>

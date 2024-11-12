@@ -5,10 +5,12 @@ import { IEmpresa } from '../../../types/dtos/empresa/IEmpresa';
 interface IinitialState{
   empresaList: IEmpresa[],
   empresaActiva: IEmpresa | null,
+  empresaModalActiva: IEmpresa | null,
 }
 const initialState: IinitialState = {
   empresaList: [],
   empresaActiva: null,
+  empresaModalActiva: null,
 }
 const EmpresaSlice = createSlice({
   name: 'empresaSlice',
@@ -23,10 +25,16 @@ const EmpresaSlice = createSlice({
     },
     removeEmpresaActiva(state){
       state.empresaActiva = null;
+    },
+    setEmpresaModalActiva(state, action: PayloadAction<IEmpresa>) {
+      state.empresaModalActiva = action.payload
+    },
+    removeEmpresaModalActiva(state){
+      state.empresaModalActiva = null;
     }
   }
 });
 
-export const {setEmpresaList, setEmpresaActiva, removeEmpresaActiva} = EmpresaSlice.actions
+export const {setEmpresaList, setEmpresaActiva, removeEmpresaActiva, setEmpresaModalActiva, removeEmpresaModalActiva} = EmpresaSlice.actions
 
 export default EmpresaSlice.reducer;

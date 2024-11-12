@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 import { setSucursalList } from "../../../redux/slices/SucursalReducer/SucursalReducer";
 import { SucursalService } from "../../../service/SurcusalService";
 import styles from "./SucursalComponent.module.css";
+import { useNavigate } from "react-router-dom";
 interface ISucursalComponent {
   company: IEmpresa;
   setOpenModalInfo: (state: boolean)=> void;
@@ -21,6 +22,8 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
   const dispatch = useAppDispatch();
   const dataSucursal = useAppSelector((state) => state.sucursal.sucursalList);
   const sucursalService = new SucursalService();
+  const navigate = useNavigate()
+
   const getSucursales = async () => {
     if(company){
       await sucursalService.getAllSucursalesByEmpresa(company.id).then((sucursalesDatos) => {
@@ -44,6 +47,10 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
     getSucursales();
   }, [company]);
 
+  const handleTableProduct = (sucursal: ISucursal)=>{
+  navigate(`/HomeSecundario/sucursal/producto/:${sucursal.id}`)
+  }
+
   return (
     <div
       style={{
@@ -60,12 +67,13 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
           className={styles.buttonModal}
           onClick={() => setOpenModal(true)}
         >
-          Crear Sucursal
+          <span className={`material-symbols-outlined ${styles.icon}`}>add</span>
+          Agregar Sucursal
         </Button>
       </div>
       <div className={styles.sucursalesContainer}>
         {sucursales.map((elem: ISucursal, i: number) => (
-          <div className={styles.cardContainer} key={i}>
+          <div className={styles.cardContainer} onClick={()=>handleTableProduct(elem)} key={i}>
             <SucursalCard
               sucursal={elem}
               setOpenModal={setOpenModal}

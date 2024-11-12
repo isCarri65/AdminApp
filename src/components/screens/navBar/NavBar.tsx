@@ -9,8 +9,9 @@ import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 interface INavBar {
     getEmpresas: ()=>void,
     getSucursales: (empresa: IEmpresa)=>void,
+    company: IEmpresa | null,
 }
-export const NavBar: FC<INavBar>= ({getEmpresas, getSucursales} )=>{
+export const NavBar: FC<INavBar>= ({getEmpresas, getSucursales, company} )=>{
     
     const location = useLocation();
     const [navBarEmpresa, setNavBarEmpresa] = useState(false); 
@@ -33,13 +34,12 @@ export const NavBar: FC<INavBar>= ({getEmpresas, getSucursales} )=>{
             {/* NavBar cuando entras a una empresa */}
             <div className={!navBarEmpresa ? "navBar_empresa" : "display_none"}>
             <h1 className="sucursal_tittle">Sistema de Gestion de Empresas</h1>
-            <div className="add_company_NavBar">
-           
-            <Button onClick={()=> setOpenModal(true)} style={{backgroundColor: '#888690', border: "none",  display: "flex", justifyContent: "space-around", alignItems: "center"}}variant="secondary"  >
-            <span className="material-symbols-outlined">add</span>
+            <div className="add_company_container" >
+            <Button className="add_company_NavBar" onClick={()=> setOpenModal(true)} style={{backgroundColor: '#888690', border: "none",  display: "flex", justifyContent: "space-around", alignItems: "center"}}variant="secondary"  >
+            <span className="material-symbols-outlined icon">add</span>
             Agregar Empresa</Button>
             </div>  
-            <NavBarCompany getEmpresas={getEmpresas} getSucursales={getSucursales}/>
+            <NavBarCompany getEmpresas={getEmpresas} getSucursales={getSucursales} company={company} setOpenModal={setOpenModal}/>
             </div>  
       <ModalCreateCompany openModal={openModal} setOpenModal={setOpenModal} getEmpresas={getEmpresas} />
         </div>

@@ -12,6 +12,7 @@
   background-color: #dcc;
   height: 100%;
   width: 100%;
+  padding: 0 80px;
 }
 .main_tittle {
   font-size: 7vh;
@@ -25,16 +26,23 @@
   height: 100%;
   width: 100%;
 }
-
+.add_company_container {
+  width: 100%;
+}
 .add_company_NavBar {
   position: relative;
-  right: 42%;
+  right: 50px;
+  height: 2.4rem;
   margin: 10px;
-  border-radius: 15px;
+  border-radius: 5px;
   background-color: #888690;
-  color: white;
+  color: #fff;
+  font-size: 1rem;
 }
 
+.icon{
+  font-size: 1rem;
+}
 .navBar_cards_nombres_container {
   height: fit-content;
   display: flex;
@@ -51,10 +59,11 @@
   justify-content: space-around;
   align-items: center;
   border-radius: 10px;
-  background-color: rgba(93, 90, 136, 1);
+  background-color: #97a5a3;
   color: black;
   margin-right: 30px;
 }
+
 .link__class__decortaion {
   color: inherit;
   text-decoration: none;
@@ -74,7 +83,6 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  transform: scale(1.16);
   border-radius: 20px;
   background-color: #888690;
   color: white;
