@@ -3,7 +3,7 @@ import { Container, Content, ClosedSideBar, OpenSideBar } from "./styles";
 
 //React icons
 import { FaBars } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 interface NavBarSideProps {
   isOpen: boolean;
@@ -12,11 +12,7 @@ interface NavBarSideProps {
 
 export const NavBarSide: React.FC<NavBarSideProps> = ({ isOpen, toggleMenu }) => {
   const { id } = useParams();
-  // const [sideBar, setSideBar] = useState(false);
 
-  // function handleChangeSideBar() {
-  //   setSideBar((prevState) => !prevState);
-  // }
   return (
     <Container>
       <Content>
@@ -42,15 +38,15 @@ export const NavBarSide: React.FC<NavBarSideProps> = ({ isOpen, toggleMenu }) =>
                 </div>
 
                 <ul>
-                  <a href={`HomeSecundario/sucursal/categoria/${id}`} title="Categoria">
+                  <Link to={`/HomeSecundario/sucursal/categoria/${id}`} title="Categoria">
                     <p>Categoria</p>
-                  </a>
-                  <a href={`HomeSecundario/sucursal/producto/${id}`} title="Producto">
+                  </Link>
+                  <Link to={`/HomeSecundario/sucursal/producto/${id}`} title="Producto">
                     <p>Productos</p>
-                  </a>
-                  <a href={`HomeSecundario/sucursal/alergenos/${id}`} title="Alergenos">
+                  </Link>
+                  <Link to={`/HomeSecundario/sucursal/alergenos/${id}`} title="Alergenos">
                     <p>Alergenos </p>
-                  </a>
+                  </Link>
                 </ul>
               </nav>
               <div>
