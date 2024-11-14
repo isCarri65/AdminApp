@@ -2,12 +2,12 @@ import { BackendClient } from "./BackendClient";
 import { ICategorias } from "../types/dtos/categorias/ICategorias";
 import { ICreateCategoria } from "../types/dtos/categorias/ICreateCategoria";
 import { IUpdateCategoria } from "../types/dtos/categorias/IUpdateCategoria";
-const API_URL:string = import.meta.env.VITE_URL_API
+const API_URL: string = import.meta.env.VITE_URL_API;
 
 export class CategoriaService extends BackendClient<ICategorias> {
-    constructor() {
-        super(API_URL + "/categoria");
-    }
+  constructor() {
+    super(API_URL + "/categorias");
+  }
 
   // Crear categoría
   async createCategoria(data: ICreateCategoria): Promise<ICategorias> {
