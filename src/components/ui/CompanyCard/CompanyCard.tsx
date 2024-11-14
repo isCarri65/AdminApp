@@ -25,6 +25,7 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ company, setOpenModal, setOpe
   }
 
   return (
+    
     <Card className={styles.cardContainer} >
       <Card.Body className={styles.cardBody}>
         <div className={styles.imgContainer}>

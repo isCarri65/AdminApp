@@ -21,7 +21,9 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
 
   const dispatch = useAppDispatch();
   const dataSucursal = useAppSelector((state) => state.sucursal.sucursalList);
-  const sucursalService = new SucursalService();
+
+  const sucursalService = new SucursalService()
+
   const navigate = useNavigate()
 
   const getSucursales = async () => {
@@ -56,13 +58,13 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
       style={{
         backgroundColor: "#ffe",
         width: "100%",
-        padding: "20px 50px",
+        padding: "20px 30px",
       }}
     >
       <div className={styles.titleContainer}>
         <p>Sucursales de: {company.nombre.toUpperCase()}</p>
       </div>
-      <div className="p-3">
+      <div >
         <Button
           className={styles.buttonModal}
           onClick={() => setOpenModal(true)}
