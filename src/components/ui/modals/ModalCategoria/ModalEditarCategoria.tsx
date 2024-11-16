@@ -7,22 +7,20 @@ import { CategoriaService } from "../../../../service/CategoriaService";
 import { ICategorias } from "../../../../types/dtos/categorias/ICategorias";
 import { CategoryFormInputsEditar } from "../../CategoryFormInputs.tsx/CategoryFormInputEditar";
 import { IUpdateCategoria } from "../../../../types/dtos/categorias/IUpdateCategoria";
-import { Button } from "react-bootstrap";
-import { IProductos } from "../../../../types/dtos/productos/IProductos";
 interface IModalCreateCompany {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
   categoriaEdit: ICategorias;
+  idEmpresa: number;
 }
 
 interface IinitialValues {
   id: number;
   denominacion: string;
   eliminado: boolean;
-  sucursales: number[];
-  subCategorias: ICategorias[];
-  categoriaPadre?: ICategorias | null;
-  articulos: IProductos | null;
+  idEmpresa: number;
+  idSucursales: number[];
+  idCategoriaPadre?: number | null;
 }
 
 // Definición del componente ModalCategoria
@@ -30,10 +28,18 @@ export const ModalEditarCategoria: FC<IModalCreateCompany> = ({
   openModal,
   setOpenModal,
   categoriaEdit,
+  idEmpresa,
 }) => {
   const categeoriaService = new CategoriaService();
-  console.log(categoriaEdit);
-  const initialValues: ICategorias = categoriaEdit;
+  const categoriaUpdate: IUpdateCategoria = {
+    id: categoriaEdit.id,
+    denominacion: categoriaEdit.denominacion,
+    eliminado: categoriaEdit.eliminado,
+    idEmpresa: idEmpresa,
+    idSucursales: categoriaEdit.sucursales.map((sucursal) => sucursal.id),
+    idCategoriaPadre: categoriaEdit.categoriaPadre ? categoriaEdit.categoriaPadre.id : null,
+  };
+  const initialValues: IUpdateCategoria = categoriaUpdate;
   // Función para cerrar el modal
   const handleClose = () => {
     setOpenModal(false);
@@ -65,14 +71,13 @@ export const ModalEditarCategoria: FC<IModalCreateCompany> = ({
             onSubmit={async (values: IinitialValues) => {
               try {
                 if (categoriaEdit.categoriaPadre === undefined) {
-                  console.log("SUBCATEGORIA");
                   const subCategoriaUpdate: IUpdateCategoria = {
                     id: values.id,
                     denominacion: values.denominacion,
                     eliminado: values.eliminado,
-                    idEmpresa: 0,
-                    idSucursales: values.sucursales?.map((e) => e.id),
-                    idCategoriaPadre: values.categoriaPadre?.id,
+                    idEmpresa: values.idEmpresa,
+                    idSucursales: values.idSucursales,
+                    idCategoriaPadre: values.idCategoriaPadre,
                   };
                   await categeoriaService.updateCategoria(categoriaEdit?.id, subCategoriaUpdate);
                   handleClose();
@@ -81,9 +86,9 @@ export const ModalEditarCategoria: FC<IModalCreateCompany> = ({
                     id: values.id,
                     denominacion: values.denominacion,
                     eliminado: values.eliminado,
-                    idEmpresa: 0,
-                    idSucursales: values.sucursales.map((e) => e.id),
-                    idCategoriaPadre: values.categoriaPadre?.id,
+                    idEmpresa: values.idEmpresa, //editar empresa activa
+                    idSucursales: values.idSucursales,
+                    idCategoriaPadre: null,
                   };
                   await categeoriaService.updateCategoria(categoriaEdit?.id, categoriaUpdate);
                   handleClose();
@@ -97,7 +102,10 @@ export const ModalEditarCategoria: FC<IModalCreateCompany> = ({
             {() => (
               <>
                 {/* Formulario */}
-                <CategoryFormInputsEditar idSucursales={categoriaEdit.sucursales} />
+                <CategoryFormInputsEditar
+                  idSucursales={categoriaEdit.sucursales}
+                  idEmpresa={idEmpresa}
+                />
               </>
             )}
           </Formik>

@@ -16,7 +16,8 @@ const CategoryTable = () => {
   const dispatch = useAppDispatch();
 
   const categoriaList = useAppSelector((state) => state.categoria.categoriaList);
-
+  const empresaActiva = useAppSelector((state) => state.empresa.empresaActiva);
+  console.log(empresaActiva?.id, "empreaActiva");
   const categoriaService = new CategoriaService();
   const getCategorias = async () => {
     await categoriaService.getCategoriasPorSucursal(idSucursal).then((datos) => {
@@ -48,12 +49,12 @@ const CategoryTable = () => {
         </div>
       </header>
       <div>
-        <CategoriaCard categoria={categoriaList} />
+        <CategoriaCard categoria={categoriaList} idEmpresa={empresaActiva?.id} />
       </div>
       <ModalCrearCategoria
         openModal={openModal}
         setOpenModal={setOpenModal}
-        idSucursales={[idSucursal]}
+        idEmpresa={empresaActiva?.id}
         categoriasAll={categoriaList}
       />
     </>

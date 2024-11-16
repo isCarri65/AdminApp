@@ -4,6 +4,7 @@ import { ICreateCategoria } from "../types/dtos/categorias/ICreateCategoria";
 import { IUpdateCategoria } from "../types/dtos/categorias/IUpdateCategoria";
 const API_URL: string = import.meta.env.VITE_URL_API;
 
+// allSubCategoriasPorSucursal
 export class CategoriaService extends BackendClient<ICategorias> {
   constructor() {
     super(API_URL + "/categorias");
@@ -24,7 +25,6 @@ export class CategoriaService extends BackendClient<ICategorias> {
 
   // Editar categoría
   async updateCategoria(id: number, data: IUpdateCategoria): Promise<ICategorias> {
-    console.log(data, "UPDATEEEE");
     const response = await fetch(`${this.baseUrl}/update/${id}`, {
       method: "PUT",
       headers: {
@@ -32,20 +32,18 @@ export class CategoriaService extends BackendClient<ICategorias> {
       },
       body: JSON.stringify(data),
     });
-    console.log(response, "----------------------------------------------");
     const updatedData = await response.json();
-    console.log(updatedData, "----------------------------------------------");
 
     return updatedData as ICategorias;
   }
 
   // Obtener categorías por id sucursal
+
   async getCategoriasPorSucursal(sucursalId: number): Promise<ICategorias[]> {
-    const response = await fetch(`${this.baseUrl}/allCategoriasPorSucursal/${sucursalId}`);
+    const response = await fetch(`${this.baseUrl}/allCategoriasPadrePorSucursal/${sucursalId}`);
     const data = await response.json();
     return data as ICategorias[];
   }
-
   // Obtener una categoría por ID
   async getCategoriaById(id: number): Promise<ICategorias> {
     const response = await fetch(`${this.baseUrl}/${id}`);
