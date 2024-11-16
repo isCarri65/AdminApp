@@ -53,7 +53,7 @@ export const HomePrincipal = () => {
       <div style={{
         backgroundColor: "#ffe",
         width: "100%",
-        padding: "20px 80px",
+        padding: "20px 30px",
       }}>
       <Button
           className={styles.buttonModal}
@@ -61,7 +61,7 @@ export const HomePrincipal = () => {
         >Crear Empresa</Button>
       <div className={styles.containerCompanys} >
         {empresas.map((empresa, index) => (
-          <div  onClick={()=> handleCardCompany(empresa)} key={index}>
+          <div className='d-flex justify-content-center'  onClick={()=> handleCardCompany(empresa)} key={index} style={{width:"100%"}}>
           <CompanyCard setOpenModal={setOpenModal} company={empresa} setOpenModalInfo={setOpenModalInfo} key={index}/>
           </div>
         ))}

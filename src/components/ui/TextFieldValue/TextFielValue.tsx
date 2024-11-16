@@ -28,7 +28,7 @@ const TextFieldValue = ({ label, name, type, placeholder }: props) => {
           style={{
             color: "black",
             fontFamily: "Inter",
-            fontSize: "1.5em",
+            fontSize: "1rem",
             fontWeight: "bold",
           }}
         >

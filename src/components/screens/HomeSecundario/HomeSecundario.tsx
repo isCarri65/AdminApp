@@ -12,7 +12,9 @@ import { NavBar } from "../navBar/NavBar";
 import { SucursalModalInfo } from "../../ui/modals/SucursalModalInfo/SucursalModalInfo";
 
 export const Home = () => {
+
   const {id} = useParams()
+
   const [company, setCompany] = useState<IEmpresa|null>(null)
   const dispatch = useAppDispatch()
   const [openModalInfo, setOpenModalInfo] = useState(false);
@@ -20,6 +22,7 @@ export const Home = () => {
 
   const empresaService = new EmpresaService()
   const getEmpresaActiva = async ()=> {
+    
     if (id){
     await empresaService.getById(Number.parseInt(id)).then((emp) => {
       if (emp) {
