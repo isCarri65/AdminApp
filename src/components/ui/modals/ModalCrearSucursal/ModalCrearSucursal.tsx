@@ -9,7 +9,7 @@ import { SucursalService } from "../../../../service/SurcusalService";
 import { IUpdateSucursal } from "../../../../types/dtos/sucursal/IUpdateSucursal";
 import { ICreateSucursal } from "../../../../types/dtos/sucursal/ICreateSucursal";
 import { SucursalFormInputs } from "../../SucursalFormInputs/SucursalFormInputs";
-import styles from "./ModalCreateSucursal.module.css"
+import styles from "./ModalCreateSucursal.module.css";
 import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
 interface IModalCrearSucursal {
   openModal: boolean;
@@ -58,20 +58,18 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
     localidad: "",
     logo: "",
   };
-  const empresaModalActiva = useAppSelector((state)=>state.empresa.empresaModalActiva)
-  const sucursalActivo = useAppSelector(
-    (state) => state.sucursal.sucursalActivo
-  );
+  const empresaModalActiva = useAppSelector((state) => state.empresa.empresaModalActiva);
+  const sucursalActivo = useAppSelector((state) => state.sucursal.sucursalActivo);
   const dispatch = useAppDispatch();
   const sucursalService = new SucursalService();
-  const stateimageActivo = useAppSelector((state)=>state.image.imageStringActivo)
-  const [imageActivo, setImageActivo] = useState<string| null>(null)
+  const stateimageActivo = useAppSelector((state) => state.image.imageStringActivo);
+  const [imageActivo, setImageActivo] = useState<string | null>(null);
 
   // Función para cerrar el modal
   const handleClose = () => {
     setOpenModal(false);
     dispatch(removeSucursalActivo());
-    dispatch(removeImageActivo())
+    dispatch(removeImageActivo());
   };
 
   const crearInitialValues = (objOrigen: ISucursal): IinitialValues => {
@@ -95,14 +93,15 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
     return objDestino;
   };
 
-  useEffect(()=>{
-    setImageActivo(stateimageActivo)
-  },[stateimageActivo])
+  useEffect(() => {
+    setImageActivo(stateimageActivo);
+  }, [stateimageActivo]);
 
   return (
-    <div >
+    <div>
       {/* Componente Modal de React Bootstrap */}
-      <Modal className={styles.modal}
+      <Modal
+        className={styles.modal}
         id={"modal"}
         show={openModal}
         onHide={handleClose}
@@ -117,8 +116,8 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
           ) : (
             <Modal.Title className={styles.title}>Crear una sucursal</Modal.Title>
           )}
-        </Modal.Header  >
-        <Modal.Body  className={styles.modalBody}>
+        </Modal.Header>
+        <Modal.Body className={styles.modalBody}>
           {/* Componente Formik para el formulario */}
           <Formik
             validationSchema={Yup.object({
@@ -136,11 +135,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
               provincia: Yup.string().required("Campo requerido"),
               localidad: Yup.string().required("Campo requerido"),
             })}
-            initialValues={
-              sucursalActivo
-                ? crearInitialValues(sucursalActivo)
-                : initialValues
-            }
+            initialValues={sucursalActivo ? crearInitialValues(sucursalActivo) : initialValues}
             enableReinitialize={false}
             onSubmit={async (values: IinitialValues) => {
               if (empresaModalActiva) {
@@ -168,14 +163,11 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                       logo: imageActivo,
                       categorias: sucursalActivo.categorias,
                     };
-                    console.log(updateSucursal)
                     const resultado = await sucursalService.updateSucursal(
                       sucursalActivo.id,
                       updateSucursal
                     );
-                    console.log(resultado);
                   } else {
-                    console.log("Crear Sucursal");
                     const sucursalCreate: ICreateSucursal = {
                       nombre: values.nombre,
                       horarioApertura: values.horarioApertura,
@@ -207,7 +199,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
               }
             }}
           >
-            {({setFieldValue}) => (
+            {({ setFieldValue }) => (
               <>
                 {/* Formulario */}
                 <SucursalFormInputs setFieldValue={setFieldValue} />

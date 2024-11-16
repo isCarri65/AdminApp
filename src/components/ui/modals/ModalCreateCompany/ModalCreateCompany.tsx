@@ -1,9 +1,9 @@
 import { Formik } from "formik";
-import { FC} from "react";
+import { FC } from "react";
 import Modal from "react-bootstrap/Modal";
 import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../../../Hooks/hooks";
-import styles from "./ModalCreateCompany.module.css"
+import styles from "./ModalCreateCompany.module.css";
 import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
 import { ICreateEmpresaDto } from "../../../../types/dtos/empresa/ICreateEmpresaDto";
 import { EmpresaService } from "../../../../service/EmpresaService";
@@ -19,7 +19,7 @@ interface IModalCreateCompany {
 
 interface IinitialValues {
   nombre: string;
-  razonSocial: string
+  razonSocial: string;
   cuit: number;
   logo: string | null;
 }
@@ -32,23 +32,20 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
 }) => {
   const initialValues: IinitialValues = {
     nombre: "",
-    razonSocial:"",
+    razonSocial: "",
     cuit: 0,
     logo: null,
-
   };
-  const empresaModalActiva = useAppSelector(
-    (state) => state.empresa.empresaModalActiva
-  );
+  const empresaModalActiva = useAppSelector((state) => state.empresa.empresaModalActiva);
   const dispatch = useAppDispatch();
   const empresaService = new EmpresaService();
-  const imageActivo = useAppSelector((state)=>state.image.imageStringActivo)
+  const imageActivo = useAppSelector((state) => state.image.imageStringActivo);
   //const [empresaModalActiva, setEmpresaModalActiva] = useState<IEmpresa|null>(null)
 
   // Función para cerrar el modal
   const handleClose = () => {
-    dispatch(removeImageActivo())
-    dispatch(removeEmpresaModalActiva())
+    dispatch(removeImageActivo());
+    dispatch(removeEmpresaModalActiva());
     setOpenModal(false);
   };
 
@@ -64,14 +61,14 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
       cuit: objOrigen.cuit,
       logo: objOrigen.logo ? objOrigen.logo : null,
     };
-    console.log(objOrigen.logo)
     return objDestino;
   };
 
   return (
-    <div >
+    <div>
       {/* Componente Modal de React Bootstrap */}
-      <Modal className={styles.modal}
+      <Modal
+        className={styles.modal}
         id={"modal"}
         show={openModal}
         onHide={handleClose}
@@ -86,8 +83,8 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
           ) : (
             <Modal.Title className={styles.title}>Crear Empresa</Modal.Title>
           )}
-        </Modal.Header  >
-        <Modal.Body  className={styles.modalBody}>
+        </Modal.Header>
+        <Modal.Body className={styles.modalBody}>
           {/* Componente Formik para el formulario */}
           <Formik
             validationSchema={Yup.object({
@@ -96,43 +93,38 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
               cuit: Yup.string().required("Campo requerido"),
             })}
             initialValues={
-              empresaModalActiva
-                ? crearInitialValues(empresaModalActiva)
-                : initialValues
+              empresaModalActiva ? crearInitialValues(empresaModalActiva) : initialValues
             }
             enableReinitialize={false}
             onSubmit={async (values: IinitialValues) => {
-              console.log("Ramirez");
-                try {
-                  if (empresaModalActiva) {
-                    const updateEmpresa: IUpdateEmpresaDto = {
-                      id: empresaModalActiva.id,
-                      nombre: values.nombre,
-                      razonSocial: values.razonSocial,
-                      cuit: values.cuit,
-                      logo: imageActivo,
-                    };
-                    const resultado = await empresaService.updateEmpresa(
-                      empresaModalActiva.id,
-                      updateEmpresa
-                    );
-                    console.log(resultado);
-                  } else {
-                    console.log("Crear Sucursal");
-                    const empresaCreate: ICreateEmpresaDto = {
-                      nombre: values.nombre,
-                      razonSocial: values.razonSocial,
-                      cuit: values.cuit,
-                      logo: imageActivo,
-                    };
-                    await empresaService.createEmpresa(empresaCreate);
-                  }
-                  getEmpresas();
-                  handleClose();
-                } catch (error) {
-                  console.error("Error al enviar los datos:", error);
-                  // Podrías mostrar una notificación de error aquí si lo deseas
+              try {
+                if (empresaModalActiva) {
+                  const updateEmpresa: IUpdateEmpresaDto = {
+                    id: empresaModalActiva.id,
+                    nombre: values.nombre,
+                    razonSocial: values.razonSocial,
+                    cuit: values.cuit,
+                    logo: imageActivo,
+                  };
+                  const resultado = await empresaService.updateEmpresa(
+                    empresaModalActiva.id,
+                    updateEmpresa
+                  );
+                } else {
+                  const empresaCreate: ICreateEmpresaDto = {
+                    nombre: values.nombre,
+                    razonSocial: values.razonSocial,
+                    cuit: values.cuit,
+                    logo: imageActivo,
+                  };
+                  await empresaService.createEmpresa(empresaCreate);
                 }
+                getEmpresas();
+                handleClose();
+              } catch (error) {
+                console.error("Error al enviar los datos:", error);
+                // Podrías mostrar una notificación de error aquí si lo deseas
+              }
             }}
           >
             {() => (

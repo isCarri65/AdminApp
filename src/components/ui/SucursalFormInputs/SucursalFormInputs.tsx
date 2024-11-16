@@ -2,7 +2,7 @@ import { Field, FieldInputProps, FieldMetaProps, Form } from "formik";
 import TextFieldValue from "../TextFieldValue/TextFielValue";
 import { Button } from "react-bootstrap";
 import styles from "./SucursalFormInputs.module.css";
-import { ChangeEvent , FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { UploadImage } from "../UploadImage/UploadImage";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
@@ -13,15 +13,13 @@ import { IPais } from "../../../types/IPais";
 import { IProvincia } from "../../../types/IProvincia";
 import { ILocalidad } from "../../../types/ILocalidad";
 interface IPropsSucursaslFormInput {
-  setFieldValue: (campo: string, valor: string)=> void
+  setFieldValue: (campo: string, valor: string) => void;
 }
 
-export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}) => {
+export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({ setFieldValue }) => {
   const [image, setImage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
-  const sucursalActivo = useAppSelector(
-    (state) => state.sucursal.sucursalActivo
-  );
+  const sucursalActivo = useAppSelector((state) => state.sucursal.sucursalActivo);
   const paisService = new PaisService();
   const provinciaService = new ProvinciaService();
   const localidadService = new LocalidadesService();
@@ -44,21 +42,18 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
   const getProvincias = async () => {
     await provinciaService.getAllProvincias().then((provincias) => {
       setProvincias(provincias);
-      console.log(provincias);
     });
   };
   const getLocalidades = async () => {
-    await localidadService
-      .getAll()
-      .then((localidades) => setLocalidades(localidades));
+    await localidadService.getAll().then((localidades) => setLocalidades(localidades));
   };
   const filterProvincias = (pais: IPais) => {
-    return provinciasList.filter((provincia) => (provincia.pais.id === pais.id));
+    return provinciasList.filter((provincia) => provincia.pais.id === pais.id);
   };
 
-  const filterLocalidades = (provincia: IProvincia)=> {
-    return localidadesList.filter((localidad)=> localidad.provincia.id === provincia.id )
-  }
+  const filterLocalidades = (provincia: IProvincia) => {
+    return localidadesList.filter((localidad) => localidad.provincia.id === provincia.id);
+  };
 
   useEffect(() => {
     if (sucursalActivo) {
@@ -66,9 +61,9 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
         setImage(sucursalActivo.logo);
         dispatch(setImageStringActivo(sucursalActivo.logo));
       }
-      setPaisActivo(sucursalActivo.domicilio.localidad.provincia.pais)
-      setProvinciaActiva(sucursalActivo.domicilio.localidad.provincia)
-      setFieldValue("localidad", sucursalActivo.domicilio.localidad.id.toString())
+      setPaisActivo(sucursalActivo.domicilio.localidad.provincia.pais);
+      setProvinciaActiva(sucursalActivo.domicilio.localidad.provincia);
+      setFieldValue("localidad", sucursalActivo.domicilio.localidad.id.toString());
     }
     getPaises();
     getProvincias();
@@ -79,27 +74,35 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
     console.log("Se ingreso una imagen");
   }, [image]);
 
-  const handlePaisActivo = (event: ChangeEvent<HTMLSelectElement>, onChange: (e: ChangeEvent<any>) => void)=>{
+  const handlePaisActivo = (
+    event: ChangeEvent<HTMLSelectElement>,
+    onChange: (e: ChangeEvent<any>) => void
+  ) => {
     onChange(event);
     const id = event.target.value;
-    const paisFinded = paisesList.find((pais)=> pais.id === Number.parseInt(id))
-    if(paisFinded) {
-      setPaisActivo(paisFinded)
-      setProvinciaActiva(null)
+    const paisFinded = paisesList.find((pais) => pais.id === Number.parseInt(id));
+    if (paisFinded) {
+      setPaisActivo(paisFinded);
+      setProvinciaActiva(null);
     } else {
-      console.log("Pais no encontrado")
+      console.log("Pais no encontrado");
     }
-  }
-  const handleProvinciaActiva = (event: ChangeEvent<HTMLSelectElement>, onChange: (e: ChangeEvent<any>) => void) =>{
-    onChange(event)
-    const id = event.target.value
-    const provinciaFinded = provinciasList.find((provincia)=> provincia.id === Number.parseInt(id) )
-    if(provinciaFinded){
-      setProvinciaActiva(provinciaFinded)
-    } else{
-      console.log("Provincia no encontrada")
+  };
+  const handleProvinciaActiva = (
+    event: ChangeEvent<HTMLSelectElement>,
+    onChange: (e: ChangeEvent<any>) => void
+  ) => {
+    onChange(event);
+    const id = event.target.value;
+    const provinciaFinded = provinciasList.find(
+      (provincia) => provincia.id === Number.parseInt(id)
+    );
+    if (provinciaFinded) {
+      setProvinciaActiva(provinciaFinded);
+    } else {
+      console.log("Provincia no encontrada");
     }
-  }
+  };
 
   return (
     <Form autoComplete="off" className="form-obraAlta">
@@ -107,12 +110,7 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
         <div className={styles.containerInputs}>
           {/* Campos del formulario */}
           <div className={styles.Section1}>
-            <TextFieldValue
-              label="Nombre:"
-              name="nombre"
-              type="text"
-              placeholder="ej. Asus"
-            />
+            <TextFieldValue label="Nombre:" name="nombre" type="text" placeholder="ej. Asus" />
             <TextFieldValue
               label="Horario de apertura:"
               name="horarioApertura"
@@ -126,18 +124,8 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
               type="time"
               placeholder="00-00"
             />
-            <TextFieldValue
-              label="Latitud:"
-              name="latitud"
-              type="number"
-              placeholder="ej. 1111"
-            />
-            <TextFieldValue
-              label="Longitud:"
-              name="longitud"
-              type="number"
-              placeholder=""
-            />
+            <TextFieldValue label="Latitud:" name="latitud" type="number" placeholder="ej. 1111" />
+            <TextFieldValue label="Longitud:" name="longitud" type="number" placeholder="" />
           </div>
           <div className={styles.Section2}>
             <div className={styles.selectContainer}>
@@ -158,26 +146,25 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
                       onFocus={() => setIsFocused(true)}
                       onBlur={() => setIsFocused(false)}
                       className={styles.customSelect}
-                      onChange={(e)=>handlePaisActivo(e, field.onChange)}
+                      onChange={(e) => handlePaisActivo(e, field.onChange)}
                     >
                       <option value="" disabled>
                         Selecciona un Pais
                       </option>
-                      {sucursalActivo && 
-                      <option value={sucursalActivo.domicilio.localidad.provincia.pais.id}> {sucursalActivo.domicilio.localidad.provincia.pais.nombre}</option>}
-                      
+                      {sucursalActivo && (
+                        <option value={sucursalActivo.domicilio.localidad.provincia.pais.id}>
+                          {" "}
+                          {sucursalActivo.domicilio.localidad.provincia.pais.nombre}
+                        </option>
+                      )}
+
                       {paisesList.map((pais) => (
-                        <option
-                          value={pais.id}
-                          key={pais.id}
-                        >
+                        <option value={pais.id} key={pais.id}>
                           {pais.nombre}
                         </option>
                       ))}
                     </select>
-                    {meta.touched && meta.error ? (
-                      <div className="error">{meta.error}</div>
-                    ) : null}
+                    {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
                   </div>
                 )}
               </Field>
@@ -192,11 +179,7 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
               <label className={styles.selectLabel} htmlFor="pais">
                 Provincia:
               </label>
-              <Field
-                as="select"
-                name="provincia"
-                placeholder="Selecciona una Provincia"
-              >
+              <Field as="select" name="provincia" placeholder="Selecciona una Provincia">
                 {({
                   field,
                   meta,
@@ -214,23 +197,24 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
                         ${styles.customSelect} 
                         ${paisActivo ? "" : styles.disabledInput}
                       `}
-                      onChange={ (e)=> handleProvinciaActiva(e, field.onChange)}
-
+                      onChange={(e) => handleProvinciaActiva(e, field.onChange)}
                     >
                       <option value="" disabled>
                         Selecciona una Provincia
                       </option>
-                      {sucursalActivo && 
-                      <option value={sucursalActivo.domicilio.localidad.provincia.id}>{sucursalActivo.domicilio.localidad.provincia.nombre}</option>}
+                      {sucursalActivo && (
+                        <option value={sucursalActivo.domicilio.localidad.provincia.id}>
+                          {sucursalActivo.domicilio.localidad.provincia.nombre}
+                        </option>
+                      )}
                       {paisActivo &&
                         filterProvincias(paisActivo).map((provincia) => (
-                          <option value={provincia.id} key={provincia.id}>{provincia.nombre}</option>
-                        ))
-                      }
+                          <option value={provincia.id} key={provincia.id}>
+                            {provincia.nombre}
+                          </option>
+                        ))}
                     </select>
-                    {meta.touched && meta.error ? (
-                      <div className="error">{meta.error}</div>
-                    ) : null}
+                    {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
                   </div>
                 )}
               </Field>
@@ -259,26 +243,28 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
                       {...field}
                       onFocus={() => setIsFocusedL(true)}
                       onBlur={() => setIsFocusedL(false)}
-                      disabled={provinciaActiva? false : true}
+                      disabled={provinciaActiva ? false : true}
                       className={
-                        styles.customSelect +
-                        " " +
-                        (provinciaActiva ? "" : styles.disabledInput)
+                        styles.customSelect + " " + (provinciaActiva ? "" : styles.disabledInput)
                       }
                     >
                       <option value="" disabled>
                         Selecciona una Localidad
                       </option>
-                      {sucursalActivo && 
-                      <option value={sucursalActivo.domicilio.localidad.id}>{sucursalActivo.domicilio.localidad.nombre}</option>}
-                      
-                      {provinciaActiva && filterLocalidades(provinciaActiva).map((localidad) => (
-                        <option value={localidad.id} key={localidad.id}>{localidad.nombre}</option>
-                      ))}
+                      {sucursalActivo && (
+                        <option value={sucursalActivo.domicilio.localidad.id}>
+                          {sucursalActivo.domicilio.localidad.nombre}
+                        </option>
+                      )}
+
+                      {provinciaActiva &&
+                        filterLocalidades(provinciaActiva).map((localidad) => (
+                          <option value={localidad.id} key={localidad.id}>
+                            {localidad.nombre}
+                          </option>
+                        ))}
                     </select>
-                    {meta.touched && meta.error ? (
-                      <div className="error">{meta.error}</div>
-                    ) : null}
+                    {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
                   </div>
                 )}
               </Field>
@@ -295,32 +281,12 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
               type="string"
               placeholder="ej. calle nueva"
             />
-            <TextFieldValue
-              label="Nro de calle:"
-              name="numero"
-              type="number"
-              placeholder="1111"
-            />
+            <TextFieldValue label="Nro de calle:" name="numero" type="number" placeholder="1111" />
           </div>
           <div className={styles.Section3}>
-            <TextFieldValue
-              label="Código Póstal:"
-              name="cp"
-              type="number"
-              placeholder=""
-            />
-            <TextFieldValue
-              label="Piso:"
-              name="piso"
-              type="number"
-              placeholder=""
-            />
-            <TextFieldValue
-              label="Nro departamento"
-              name="nroDpto"
-              type="number"
-              placeholder=""
-            />
+            <TextFieldValue label="Código Póstal:" name="cp" type="number" placeholder="" />
+            <TextFieldValue label="Piso:" name="piso" type="number" placeholder="" />
+            <TextFieldValue label="Nro departamento" name="nroDpto" type="number" placeholder="" />
 
             <UploadImage image={image} setImage={setImage} />
           </div>

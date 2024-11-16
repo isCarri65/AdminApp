@@ -17,7 +17,6 @@ const CategoryTable = () => {
 
   const categoriaList = useAppSelector((state) => state.categoria.categoriaList);
   const empresaActiva = useAppSelector((state) => state.empresa.empresaActiva);
-  console.log(empresaActiva?.id, "empreaActiva");
   const categoriaService = new CategoriaService();
   const getCategorias = async () => {
     await categoriaService.getCategoriasPorSucursal(idSucursal).then((datos) => {

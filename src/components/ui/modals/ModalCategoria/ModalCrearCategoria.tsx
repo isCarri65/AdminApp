@@ -27,7 +27,6 @@ export const ModalCrearCategoria: FC<IModalCreateCompany> = ({
   idEmpresa,
   categoriasAll,
 }) => {
-  console.log(idEmpresa, "idEmpresa modal");
   const catageoriaService = new CategoriaService();
 
   const initialValues: ICreateCategoria = {
