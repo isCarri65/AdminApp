@@ -68,7 +68,7 @@
 .icon {
   position: absolute;
   right: 10px;
-  top: 50px;
+  top: 55px;
   transform: translateY(-50%);
   color: #888;
   pointer-events: none; /* Hace que el icono no sea clicable */

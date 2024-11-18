@@ -6,12 +6,10 @@ import { ChangeEvent , FC, useEffect, useState } from "react";
 import { UploadImage } from "../UploadImage/UploadImage";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
-import { PaisService } from "../../../service/PaisService";
-import { ProvinciaService } from "../../../service/ProvinciaService";
-import { LocalidadesService } from "../../../service/LocalidadService";
 import { IPais } from "../../../types/IPais";
 import { IProvincia } from "../../../types/IProvincia";
-import { ILocalidad } from "../../../types/ILocalidad";
+import { setPaisActivo } from "../../../redux/slices/PaisReducer/PaisReducer";
+import { removeProvinciaActiva, setProvinciaActiva } from "../../../redux/slices/ProvinciaReducer/ProvincisReducer";
 interface IPropsSucursaslFormInput {
   setFieldValue: (campo: string, valor: string)=> void
 }
@@ -22,42 +20,23 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
   const sucursalActivo = useAppSelector(
     (state) => state.sucursal.sucursalActivo
   );
-  const paisService = new PaisService();
-  const provinciaService = new ProvinciaService();
-  const localidadService = new LocalidadesService();
-
-  const [paisesList, setPaises] = useState<IPais[]>([]);
-  const [provinciasList, setProvincias] = useState<IProvincia[]>([]);
-  const [localidadesList, setLocalidades] = useState<ILocalidad[]>([]);
-  const [paisActivo, setPaisActivo] = useState<IPais | null>(null);
-  const [provinciaActiva, setProvinciaActiva] = useState<IProvincia | null>(null);
-
+  
   const [isFocused, setIsFocused] = useState(false);
   const [isFocusedPr, setIsFocusedPr] = useState(false);
   const [isFocusedL, setIsFocusedL] = useState(false);
 
-  const getPaises = async () => {
-    await paisService.getAllPaises().then((paises) => {
-      setPaises(paises);
-    });
-  };
-  const getProvincias = async () => {
-    await provinciaService.getAllProvincias().then((provincias) => {
-      setProvincias(provincias);
-      console.log(provincias);
-    });
-  };
-  const getLocalidades = async () => {
-    await localidadService
-      .getAll()
-      .then((localidades) => setLocalidades(localidades));
-  };
+  const paisActivo  = useAppSelector((state)=>state.pais.paisActivo)
+  const provinciaActiva  = useAppSelector((state)=>state.provincia.provinciaActiva)
+  const provincias = useAppSelector((state)=>state.provincia.provinciasList)
+  const localidades = useAppSelector((state)=>state.localidad.localidadesList)
+  const paises = useAppSelector((state)=>state.pais.paisesList)
+
   const filterProvincias = (pais: IPais) => {
-    return provinciasList.filter((provincia) => (provincia.pais.id === pais.id));
+    return provincias.filter((provincia) => (provincia.pais.id === pais.id));
   };
 
   const filterLocalidades = (provincia: IProvincia)=> {
-    return localidadesList.filter((localidad)=> localidad.provincia.id === provincia.id )
+    return localidades.filter((localidad)=> localidad.provincia.id === provincia.id )
   }
 
   useEffect(() => {
@@ -66,36 +45,35 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
         setImage(sucursalActivo.logo);
         dispatch(setImageStringActivo(sucursalActivo.logo));
       }
-      setPaisActivo(sucursalActivo.domicilio.localidad.provincia.pais)
-      setProvinciaActiva(sucursalActivo.domicilio.localidad.provincia)
+      dispatch(setPaisActivo(sucursalActivo.domicilio.localidad.provincia.pais))
+      dispatch(setProvinciaActiva(sucursalActivo.domicilio.localidad.provincia))
       setFieldValue("localidad", sucursalActivo.domicilio.localidad.id.toString())
+      setFieldValue("provincia", sucursalActivo.domicilio.localidad.provincia.id.toString())
+      setFieldValue("pais", sucursalActivo.domicilio.localidad.provincia.pais.id.toString())
     }
-    getPaises();
-    getProvincias();
-    getLocalidades();
   }, []);
 
   useEffect(() => {
     console.log("Se ingreso una imagen");
   }, [image]);
 
-  const handlePaisActivo = (event: ChangeEvent<HTMLSelectElement>, onChange: (e: ChangeEvent<any>) => void)=>{
+  const handlePaisActivo = (event: ChangeEvent<HTMLSelectElement>, onChange: (e: ChangeEvent<HTMLSelectElement>) => void)=>{
     onChange(event);
     const id = event.target.value;
-    const paisFinded = paisesList.find((pais)=> pais.id === Number.parseInt(id))
+    const paisFinded = paises.find((pais)=> pais.id === Number.parseInt(id))
     if(paisFinded) {
-      setPaisActivo(paisFinded)
-      setProvinciaActiva(null)
+      dispatch(setPaisActivo(paisFinded))
+      dispatch(removeProvinciaActiva())
     } else {
       console.log("Pais no encontrado")
     }
   }
-  const handleProvinciaActiva = (event: ChangeEvent<HTMLSelectElement>, onChange: (e: ChangeEvent<any>) => void) =>{
+  const handleProvinciaActiva = (event: ChangeEvent<HTMLSelectElement>, onChange: (e: ChangeEvent<HTMLSelectElement>) => void) =>{
     onChange(event)
     const id = event.target.value
-    const provinciaFinded = provinciasList.find((provincia)=> provincia.id === Number.parseInt(id) )
+    const provinciaFinded = provincias.find((provincia)=> provincia.id === Number.parseInt(id) )
     if(provinciaFinded){
-      setProvinciaActiva(provinciaFinded)
+      dispatch(setProvinciaActiva(provinciaFinded))
     } else{
       console.log("Provincia no encontrada")
     }
@@ -145,10 +123,7 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
                 Pais:
               </label>
               <Field as="select" name="pais">
-                {({
-                  field,
-                  meta,
-                }: {
+                {({field,meta}: {
                   field: FieldInputProps<string>;
                   meta: FieldMetaProps<string>;
                 }) => (
@@ -163,10 +138,7 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
                       <option value="" disabled>
                         Selecciona un Pais
                       </option>
-                      {sucursalActivo && 
-                      <option value={sucursalActivo.domicilio.localidad.provincia.pais.id}> {sucursalActivo.domicilio.localidad.provincia.pais.nombre}</option>}
-                      
-                      {paisesList.map((pais) => (
+                      {paises.map((pais) => (
                         <option
                           value={pais.id}
                           key={pais.id}
@@ -183,7 +155,7 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
               </Field>
               <i
                 className={`fas fa-chevron-down ${
-                  styles.icon + " " + (isFocused ? "" : styles.open)
+                  styles.icon + " " + (!isFocused ? "" : styles.open)
                 } `}
               ></i>
             </div>
@@ -220,8 +192,6 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
                       <option value="" disabled>
                         Selecciona una Provincia
                       </option>
-                      {sucursalActivo && 
-                      <option value={sucursalActivo.domicilio.localidad.provincia.id}>{sucursalActivo.domicilio.localidad.provincia.nombre}</option>}
                       {paisActivo &&
                         filterProvincias(paisActivo).map((provincia) => (
                           <option value={provincia.id} key={provincia.id}>{provincia.nombre}</option>
@@ -237,7 +207,7 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
 
               <i
                 className={`fas fa-chevron-down ${
-                  styles.icon + " " + (isFocusedPr ? "" : styles.open)
+                  styles.icon + " " + (!isFocusedPr ? "" : styles.open)
                 } `}
               ></i>
             </div>
@@ -269,9 +239,6 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
                       <option value="" disabled>
                         Selecciona una Localidad
                       </option>
-                      {sucursalActivo && 
-                      <option value={sucursalActivo.domicilio.localidad.id}>{sucursalActivo.domicilio.localidad.nombre}</option>}
-                      
                       {provinciaActiva && filterLocalidades(provinciaActiva).map((localidad) => (
                         <option value={localidad.id} key={localidad.id}>{localidad.nombre}</option>
                       ))}
@@ -285,7 +252,7 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
 
               <i
                 className={`fas fa-chevron-down ${
-                  styles.icon + " " + (isFocusedL ? "" : styles.open)
+                  styles.icon + " " + (!isFocusedL ? "" : styles.open)
                 } `}
               ></i>
             </div>

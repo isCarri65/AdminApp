@@ -58,7 +58,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
     localidad: "",
     logo: "",
   };
-  const empresaModalActiva = useAppSelector((state)=>state.empresa.empresaModalActiva)
+  const empresaActiva = useAppSelector((state)=>state.empresa.empresaActiva)
   const sucursalActivo = useAppSelector(
     (state) => state.sucursal.sucursalActivo
   );
@@ -143,7 +143,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
             }
             enableReinitialize={false}
             onSubmit={async (values: IinitialValues) => {
-              if (empresaModalActiva) {
+              if (empresaActiva) {
                 try {
                   if (sucursalActivo) {
                     const updateSucursal: IUpdateSucursal = {
@@ -164,7 +164,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                         nroDpto: values.nroDpto,
                         idLocalidad: Number.parseInt(values.localidad),
                       },
-                      idEmpresa: empresaModalActiva.id,
+                      idEmpresa: empresaActiva.id,
                       logo: imageActivo,
                       categorias: sucursalActivo.categorias,
                     };
@@ -191,7 +191,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                         nroDpto: values.nroDpto,
                         idLocalidad: Number.parseInt(values.localidad),
                       },
-                      idEmpresa: empresaModalActiva.id,
+                      idEmpresa: empresaActiva.id,
                       logo: imageActivo,
                     };
                     await sucursalService.createSucursal(sucursalCreate);

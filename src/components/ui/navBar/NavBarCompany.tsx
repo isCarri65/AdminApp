@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from "react";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import "../../screens/navBar/navBar.css";
 import "swiper/css";
-import { setEmpresaModalActiva } from "../../../redux/slices/CompanySlices/EmpresaSlice";
+import { setEmpresaActiva, setEmpresaModalActiva } from "../../../redux/slices/CompanySlices/EmpresaSlice";
 import styles from "./NavBarCompany.module.css";
 import { CompanyModalInfo } from "../modals/CompanyModalInfo/CompanyModalInfo";
 import { A11y, Navigation, Pagination } from "swiper/modules";
@@ -12,20 +12,16 @@ import "swiper/css/bundle"
 
 interface INavBarCompany {
   getEmpresas: () => void;
-  getSucursales: (empresa: IEmpresa) => void;
-  company: IEmpresa | null;
   setOpenModal: (state: boolean) => void;
 }
 
 export const NavBarCompany: FC<INavBarCompany> = ({
   getEmpresas,
-  getSucursales,
-  company,
   setOpenModal,
 }) => {
   const dispatch = useAppDispatch();
   const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
-  const [empresaActiva, setEmpresaA] = useState<IEmpresa | null>(null);
+  const empresaActiva = useAppSelector((state=>state.empresa.empresaActiva))
   const stateEmpresaList = useAppSelector((state) => state.empresa.empresaList);
   const [openModalInfo, setOpenModalInfo] = useState(false);
   const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(null);
@@ -37,10 +33,6 @@ export const NavBarCompany: FC<INavBarCompany> = ({
   useEffect(() => {
     setEmpresas(stateEmpresaList);
   }, [stateEmpresaList]);
-
-  useEffect(() => {
-    setEmpresaA(company);
-  }, [company]);
 
   const handleNext = () => {
     if (swiperInstance) {
@@ -60,8 +52,7 @@ export const NavBarCompany: FC<INavBarCompany> = ({
   };
 
   const handleHover = async (empresa: IEmpresa) => {
-    setEmpresaA(empresa);
-    getSucursales(empresa);
+    dispatch(setEmpresaActiva(empresa));
   };
   const HandleOpenModal = (
     event: React.MouseEvent<HTMLDivElement>,

@@ -3,18 +3,13 @@ import { useState, FC } from "react";
 import "./navBar.css";
 import { NavBarCompany } from "../../ui/navBar/NavBarCompany";
 import { ModalCreateCompany } from "../../ui/modals/ModalCreateCompany/ModalCreateCompany";
-import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { useNavigate } from "react-router-dom";
 
 interface INavBar {
   getEmpresas: () => void;
-  getSucursales: (empresa: IEmpresa) => void;
-  company: IEmpresa | null;
 }
 export const NavBar: FC<INavBar> = ({
   getEmpresas,
-  getSucursales,
-  company,
 }) => {
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate()
@@ -45,8 +40,6 @@ export const NavBar: FC<INavBar> = ({
         </div>
         <NavBarCompany
           getEmpresas={getEmpresas}
-          getSucursales={getSucursales}
-          company={company}
           setOpenModal={setOpenModal}
         />
       </div>
