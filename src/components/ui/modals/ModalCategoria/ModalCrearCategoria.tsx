@@ -10,13 +10,13 @@ import { ICategorias } from "../../../../types/dtos/categorias/ICategorias";
 interface IModalCreateCompany {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
-  idSucursales: number[];
+  idEmpresa: number;
   categoriasAll: ICategorias[];
 }
 
 interface IinitialValues {
   denominacion: string;
-  idSucursales: number[];
+  idEmpresa: number;
   idCategoriaPadre: number | null;
 }
 
@@ -24,14 +24,14 @@ interface IinitialValues {
 export const ModalCrearCategoria: FC<IModalCreateCompany> = ({
   openModal,
   setOpenModal,
-  idSucursales,
+  idEmpresa,
   categoriasAll,
 }) => {
   const catageoriaService = new CategoriaService();
 
   const initialValues: ICreateCategoria = {
     denominacion: "",
-    idSucursales: [],
+    idEmpresa: 0,
     idCategoriaPadre: 0 || null,
   };
 
@@ -76,7 +76,7 @@ export const ModalCrearCategoria: FC<IModalCreateCompany> = ({
               try {
                 const categoriaCreate: ICreateCategoria = {
                   denominacion: values.denominacion,
-                  idSucursales: values.idSucursales,
+                  idEmpresa: values.idEmpresa,
                   idCategoriaPadre: values.idCategoriaPadre || null,
                 };
                 await catageoriaService.createCategoria(categoriaCreate);
@@ -90,7 +90,7 @@ export const ModalCrearCategoria: FC<IModalCreateCompany> = ({
             {() => (
               <>
                 {/* Formulario */}
-                <CategoryFormInputs categoriasAll={categoriasAll} idSucursales={idSucursales} />
+                <CategoryFormInputs categoriasAll={categoriasAll} idEmpresa={idEmpresa} />
               </>
             )}
           </Formik>

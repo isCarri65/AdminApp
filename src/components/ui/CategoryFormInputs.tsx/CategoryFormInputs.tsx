@@ -9,11 +9,11 @@ import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { ICategorias } from "../../../types/dtos/categorias/ICategorias";
 
 interface IModalCreateCompany {
-  idSucursales: number[];
+  idEmpresa: number;
   categoriasAll: ICategorias[];
 }
 
-export const CategoryFormInputs: FC<IModalCreateCompany> = ({ categoriasAll, idSucursales }) => {
+export const CategoryFormInputs: FC<IModalCreateCompany> = ({ categoriasAll, idEmpresa }) => {
   /* Categoria service, traer categoria por id para las subcategoria */
   const dispatch = useAppDispatch();
 
@@ -34,8 +34,8 @@ export const CategoryFormInputs: FC<IModalCreateCompany> = ({ categoriasAll, idS
 
   const { setFieldValue } = useFormikContext();
   useEffect(() => {
-    setFieldValue("idSucursales", idSucursales);
-  }, [idSucursales, setFieldValue]);
+    setFieldValue("idEmpresa", idEmpresa);
+  }, [idEmpresa, setFieldValue]);
   return (
     <Form autoComplete="off" className="form-obraAlta">
       <div className="container_Form_Ingredientes">

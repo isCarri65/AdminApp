@@ -7,9 +7,10 @@ import { setCategoriaActiva } from "../../../redux/slices/CategorySlices/Categor
 import { ModalEditarCategoria } from "../modals/ModalCategoria/ModalEditarCategoria";
 interface ICategoriaCard {
   categoria: ICategorias[];
+  idEmpresa: number;
 }
 
-export const CategoriaCard: FC<ICategoriaCard> = ({ categoria }) => {
+export const CategoriaCard: FC<ICategoriaCard> = ({ categoria, idEmpresa }) => {
   /* Categoria service, traer categoria por id para las subcategoria */
   const dispatch = useAppDispatch();
 
@@ -25,7 +26,7 @@ export const CategoriaCard: FC<ICategoriaCard> = ({ categoria }) => {
   };
   useEffect(() => {
     getCategorias();
-  }, [categoria]);
+  }, [categoria, categoriaListActiva]);
   /* --------------------- Cierre Categoria ------------------*/
 
   const [openCategoryIds, setOpenCategoryIds] = useState<number[]>([]);
@@ -104,6 +105,7 @@ export const CategoriaCard: FC<ICategoriaCard> = ({ categoria }) => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           categoriaEdit={categoriaEdit}
+          idEmpresa={idEmpresa}
         />
       ) : (
         ""
