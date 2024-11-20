@@ -4,11 +4,11 @@ import { FC, useEffect, useState } from "react";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import "../../screens/navBar/navBar.css";
 import "swiper/css";
-import { setEmpresaActiva, setEmpresaModalActiva } from "../../../redux/slices/CompanySlices/EmpresaSlice";
+import { removeEmpresaModalActiva, setEmpresaActiva, setEmpresaModalActiva } from "../../../redux/slices/CompanySlices/EmpresaSlice";
 import styles from "./NavBarCompany.module.css";
-import { CompanyModalInfo } from "../modals/CompanyModalInfo/CompanyModalInfo";
 import { A11y, Navigation, Pagination } from "swiper/modules";
 import "swiper/css/bundle"
+import { ModalInfoAdaptable } from "../modals/ModalInfoAdaptable/ModalInfoAdaptable";
 
 interface INavBarCompany {
   getEmpresas: () => void;
@@ -22,6 +22,7 @@ export const NavBarCompany: FC<INavBarCompany> = ({
   const dispatch = useAppDispatch();
   const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
   const empresaActiva = useAppSelector((state=>state.empresa.empresaActiva))
+  const empresaModalActiva = useAppSelector((state)=>state.empresa.empresaModalActiva)
   const stateEmpresaList = useAppSelector((state) => state.empresa.empresaList);
   const [openModalInfo, setOpenModalInfo] = useState(false);
   const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(null);
@@ -33,6 +34,11 @@ export const NavBarCompany: FC<INavBarCompany> = ({
   useEffect(() => {
     setEmpresas(stateEmpresaList);
   }, [stateEmpresaList]);
+  useEffect(() => {
+    if(openModalInfo === false){     
+      dispatch(removeEmpresaModalActiva());
+    }
+  }, [openModalInfo]);
 
   const handleNext = () => {
     if (swiperInstance) {
@@ -77,7 +83,7 @@ export const NavBarCompany: FC<INavBarCompany> = ({
         <Swiper
           modules={[Pagination, Navigation, A11y]}
           spaceBetween={20}
-          slidesPerView={3}
+          slidesPerView={4}
           allowTouchMove={false}
           pagination={{
             el: `.pagination`,
@@ -85,6 +91,9 @@ export const NavBarCompany: FC<INavBarCompany> = ({
             type:"fraction",
           }}
           breakpoints={{
+            1110: {
+              slidesPerView: 4, // Valor por defecto para pantallas mayores a 1110px
+            },
             850: {
               slidesPerView: 3, // Valor por defecto para pantallas mayores a 850px
             },
@@ -132,9 +141,7 @@ export const NavBarCompany: FC<INavBarCompany> = ({
                     onClick={(event) => HandleShowModalInfo(event, empresa)}
                     className="link__class__decortaion"
                   >
-                    <span
-                      className={`material-symbols-outlined ${styles.iconEdit}`}
-                    >
+                    <span className={`material-symbols-outlined ${styles.iconEdit}`}>
                       visibility
                     </span>
                   </div>
@@ -156,9 +163,12 @@ export const NavBarCompany: FC<INavBarCompany> = ({
         </button>
       </div>
       <div
-        className={openModalInfo ? styles.openModalInfo : styles.closeModalInfo}
+      className={openModalInfo ? styles.openModalInfo : styles.closeModalInfo}
       >
-        <CompanyModalInfo setOpenModalInfo={setOpenModalInfo} />
+        {empresaModalActiva ?
+        <ModalInfoAdaptable<IEmpresa> setOpenModalInfo={setOpenModalInfo} objeto={empresaModalActiva} />
+        :
+        <div></div>}
       </div>
     </div>
   );
