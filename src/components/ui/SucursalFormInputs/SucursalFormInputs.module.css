@@ -51,7 +51,9 @@
   color: #999; /* Color del texto de marcador */
 }
 .buttonSubmit{
-  background-color: #756070 
+  background-color: #756070 ;
+  width: 100px;
+  font-size: 1.1rem;
 }
 .buttonSubmit:hover {
   background-color: #756070 !important;
