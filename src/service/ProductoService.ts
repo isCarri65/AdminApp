@@ -85,7 +85,6 @@ export class ProductService extends BackendClient<IProductos> {
         const response = await fetch(
             `${this.baseUrl}/pagedPorSucursal/${sucursalId}?page=${page}&size=${size}`
         );
-
         if (!response.ok) {
             throw new Error(`Error al obtener productos con paginación: ${response.statusText}`);
         }

@@ -50,7 +50,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
   }, [company]);
 
   const handleTableProduct = (sucursal: ISucursal)=>{
-  navigate(`/HomeSecundario/sucursal/producto/:${sucursal.id}`)
+  navigate(`/HomeSecundario/sucursal/producto/${sucursal.id}`)
   }
 
   return (

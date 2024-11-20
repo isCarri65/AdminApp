@@ -6,8 +6,14 @@ import "../ProductTable/ProductTable.css";
 import { IProductos } from "../../../types/dtos/productos/IProductos";
 import { ProductService } from "../../../service/ProductoService";
 import EditarProducto from "./EditarProducto";
+import { useParams } from "react-router-dom";
+import { SucursalService } from "../../../service/SurcusalService";
+import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
+import { setSucursalActivo } from "../../../redux/slices/SucursalReducer/SucursalReducer";
 
-const ProductTable = ({ sucursalId }: { sucursalId: number }) => {
+const ProductTable = () => {
+
+  const {sucursalId} = useParams()
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [showModalCrear, setShowModalCrear] = useState(false);
   const [showModalEditar, setShowModalEditar] = useState(false);
@@ -15,30 +21,47 @@ const ProductTable = ({ sucursalId }: { sucursalId: number }) => {
   const [productoSeleccionado, setProductoSeleccionado] = useState<IProductos | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const dispatch = useAppDispatch()
+  const sucursalActiva = useAppSelector((state)=>state.sucursal.sucursalActivo)
+
 
   const productService = new ProductService();
+  const sucursalService = new SucursalService()
 
+  const getSucursalActiva = async (id:number)=>{
+    await sucursalService.getById(id).then((sucursal)=>{
+      if(sucursal){
+      dispatch(setSucursalActivo(sucursal))
+      } else {
+        console.log("No se encontró una sucursal")
+      }
+    })
+  }
   // Función para obtener los productos con paginación
   const fetchProductos = async (page: number) => {
-    if (!sucursalId) {
+    if (!sucursalActiva) {
       console.warn("Sucursal ID no válido");
       return;
     }
     try {
-      const response = await productService.getProductosPorSucursalPaged(sucursalId, page, 10); // 10 productos por página
+      const response = await productService.getProductosPorSucursalPaged(sucursalActiva.id, page, 2); // 10 productos por página
       setProductos(response.content);
       setTotalPages(response.totalPages);
+
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
-  // Ejecutar fetchProductos cuando cambie el ID de sucursal o la página
-  useEffect(() => {
-    if (sucursalId) {
-      fetchProductos(currentPage);
-    }
-  }, [sucursalId, currentPage]);
+useEffect(()=>{
+  if(sucursalId){
+    getSucursalActiva(Number.parseInt(sucursalId))
+  }
+},[])
+useEffect(()=>{
+  fetchProductos(currentPage)
+},[sucursalActiva])
+
 
   // Manejo de eventos para el modal
   const toggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);

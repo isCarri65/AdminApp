@@ -36,7 +36,7 @@ cd tu-repositorio
 - npm install sweetalert2
 - npm install @mui/material @emotion/react @emotion/styled
 - npm install swiper
-
+- npm install @fortawesome/fontawesome-free
 
 **Ejecución del proyecto**
 Para ejecutar el proyecto en modo de desarrollo:

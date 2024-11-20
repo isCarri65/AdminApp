@@ -5,6 +5,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { ICreateProducto } from '../../../types/dtos/productos/ICreateProducto';
 import { ProductService } from '../../../service/ProductoService';
 import { ICategorias } from '../../../types/dtos/categorias/ICategorias';
+import { CategoriaService } from '../../../service/CategoriaService';
+import { useAppSelector } from '../../../Hooks/hooks';
+import { AlergenoService } from '../../../service/AlergenoService';
+import { IAlergenos } from '../../../types/dtos/alergenos/IAlergenos';
 
 const API_URL: string = import.meta.env.VITE_URL_API;
 
@@ -17,44 +21,33 @@ interface CrearProductoProps {
 const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCreated }) => {
   const [nombre, setNombre] = useState('');
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<number | null>(null);
-  const [alergenos, setAlergenos] = useState<number[]>([]);
+  const [alergenos, setAlergenos] = useState<IAlergenos[]>([]);
   const [precio, setPrecio] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [imagen, setImagen] = useState<File | null>(null);
-  const [categorias, setCategorias] = useState<{ id: number; nombre: string }[]>([]);
-  const [alergenosLista, setAlergenosLista] = useState<{ id: number; nombre: string }[]>([]);
+  const [categorias, setCategorias] = useState<ICategorias[]>([]);
+  const sucursalActiva = useAppSelector((state)=>state.sucursal.sucursalActivo)
 
+  const categoriaService = new CategoriaService()
+  const alergenosService = new AlergenoService()
   // Obtener categorías y alérgenos desde el backend
+
+  const getCategorias = async ()=>{
+    if(sucursalActiva){
+      await categoriaService.getCategoriasPadrePorSucursal(sucursalActiva.id).then((categoriasResponse)=>{
+        setCategorias(categoriasResponse)
+      })
+    }
+  }
+
+  const getAlergenos = async ()=>{
+    await alergenosService.getAllAlergenos().then((alergenos)=>{
+      setAlergenos(alergenos)
+    })
+  }
   useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const response = await fetch(`${API_URL}/categorias`);
-        const data: ICategorias[] = await response.json();
-        const categoriasTransformadas = data.map((cat) => ({
-          id: cat.id,
-          nombre: cat.denominacion,
-        }));
-        setCategorias(categoriasTransformadas);
-      } catch (error) {
-        console.error('Error al obtener las categorías:', error);
-      }
-
-      const idsSeleccionados: number[] = []; // Aquí se puede definir el array vacío o con los valores que se quieran establecer inicialmente
-      setAlergenos(idsSeleccionados); // Ahora esta llamada está bien
-    };
-
-    const fetchAlergenos = async () => {
-      try {
-        const response = await fetch(`${API_URL}/alergenos`);
-        const data: { id: number; nombre: string }[] = await response.json();
-        setAlergenosLista(data);
-      } catch (error) {
-        console.error('Error al obtener los alérgenos:', error);
-      }
-    };
-
-    fetchCategorias();
-    fetchAlergenos();
+    getCategorias()
+    getAlergenos()
   }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +71,7 @@ const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCr
       habilitado: true,
       codigo: uuidv4(),
       idCategoria: categoriaSeleccionada,
-      idAlergenos: alergenos,
+      idAlergenos: [],
       imagenes: imagen ? [{ url: URL.createObjectURL(imagen), name: imagen.name }] : [],
     };
 
@@ -108,6 +101,7 @@ const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCr
           <Form.Group controlId="nombre">
             <Form.Label>Nombre del Producto</Form.Label>
             <Form.Control
+              required
               type="text"
               placeholder="Nombre del Producto"
               value={nombre}
@@ -117,6 +111,7 @@ const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCr
           <Form.Group controlId="categoria" className="mt-3">
             <Form.Label>Categoría</Form.Label>
             <Form.Select
+              required
               value={categoriaSeleccionada || ''}
               onChange={(e) => setCategoriaSeleccionada(Number(e.target.value))}
             >
@@ -131,6 +126,7 @@ const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCr
           <Form.Group controlId="alergenos" className="mt-3">
             <Form.Label>Alérgenos</Form.Label>
             <Select
+              required
               options={opcionesAlergenos}
               isMulti
               onChange={(selectedOptions) => {
@@ -146,6 +142,7 @@ const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCr
           <Form.Group controlId="precio" className="mt-3">
             <Form.Label>Precio</Form.Label>
             <Form.Control
+              required
               type="number"
               placeholder="Precio"
               value={precio}
