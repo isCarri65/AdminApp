@@ -18,19 +18,30 @@ export const CategoriaCard: FC<ICategoriaCard> = ({ categoria, idEmpresa }) => {
 
   const categoriaService = new CategoriaService();
 
-  const getCategorias = async () => {
-    const response = await Promise.all(
-      categoria.map((e) => categoriaService.getCategoriaById(e.id))
-    );
-    dispatch(setCategoriaActiva(response));
-  };
+  // const getCategorias = async () => {
+  //   const response = await Promise.all(
+  //     categoria.map((e) => categoriaService.getCategoriaById(e.id))
+  //   );
+  //   dispatch(setCategoriaActiva(response));
+  // };
   useEffect(() => {
+    const getCategorias = async () => {
+      const response = await Promise.all(
+        categoria.map((e) => categoriaService.getCategoriaById(e.id))
+      );
+      // Solo actualiza si las categorías han cambiado
+      if (JSON.stringify(response) !== JSON.stringify(categoriaListActiva)) {
+        dispatch(setCategoriaActiva(response));
+      }
+    };
     getCategorias();
-  }, [categoria, categoriaListActiva]);
+  }, [categoria]);
   /* --------------------- Cierre Categoria ------------------*/
 
   const [openCategoryIds, setOpenCategoryIds] = useState<number[]>([]);
   const [openModal, setOpenModal] = useState(false);
+  const [idCategoriaPadre, setIdCategoriaPadre] = useState<number | null>(null);
+
   const [categoriaEdit, setCategoriEdit] = useState<ICategorias>();
 
   const handleCategoryToggle = (id: number) => {
@@ -42,7 +53,6 @@ export const CategoriaCard: FC<ICategoriaCard> = ({ categoria, idEmpresa }) => {
     setOpenModal(true);
     setCategoriEdit(categoria);
   };
-
   return (
     <>
       {categoriaListActiva
@@ -53,6 +63,7 @@ export const CategoriaCard: FC<ICategoriaCard> = ({ categoria, idEmpresa }) => {
                   className={styles.tittle_categoriaPadre}
                   onClick={() => {
                     handleCategoryToggle(categoria.id);
+                    setIdCategoriaPadre(categoria.id);
                   }}
                 >
                   {categoria.denominacion}
@@ -106,6 +117,7 @@ export const CategoriaCard: FC<ICategoriaCard> = ({ categoria, idEmpresa }) => {
           setOpenModal={setOpenModal}
           categoriaEdit={categoriaEdit}
           idEmpresa={idEmpresa}
+          idCategoriaPadre={idCategoriaPadre}
         />
       ) : (
         ""

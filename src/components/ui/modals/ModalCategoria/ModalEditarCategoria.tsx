@@ -7,11 +7,14 @@ import { CategoriaService } from "../../../../service/CategoriaService";
 import { ICategorias } from "../../../../types/dtos/categorias/ICategorias";
 import { CategoryFormInputsEditar } from "../../CategoryFormInputs.tsx/CategoryFormInputEditar";
 import { IUpdateCategoria } from "../../../../types/dtos/categorias/IUpdateCategoria";
+import { useAppDispatch } from "../../../../Hooks/hooks";
+import { updateCategoriaInList } from "../../../../redux/slices/CategorySlices/CategoriaSlice";
 interface IModalCreateCompany {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
   categoriaEdit: ICategorias;
   idEmpresa: number;
+  idCategoriaPadre: number | null;
 }
 
 interface IinitialValues {
@@ -29,6 +32,7 @@ export const ModalEditarCategoria: FC<IModalCreateCompany> = ({
   setOpenModal,
   categoriaEdit,
   idEmpresa,
+  idCategoriaPadre,
 }) => {
   const categeoriaService = new CategoriaService();
   const categoriaUpdate: IUpdateCategoria = {
@@ -37,12 +41,54 @@ export const ModalEditarCategoria: FC<IModalCreateCompany> = ({
     eliminado: categoriaEdit.eliminado,
     idEmpresa: idEmpresa,
     idSucursales: categoriaEdit.sucursales.map((sucursal) => sucursal.id),
-    idCategoriaPadre: categoriaEdit.categoriaPadre ? categoriaEdit.categoriaPadre.id : null,
+    idCategoriaPadre: idCategoriaPadre,
   };
   const initialValues: IUpdateCategoria = categoriaUpdate;
   // Función para cerrar el modal
   const handleClose = () => {
     setOpenModal(false);
+  };
+
+  //Actualizacion de componente
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = async (values: IinitialValues) => {
+    try {
+      if (categoriaEdit.categoriaPadre === undefined) {
+        const subCategoriaUpdate: IUpdateCategoria = {
+          id: values.id,
+          denominacion: values.denominacion,
+          eliminado: values.eliminado,
+          idEmpresa: values.idEmpresa,
+          idSucursales: values.idSucursales,
+          idCategoriaPadre: values.idCategoriaPadre,
+        };
+        const updatedCategoriaHija = await categeoriaService.updateCategoria(
+          categoriaEdit?.id,
+          subCategoriaUpdate
+        );
+        dispatch(updateCategoriaInList(updatedCategoriaHija));
+      } else {
+        const categoriaUpdate: IUpdateCategoria = {
+          id: values.id,
+          denominacion: values.denominacion,
+          eliminado: values.eliminado,
+          idEmpresa: values.idEmpresa, //editar empresa activa
+          idSucursales: values.idSucursales,
+          idCategoriaPadre: null,
+        };
+        const updatedCategoriaPadre = await categeoriaService.updateCategoria(
+          categoriaEdit?.id,
+          categoriaUpdate
+        );
+        dispatch(updateCategoriaInList(updatedCategoriaPadre));
+      }
+      // Actualiza localmente el estado en Redux
+
+      handleClose();
+    } catch (error) {
+      console.error("Error al enviar los datos:", error);
+    }
   };
 
   return (
@@ -69,34 +115,7 @@ export const ModalEditarCategoria: FC<IModalCreateCompany> = ({
             initialValues={initialValues}
             enableReinitialize={false}
             onSubmit={async (values: IinitialValues) => {
-              try {
-                if (categoriaEdit.categoriaPadre === undefined) {
-                  const subCategoriaUpdate: IUpdateCategoria = {
-                    id: values.id,
-                    denominacion: values.denominacion,
-                    eliminado: values.eliminado,
-                    idEmpresa: values.idEmpresa,
-                    idSucursales: values.idSucursales,
-                    idCategoriaPadre: values.idCategoriaPadre,
-                  };
-                  await categeoriaService.updateCategoria(categoriaEdit?.id, subCategoriaUpdate);
-                  handleClose();
-                } else {
-                  const categoriaUpdate: IUpdateCategoria = {
-                    id: values.id,
-                    denominacion: values.denominacion,
-                    eliminado: values.eliminado,
-                    idEmpresa: values.idEmpresa, //editar empresa activa
-                    idSucursales: values.idSucursales,
-                    idCategoriaPadre: null,
-                  };
-                  await categeoriaService.updateCategoria(categoriaEdit?.id, categoriaUpdate);
-                  handleClose();
-                }
-              } catch (error) {
-                console.error("Error al enviar los datos:", error);
-                // Podrías mostrar una notificación de error aquí si lo deseas
-              }
+              handleSubmit(values);
             }}
           >
             {() => (
@@ -105,6 +124,7 @@ export const ModalEditarCategoria: FC<IModalCreateCompany> = ({
                 <CategoryFormInputsEditar
                   idSucursales={categoriaEdit.sucursales}
                   idEmpresa={idEmpresa}
+                  idCategoriaPadre={idCategoriaPadre}
                 />
               </>
             )}
