@@ -104,6 +104,8 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
               type="time"
               placeholder="00-00"
             />
+            
+
             <TextFieldValue
               label="Latitud:"
               name="latitud"
@@ -288,13 +290,19 @@ export const SucursalFormInputs: FC<IPropsSucursaslFormInput> = ({setFieldValue}
               type="number"
               placeholder=""
             />
-
+            <div className="d-flex justify-content-start align-items-center gap-3 mb-3">
+            <label htmlFor="esCasaMatriz"><strong>Es casa Matriz?</strong></label> 
+            <Field style={{width:"1rem", height:"1rem"}}
+              type="checkbox"
+              name="esCasaMatriz"
+            />
+            </div>
             <UploadImage image={image} setImage={setImage} />
           </div>
         </div>
       </div>
       {/* Botón para enviar el formulario */}
-      <div className="d-flex justify-content-end">
+      <div className="d-flex justify-content-end m-2">
         <Button className={styles.buttonSubmit} variant="success" type="submit">
           Enviar
         </Button>

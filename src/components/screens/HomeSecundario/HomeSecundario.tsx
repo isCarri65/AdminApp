@@ -3,19 +3,20 @@
 import { SucursalComponent } from "../../ui/SucursalComponent/SucursalComponent";
 import { EmpresaService } from "../../../service/EmpresaService";
 import { useEffect, useState } from "react";
-import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setEmpresaActiva, setEmpresaList } from "../../../redux/slices/CompanySlices/EmpresaSlice";
 import { useParams } from "react-router-dom";
 import styles from "./HomeSecundario.module.css"
 import { NavBar } from "../navBar/NavBar";
-import { SucursalModalInfo } from "../../ui/modals/SucursalModalInfo/SucursalModalInfo";
 import { PaisService } from "../../../service/PaisService";
 import { ProvinciaService } from "../../../service/ProvinciaService";
 import { LocalidadesService } from "../../../service/LocalidadService";
 import { setPaisesList } from "../../../redux/slices/PaisReducer/PaisReducer";
 import { setProvinciasList } from "../../../redux/slices/ProvinciaReducer/ProvincisReducer";
 import { setLocalidadesList } from "../../../redux/slices/LocalidadReducer/LocalidadReducer";
+import { ModalInfoAdaptable } from "../../ui/modals/ModalInfoAdaptable/ModalInfoAdaptable";
+import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
+import { removeSucursalActivo, setSucursalActivo } from "../../../redux/slices/SucursalReducer/SucursalReducer";
 
 export const Home = () => {
 
@@ -30,6 +31,8 @@ export const Home = () => {
   const empresaService = new EmpresaService()
   
   const empresaActiva = useAppSelector((state)=>state.empresa.empresaActiva)
+  const sucursalActivo = useAppSelector((state)=>state.sucursal.sucursalActivo)
+
   const getPaises = async () => {
     await paisService.getAllPaises().then((paises) => {
       dispatch(setPaisesList(paises))
@@ -61,6 +64,11 @@ export const Home = () => {
       dispatch(setEmpresaList(datos))
     })
   }
+  useEffect(()=>{
+    if(openModalInfo === false) {
+      dispatch(removeSucursalActivo())
+    }
+  },[openModalInfo])
 
   useEffect(()=>{
     console.log("Montar Componente")
@@ -92,7 +100,7 @@ export const Home = () => {
       <div
         className={openModalInfo ? styles.openModalInfo : styles.closeModalInfo}
       >
-        <SucursalModalInfo setOpenModalInfo={setOpenModalInfo} />
+        {sucursalActivo? <ModalInfoAdaptable<ISucursal> setOpenModalInfo={setOpenModalInfo} objeto={sucursalActivo}/> : <p>Cargando...</p>}
       </div>
     </>
   );

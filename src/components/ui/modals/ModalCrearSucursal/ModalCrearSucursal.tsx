@@ -152,7 +152,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                       eliminado: false,
                       horarioApertura: values.horarioApertura,
                       horarioCierre: values.horarioCierre,
-                      esCasaMatriz: true,
+                      esCasaMatriz: values.esCasaMatriz,
                       latitud: values.latitud,
                       longitud: values.longitud,
                       domicilio: {
@@ -180,7 +180,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                       nombre: values.nombre,
                       horarioApertura: values.horarioApertura,
                       horarioCierre: values.horarioCierre,
-                      esCasaMatriz: true,
+                      esCasaMatriz: values.esCasaMatriz,
                       latitud: values.latitud,
                       longitud: values.longitud,
                       domicilio: {

@@ -79,7 +79,7 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header className={styles.modalHeader} closeButton>
+        <Modal.Header  className={styles.modalHeader} closeButton>
           {/* Título del modal dependiendo de si se está editando o añadiendo una persona */}
           {empresaModalActiva ? (
             <Modal.Title className={`${styles.title} mx-auto`}>Editar Empresa</Modal.Title>
