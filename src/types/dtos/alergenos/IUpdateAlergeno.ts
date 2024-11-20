@@ -1,3 +1,4 @@
+
 import { IImagen } from "../../IImagen";
 import { baseDto } from "../baseDto/baseDto";
 
