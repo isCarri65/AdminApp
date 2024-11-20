@@ -29,7 +29,7 @@ export const SucursalComponent: FC<ISucursalComponent> = ({ company, setOpenModa
   const getSucursales = async () => {
     if(company){
       await sucursalService.getAllSucursalesByEmpresa(company.id).then((sucursalesDatos) => {
-        dispatch(setSucursalList({ sucursalList: sucursalesDatos }));
+        dispatch(setSucursalList(sucursalesDatos));
       });
     } else {
       console.log("No se encontró empresa Activa")

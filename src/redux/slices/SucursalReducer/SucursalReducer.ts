@@ -14,7 +14,6 @@ const initialState: IinitialState = {
 }
 
 
-
 const SucursalReducer = createSlice({
   name: 'sucursalReducer',
   initialState,
