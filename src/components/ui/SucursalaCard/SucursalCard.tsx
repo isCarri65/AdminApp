@@ -15,7 +15,7 @@ export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal, setOpe
 
   const handleOpenModal = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    distpach(setSucursalActivo({ sucursalActivo: sucursal }));
+    distpach(setSucursalActivo(sucursal));
     setOpenModal(true);
   };
   /*
@@ -51,7 +51,7 @@ export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal, setOpe
 
   const handleShowInfo = (event: React.MouseEvent<HTMLButtonElement>)=>{
     event.stopPropagation()
-    distpach(setSucursalActivo({sucursalActivo: sucursal}))
+    distpach(setSucursalActivo(sucursal))
     setOpenModalInfo(true)
   }
   return (

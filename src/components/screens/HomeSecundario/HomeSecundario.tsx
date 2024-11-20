@@ -16,7 +16,7 @@ import { setProvinciasList } from "../../../redux/slices/ProvinciaReducer/Provin
 import { setLocalidadesList } from "../../../redux/slices/LocalidadReducer/LocalidadReducer";
 import { ModalInfoAdaptable } from "../../ui/modals/ModalInfoAdaptable/ModalInfoAdaptable";
 import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
-import { removeSucursalActivo, setSucursalActivo } from "../../../redux/slices/SucursalReducer/SucursalReducer";
+import { removeSucursalActivo } from "../../../redux/slices/SucursalReducer/SucursalReducer";
 
 export const Home = () => {
 

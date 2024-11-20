@@ -168,7 +168,7 @@ export const NavBarCompany: FC<INavBarCompany> = ({
         {empresaModalActiva ?
         <ModalInfoAdaptable<IEmpresa> setOpenModalInfo={setOpenModalInfo} objeto={empresaModalActiva} />
         :
-        <p>Cargando...</p>}
+        <div></div>}
       </div>
     </div>
   );
