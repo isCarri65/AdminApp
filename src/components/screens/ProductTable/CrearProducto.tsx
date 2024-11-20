@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
-import Select from "react-select"; // Importa React-Select
-import { v4 as uuidv4 } from 'uuid'; // Importa uuid para generar códigos únicos
-import noImage from '../../../assets/images/noImage.jpeg';
+import Select from "react-select"; 
+import { v4 as uuidv4 } from 'uuid';
 import { ICreateProducto } from '../../../types/dtos/productos/ICreateProducto';
 import { ProductService } from '../../../service/ProductoService';
 import { ICategorias } from '../../../types/dtos/categorias/ICategorias';
@@ -39,6 +38,9 @@ const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCr
       } catch (error) {
         console.error('Error al obtener las categorías:', error);
       }
+
+      const idsSeleccionados: number[] = []; // Aquí se puede definir el array vacío o con los valores que se quieran establecer inicialmente
+      setAlergenos(idsSeleccionados); // Ahora esta llamada está bien
     };
 
     const fetchAlergenos = async () => {
@@ -69,13 +71,12 @@ const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCr
       return;
     }
 
-    // Generar datos para el producto
     const productoData: ICreateProducto = {
       denominacion: nombre,
       precioVenta: parseFloat(precio),
       descripcion: descripcion || '',
       habilitado: true,
-      codigo: uuidv4(), // Generar un código único
+      codigo: uuidv4(),
       idCategoria: categoriaSeleccionada,
       idAlergenos: alergenos,
       imagenes: imagen ? [{ url: URL.createObjectURL(imagen), name: imagen.name }] : [],
@@ -92,11 +93,10 @@ const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCr
     }
   };
 
-  // Transformar alérgenos para React-Select
   const opcionesAlergenos = alergenosLista.map((alergeno) => ({
     value: alergeno.id,
     label: alergeno.nombre,
-  }));
+  }));  
 
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -135,13 +135,13 @@ const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCr
               isMulti
               onChange={(selectedOptions) => {
                 const idsSeleccionados = (selectedOptions || [])
-                  .filter(Boolean) // Filtra valores undefined o null
+                  .filter((option): option is { value: number; label: string } => Boolean(option)) // Predicado para asegurar que no sea undefined
                   .map((option) => option.value);
                 setAlergenos(idsSeleccionados);
               }}
               value={alergenos.map((id) => opcionesAlergenos.find((op) => op.value === id))}
               placeholder="Seleccione alérgenos"
-          />
+            />
           </Form.Group>
           <Form.Group controlId="precio" className="mt-3">
             <Form.Label>Precio</Form.Label>
@@ -164,25 +164,16 @@ const CrearProducto: React.FC<CrearProductoProps> = ({ show, onHide, onProductCr
           </Form.Group>
           <Form.Group controlId="imagen" className="mt-3">
             <Form.Label>Imagen</Form.Label>
-            <div className="image-upload">
-              <input type="file" onChange={handleImageChange} />
-              {imagen ? (
-                <img src={URL.createObjectURL(imagen)} alt="Preview" className="preview-image" />
-              ) : (
-                <img src={noImage} alt="No image" className="preview-image" />
-              )}
-            </div>
+            <Form.Control
+              type="file"
+              onChange={handleImageChange}
+            />
           </Form.Group>
+          <Button variant="primary" type="submit" className="mt-3">
+            Crear Producto
+          </Button>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Volver
-        </Button>
-        <Button variant="primary" type="submit" form="crear-producto-form">
-          Confirmar
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };
