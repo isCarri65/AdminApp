@@ -1,0 +1,60 @@
+.containerInputs {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1.5rem;
+}
+.selectLabel {
+  color: #000000;
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: bold;
+  padding: 4.8px;
+}
+.selectContainer {
+  margin: 8px 0px 0px;
+}
+
+.section1 {
+  width: 34%;
+}
+.section2 {
+  width: 34%;
+}
+.section3 {
+  width: 100px;
+}
+.customSelect {
+  width: 100%; /* Haz que la select ocupe todo el ancho del contenedor */
+  padding: 6px; /* Espacio interno */
+  border: solid 1.6px #828690;
+  border-radius: 0.5px;
+  background-color: #fff; /* Fondo blanco */
+  appearance: none; /* Elimina el estilo predeterminado del navegador */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: #333; /* Color de texto */
+  margin-bottom: 16px;
+}
+
+.customSelect:focus {
+  outline: none; /* Elimina el contorno al hacer foco */
+  border-color: #999; /* Color de borde más oscuro al hacer foco */
+}
+
+.customSelect::placeholder {
+  color: #999; /* Color del texto de marcador */
+}
+.buttonSubmit {
+  background-color: #756070;
+  font-size: 1.5em;
+}
+.buttonSubmit:hover {
+  background-color: #756070 !important;
+  border: solid 1px #756070 !important;
+}
+.buttonSubmit:active {
+  background-color: #756070 !important;
+  border: solid 1px #6e5c6a !important;
+  transform: scale(0.98);
+}

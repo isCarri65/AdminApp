@@ -5,7 +5,7 @@ import noImage from "../../../assets/images/noImage.jpeg";
 import { IImagen } from "../../../types/IImagen";
 import { ImageService } from "../../../service/ImageService";
 import { useAppDispatch } from "../../../Hooks/hooks";
-import { removeImageActivo, setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
+import {  removeImageObjetoActivo, removeImageStringActivo, setImageObjetoActivo, setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
 
 // Definimos la interfaz de las propiedades que recibirá el componente UploadImage
 interface IUploadImage {
@@ -58,10 +58,13 @@ export const UploadImage: FC<IUploadImage> = ({
 
         // Si setImageObjeto está definido, actualizamos el objeto de imagen con la URL y el nombre del archivo
         if (setImageObjeto) {
-          setImageObjeto({
+          
+          const imagenObjeto: IImagen =  {
             url: data,
-            name: file.name,
-          });
+            name: file.name
+          }
+          setImageObjeto(imagenObjeto)
+          dispatch(setImageObjetoActivo(imagenObjeto))
         }
       } catch (error) {
         console.log(error); // En caso de error, lo mostramos en la consola
@@ -82,13 +85,14 @@ export const UploadImage: FC<IUploadImage> = ({
         .deleteImgItems(elementActive?.id, imageObjeto.url, typeElement)
         .then(() => {
           setImageObjeto(null); // Eliminamos el objeto de imagen
-          dispatch(removeImageActivo())
+          dispatch(removeImageObjetoActivo())
         });
     }
     // Si existe solo la URL de la imagen
     else if (image && setImage) {
       await imageService.deleteImgCloudinary(image).then(() => {
         setImage(null); // Eliminamos la URL de la imagen
+        dispatch(removeImageStringActivo())
       });
     }
   };
@@ -100,10 +104,12 @@ export const UploadImage: FC<IUploadImage> = ({
         border: "1px solid #9d9d9d",
         borderRadius: ".4rem",
         padding: ".4rem",
-        height: "120px",
+        height: "155px",
         display: "flex",
+        flexWrap: "wrap",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "center",
+        flexDirection: "column",
       }}
     >
       {/* Si hay una imagen cargada, mostramos la vista con la imagen y el botón para eliminarla */}
@@ -114,10 +120,11 @@ export const UploadImage: FC<IUploadImage> = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: "column",
             padding: ".4rem",
           }}
         >
-          <div style={{ width: "10vw" }}>
+          <div style={{width: "100%" }}>
             <Button
               onClick={handleDeleteImagen} // Ejecuta la función de eliminación de imagen
               variant="outlined"
@@ -135,6 +142,7 @@ export const UploadImage: FC<IUploadImage> = ({
               borderRadius: ".4rem",
               height: "10vh",
               objectFit: "fill",
+              marginTop: "10px"
             }}
           />
         </div>

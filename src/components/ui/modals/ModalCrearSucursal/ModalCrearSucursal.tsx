@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../../../Hooks/hooks";
@@ -8,10 +8,9 @@ import { ISucursal } from "../../../../types/dtos/sucursal/ISucursal";
 import { SucursalService } from "../../../../service/SurcusalService";
 import { IUpdateSucursal } from "../../../../types/dtos/sucursal/IUpdateSucursal";
 import { ICreateSucursal } from "../../../../types/dtos/sucursal/ICreateSucursal";
-import { useParams } from "react-router-dom";
 import { SucursalFormInputs } from "../../SucursalFormInputs/SucursalFormInputs";
 import styles from "./ModalCreateSucursal.module.css"
-import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
+import { removeImageStringActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
 interface IModalCrearSucursal {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
@@ -30,8 +29,9 @@ interface IinitialValues {
   cp: number;
   piso: number;
   nroDpto: number;
-  idLocalidad: number;
-  idEmpresa: number;
+  pais: string;
+  provincia: string;
+  localidad: string;
   logo: string | null;
 }
 
@@ -53,23 +53,25 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
     cp: 0,
     piso: 0,
     nroDpto: 0,
-    idLocalidad: 0,
-    idEmpresa: 0,
+    pais: "",
+    provincia: "",
+    localidad: "",
     logo: "",
   };
+  const empresaActiva = useAppSelector((state)=>state.empresa.empresaActiva)
   const sucursalActivo = useAppSelector(
     (state) => state.sucursal.sucursalActivo
   );
   const dispatch = useAppDispatch();
   const sucursalService = new SucursalService();
-  const { id } = useParams();
-  const imageActivo = useAppSelector((state)=>state.image.imageStringActivo)
+  const stateimageActivo = useAppSelector((state)=>state.image.imageStringActivo)
+  const [imageActivo, setImageActivo] = useState<string| null>(null)
 
   // Función para cerrar el modal
   const handleClose = () => {
     setOpenModal(false);
     dispatch(removeSucursalActivo());
-    dispatch(removeImageActivo())
+    dispatch(removeImageStringActivo())
   };
 
   const crearInitialValues = (objOrigen: ISucursal): IinitialValues => {
@@ -85,12 +87,17 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
       cp: objOrigen.domicilio.cp,
       piso: objOrigen.domicilio.piso,
       nroDpto: objOrigen.domicilio.nroDpto,
-      idLocalidad: objOrigen.domicilio.localidad.id,
-      idEmpresa: objOrigen.empresa.id,
+      localidad: objOrigen.domicilio.localidad.nombre,
+      provincia: objOrigen.domicilio.localidad.provincia.nombre,
+      pais: objOrigen.domicilio.localidad.provincia.pais.nombre,
       logo: objOrigen.logo ? objOrigen.logo : null,
     };
     return objDestino;
   };
+
+  useEffect(()=>{
+    setImageActivo(stateimageActivo)
+  },[stateimageActivo])
 
   return (
     <div >
@@ -125,6 +132,9 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
               cp: Yup.number().required("Campo requerido"),
               piso: Yup.number().required("Campo requerido"),
               nroDpto: Yup.number().required("Campo requerido"),
+              pais: Yup.string().required("Campo requerido"),
+              provincia: Yup.string().required("Campo requerido"),
+              localidad: Yup.string().required("Campo requerido"),
             })}
             initialValues={
               sucursalActivo
@@ -133,8 +143,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
             }
             enableReinitialize={false}
             onSubmit={async (values: IinitialValues) => {
-              console.log("Ramirez");
-              if (id) {
+              if (empresaActiva) {
                 try {
                   if (sucursalActivo) {
                     const updateSucursal: IUpdateSucursal = {
@@ -143,7 +152,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                       eliminado: false,
                       horarioApertura: values.horarioApertura,
                       horarioCierre: values.horarioCierre,
-                      esCasaMatriz: true,
+                      esCasaMatriz: values.esCasaMatriz,
                       latitud: values.latitud,
                       longitud: values.longitud,
                       domicilio: {
@@ -153,12 +162,13 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                         cp: values.cp,
                         piso: values.piso,
                         nroDpto: values.nroDpto,
-                        idLocalidad: 1,
+                        idLocalidad: Number.parseInt(values.localidad),
                       },
-                      idEmpresa: Number.parseInt(id),
+                      idEmpresa: empresaActiva.id,
                       logo: imageActivo,
                       categorias: sucursalActivo.categorias,
                     };
+                    console.log(updateSucursal)
                     const resultado = await sucursalService.updateSucursal(
                       sucursalActivo.id,
                       updateSucursal
@@ -170,7 +180,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                       nombre: values.nombre,
                       horarioApertura: values.horarioApertura,
                       horarioCierre: values.horarioCierre,
-                      esCasaMatriz: true,
+                      esCasaMatriz: values.esCasaMatriz,
                       latitud: values.latitud,
                       longitud: values.longitud,
                       domicilio: {
@@ -179,9 +189,9 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
                         cp: values.cp,
                         piso: values.piso,
                         nroDpto: values.nroDpto,
-                        idLocalidad: 1,
+                        idLocalidad: Number.parseInt(values.localidad),
                       },
-                      idEmpresa: Number.parseInt(id),
+                      idEmpresa: empresaActiva.id,
                       logo: imageActivo,
                     };
                     await sucursalService.createSucursal(sucursalCreate);
@@ -197,10 +207,10 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
               }
             }}
           >
-            {() => (
+            {({setFieldValue}) => (
               <>
                 {/* Formulario */}
-                <SucursalFormInputs />
+                <SucursalFormInputs setFieldValue={setFieldValue} />
               </>
             )}
           </Formik>

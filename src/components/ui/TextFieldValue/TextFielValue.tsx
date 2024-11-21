@@ -28,7 +28,7 @@ const TextFieldValue = ({ label, name, type, placeholder }: props) => {
           style={{
             color: "black",
             fontFamily: "Inter",
-            fontSize: "14px",
+            fontSize: "1rem",
             fontWeight: "bold",
           }}
         >
@@ -45,8 +45,8 @@ const TextFieldValue = ({ label, name, type, placeholder }: props) => {
         autoComplete="off"
         style={{
           border: "solid 1.6px #828690",
-          borderRadius: "0.5px"
-      }}
+          borderRadius: "0.5px",
+        }}
       />
 
       {/* Mensaje de error para el campo */}

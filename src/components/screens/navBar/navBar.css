@@ -6,12 +6,15 @@
 /*  ---------- NavBar ----------   */
 
 .main_navBar {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(128, 128, 128, 0.393);
+  background-color: #dcc;
   height: 100%;
   width: 100%;
+  padding: 0 20px;
+  flex-direction: column;
 }
 .main_tittle {
   font-size: 7vh;
@@ -22,28 +25,44 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 100%;
+  height: 80%;
   width: 100%;
 }
-
-.add_company_NavBar {
-  position: relative;
-  right: 42%;
-  margin: 10px;
-  border-radius: 15px;
-  background-color: #888690;
-  color: white;
+.add_company_container {
+  width: 100%;
 }
-
+.add_company_NavBar {
+  padding: 0 10px;
+  height: 2.4rem;
+  margin: 10px;
+  border-radius: 5px;
+  border: solid 1px #756070;
+  background-color: #888690;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.add_company_NavBar:hover{
+    background-color: #756070;
+    border: solid 1px #756070;
+}
+.icon{
+  font-size: 1rem;
+}
 .navBar_cards_nombres_container {
   height: fit-content;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 10px;
 }
 .navBar_swiper {
-  overflow-x: hidden;
   width: 90vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .navBar_cards_nombres_container_icons {
@@ -51,10 +70,44 @@
   justify-content: space-around;
   align-items: center;
   border-radius: 10px;
-  background-color: rgba(93, 90, 136, 1);
-  color: black;
-  margin-right: 30px;
+  background-color: #97a5a3;
+  color: #000;
+  cursor: pointer;
 }
+
+.navBar_cards_nombres_container_icons_hover {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 20px;
+  background-color: #888690;
+  color: #fff;
+  cursor: pointer;
+}
+
+
+.buttonUndo{
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  color: #000; 
+  transition: all 0.2s ease;
+  padding: 0 5px;
+}
+.buttonUndo span{
+  font-size: 2.5rem ;
+  margin: 0;
+  padding: 0;
+}
+.buttonUndo:hover{
+  background-color: #888690;
+  color: #fff;
+}
+
 .link__class__decortaion {
   color: inherit;
   text-decoration: none;
@@ -65,23 +118,38 @@
   font-size: 2rem;
 }
 .navBar_cards_nombres {
+  display: -webkit-box;
   background-color: transparent;
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  
+  overflow: hidden;
 }
-.navBar_cards_nombres_container_icons_hover {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  transform: scale(1.16);
-  border-radius: 20px;
-  background-color: #888690;
-  color: white;
-  margin-right: 50px;
-  margin-left: 30px;
-}
+
 .sucursal_tittle {
   font-size: 5vh;
   margin: 0;
+}
+
+@media (max-width: 590px){
+  .add_company_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .sucursal_tittle{
+    font-size: 1.8rem;
+  }
+  .buttonUndo{
+    background-color: transparent;
+    border: none;
+    font-size: 1.2rem;
+    
+  }
+  .buttonUndo .iconUndo{
+    font-size: 1.5rem;
+  }
 }

@@ -1,24 +1,14 @@
-.cardContainer {
-  border: solid 1px #888;
-  border-radius: 6px;
-  height: 25rem;
-  width: 100%;
-  min-height: 400px;
-  min-width: 250px;
-  max-width: 300px;
-  box-shadow: 0 0 15px #333;
-}
+
 
 .containerCompanys {
-  padding-top: 1rem;
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 2rem;
-    height: 100%;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    justify-items: center;
+  padding-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  height: 100%;
+  justify-items: center;
+  align-content: center;
+  gap: 3rem;
+  width:100%;
 }
 
 .titleContainer{
@@ -26,7 +16,10 @@
 }
 .headerC{
   height: 20vh;
-  background-color: #d8d8d8 
+  background-color: #dcc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
  }
        
 .title h1 { 
@@ -57,23 +50,19 @@
   transform: scale(0.98);
 }
 
-/* Desde 590px, cambiar a 2 columnas */
-@media (min-width: 590px) {
+@media (min-width: 830px) {
   .containerCompanys {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
-/* Desde 850px (590 + 260), cambiar a 3 columnas */
-@media (min-width: 850px) {
+@media (min-width: 1240px) {
   .containerCompanys {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
-/* Desde 1110px (850 + 260), cambiar a 4 columnas */
-@media (min-width: 1110px) {
-  .containerCompanys {
-    grid-template-columns: repeat(4, 1fr);
-  }
+.openModalInfo {
+  display: flex;
+}
+.closeModalInfo {
+  display: none;
 }

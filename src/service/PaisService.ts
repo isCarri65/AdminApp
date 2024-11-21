@@ -1,10 +1,10 @@
 import { IPais } from "../types/IPais";
 import { BackendClient } from "./BackendClient";
-
+const API_URL:string = import.meta.env.VITE_URL_API
 
 export class PaisService extends BackendClient<IPais> {
     constructor() {
-        super("http://190.221.207.224:8090/paises");
+        super(API_URL + "/paises");
     }
 
     // Obtener todos los países

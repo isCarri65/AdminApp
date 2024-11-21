@@ -1,0 +1,64 @@
+.cardName {
+  font-size: 1.5rem;
+}
+.cardContainer { 
+  width: 100%;
+  min-width: 180px;
+  max-width: 380px;
+  height: 2.2rem;
+  border-radius: 15px;
+  padding: 0 5px;
+}
+.iconEdit{
+  font-size: 1.6rem;
+  
+  transition: color 0.2s ease
+}
+.navBarIcons {
+  display: flex;
+  justify-content: space-around;
+  align-items:center;
+  width: 20%;
+}
+.navBarIconsDisabled {
+  display: none;
+}
+.iconEdit:hover {
+  cursor: pointer;
+  color: #aaa;
+}
+.openModalInfo {
+  display: flex;
+}
+.closeModalInfo {
+  display: none;
+}
+.buttonSwiperContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.buttonSwiperRight{
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease-in;
+}
+.buttonSwiperLeft:hover{
+  background-color: #888690;
+  color: #fff;
+}
+.buttonSwiperLeft{
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease-in;
+}
+.buttonSwiperRight:hover{
+  
+  background-color: #888690;
+  color: #fff;
+}

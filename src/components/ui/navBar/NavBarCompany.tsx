@@ -1,94 +1,174 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { IEmpresa } from "../../../types/dtos/empresa/IEmpresa";
 import { FC, useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import "../../screens/navBar/navBar.css";
 import "swiper/css";
-import { setEmpresaActiva } from "../../../redux/slices/CompanySlices/EmpresaSlice";
-import { EmpresaService } from "../../../service/EmpresaService";
+import { removeEmpresaModalActiva, setEmpresaActiva, setEmpresaModalActiva } from "../../../redux/slices/CompanySlices/EmpresaSlice";
+import styles from "./NavBarCompany.module.css";
+import { A11y, Navigation, Pagination } from "swiper/modules";
+import "swiper/css/bundle"
+import { ModalInfoAdaptable } from "../modals/ModalInfoAdaptable/ModalInfoAdaptable";
 
 interface INavBarCompany {
   getEmpresas: () => void;
+  setOpenModal: (state: boolean) => void;
 }
 
-export const NavBarCompany: FC<INavBarCompany> = ({ getEmpresas }) => {
-  const { id } = useParams();
+export const NavBarCompany: FC<INavBarCompany> = ({
+  getEmpresas,
+  setOpenModal,
+}) => {
   const dispatch = useAppDispatch();
   const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
-  const [empresaA, setEmpresaA] = useState<IEmpresa | null>(null);
-  const empresaAc = useAppSelector((state) => state.empresa.empresaActiva);
-  const empresaList = useAppSelector((state) => state.empresa.empresaList);
-  const navigate = useNavigate();
+  const empresaActiva = useAppSelector((state=>state.empresa.empresaActiva))
+  const empresaModalActiva = useAppSelector((state)=>state.empresa.empresaModalActiva)
+  const stateEmpresaList = useAppSelector((state) => state.empresa.empresaList);
+  const [openModalInfo, setOpenModalInfo] = useState(false);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(null);
 
-  const empresaService = new EmpresaService();
-  const getEmpresaActiva = async () => {
-    if (id) {
-      await empresaService.getById(Number.parseInt(id)).then((emp) => {
-        if (emp) dispatch(setEmpresaActiva(emp));
-      });
-    }
-  };
   useEffect(() => {
     getEmpresas();
-    getEmpresaActiva();
-  }, [id]);
-  useEffect(() => {
-    setEmpresas(empresaList);
-  }, [empresaList]);
-  useEffect(() => {
-    setEmpresaA(empresaAc);
-  }, [empresaAc]);
+  }, []);
 
-  const handleHover = async (id: number) => {
-    const empresa = await empresaService.getById(id);
-    if (empresa) {
-      dispatch(setEmpresaActiva(empresa));
-      setEmpresaA(empresaA);
+  useEffect(() => {
+    setEmpresas(stateEmpresaList);
+  }, [stateEmpresaList]);
+  useEffect(() => {
+    if(openModalInfo === false){     
+      dispatch(removeEmpresaModalActiva());
     }
-    navigate(`/HomeSecundario/${id}`);
+  }, [openModalInfo]);
+
+  const handleNext = () => {
+    if (swiperInstance) {
+      if(swiperInstance.params.slidesPerView && swiperInstance.params.slidesPerView != "auto"){
+      const maxIndex = swiperInstance.slides.length - swiperInstance.params.slidesPerView
+      const newIndex = Math.min(swiperInstance.activeIndex + 3, maxIndex);
+      swiperInstance.slideTo(newIndex);
+      }
+    }
+  };
+  
+  const handlePrev = () => {
+    if (swiperInstance) {
+      const newIndex = Math.max(swiperInstance.activeIndex - 3, 0);
+      swiperInstance.slideTo(newIndex);
+    }
   };
 
+  const handleHover = async (empresa: IEmpresa) => {
+    dispatch(setEmpresaActiva(empresa));
+  };
+  const HandleOpenModal = (
+    event: React.MouseEvent<HTMLDivElement>,
+    empresa: IEmpresa
+  ) => {
+    event.stopPropagation();
+    dispatch(setEmpresaModalActiva(empresa));
+    setOpenModal(true);
+  };
+  const HandleShowModalInfo = (
+    event: React.MouseEvent<HTMLDivElement>,
+    empresa: IEmpresa
+  ) => {
+    event.stopPropagation();
+    dispatch(setEmpresaModalActiva(empresa));
+    setOpenModalInfo(true);
+  };
+  
   return (
     <div className="navBar_cards_nombres_container">
       <div className="navBar_swiper">
         <Swiper
-          modules={[Pagination]}
-          spaceBetween={10}
-          slidesPerView={3}
+          modules={[Pagination, Navigation, A11y]}
+          spaceBetween={20}
+          slidesPerView={4}
+          allowTouchMove={false}
           pagination={{
-            el: ".pagination",
+            el: `.pagination`,
             clickable: true,
+            type:"fraction",
           }}
+          breakpoints={{
+            1110: {
+              slidesPerView: 4, // Valor por defecto para pantallas mayores a 1110px
+            },
+            850: {
+              slidesPerView: 3, // Valor por defecto para pantallas mayores a 850px
+            },
+            590: {
+              slidesPerView: 2, 
+            },
+            0: {
+              slidesPerView: 1, 
+            },
+          }}
+          onSwiper={(swiper) => setSwiperInstance(swiper)}
         >
           {empresas.map((empresa, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide
+              key={index}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
               <div
-                onClick={() => handleHover(empresa.id)}
-                key={index}
-                className={` ${
-                  empresaA
-                    ? empresaA.id === empresa.id
+                onClick={() => handleHover(empresa)}
+                className={` ${styles.cardContainer} ${
+                  empresaActiva
+                    ? empresaActiva.id === empresa.id
                       ? "navBar_cards_nombres_container_icons_hover"
                       : "navBar_cards_nombres_container_icons"
                     : "navBar_cards_nombres_container_icons"
                 }`}
               >
-                <div className="navBar_cards_nombres link__class__decortaion">{empresa.nombre}</div>
-
-                {/* <Link to={`HomeSecundario/${empresa.id}`} className="link__class__decortaion">
-                  <div className="navBar_cards_nombres">{empresa.nombre}</div>
-                </Link> */}
-                <div className="navBar_icons">
-                  <Link to={`/${empresa.nombre}/edit`} className="link__class__decortaion">
-                    <span className="material-symbols-outlined">edit</span>
-                  </Link>
+                <div
+                  className={`navBar_cards_nombres link__class__decortaion ${styles.cardName}`}
+                >
+                  {typeof empresa.nombre === "string" ? empresa.nombre.toUpperCase() : ""} 
+                </div>
+                <div className={empresaActiva && empresaActiva.id === empresa.id ? styles.navBarIcons: styles.navBarIconsDisabled}>
+                  <div
+                    onClick={(event) => HandleOpenModal(event, empresa)}
+                    className="link__class__decortaion"
+                  >
+                    <span
+                      className={`material-symbols-outlined ${styles.iconEdit}`}
+                    >
+                      edit
+                    </span>
+                  </div>
+                  <div
+                    onClick={(event) => HandleShowModalInfo(event, empresa)}
+                    className="link__class__decortaion"
+                  >
+                    <span className={`material-symbols-outlined ${styles.iconEdit}`}>
+                      visibility
+                    </span>
+                  </div>
                 </div>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
+      </div>
+      <div className={styles.buttonSwiperContainer}>
+        <button className={styles.buttonSwiperLeft} onClick={handlePrev}>
+          <span className={`material-symbols-outlined ${styles.buttonSwiperIcon}`}>chevron_left</span>
+        </button>
+
+        <div className="pagination d-flex justify-content-center" style={{color: "#111", width: "80px"}}></div>
+
+        <button className={styles.buttonSwiperRight} onClick={handleNext}>
+          <span className={`material-symbols-outlined ${styles.buttonSwiperIcon}`}>chevron_right</span>
+        </button>
+      </div>
+      <div
+      className={openModalInfo ? styles.openModalInfo : styles.closeModalInfo}
+      >
+        {empresaModalActiva ?
+        <ModalInfoAdaptable<IEmpresa> setOpenModalInfo={setOpenModalInfo} objeto={empresaModalActiva} />
+        :
+        <div></div>}
       </div>
     </div>
   );

@@ -3,28 +3,24 @@ import TextFieldValue from "../TextFieldValue/TextFielValue";
 import { Button } from "react-bootstrap";
 import styles from "./CompanyFormInputs.module.css";
 import { useEffect, useState } from "react";
-import { UploadImage } from "../UploadImage/UploadImage";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
+import { UploadImageCompany } from "../UploadImage/UploadImageCompany";
 
 export const CompanyFormInputs = () => {
   const [image, setImage] = useState<string | null>(null);
   const dispatch = useAppDispatch()
-  const empresaActiva = useAppSelector(
-    (state) => state.empresa.empresaActiva
+  const empresaModalActiva = useAppSelector(
+    (state) => state.empresa.empresaModalActiva
   );
   useEffect(() => {
-    if (empresaActiva) {
-      if (empresaActiva.logo) {
-        setImage(empresaActiva.logo);
-        dispatch(setImageStringActivo(empresaActiva.logo))
+    if (empresaModalActiva) {
+      if (empresaModalActiva.logo) {
+        setImage(empresaModalActiva.logo);
+        dispatch(setImageStringActivo(empresaModalActiva.logo))
       }
     }
   }, []);
-  useEffect(() =>{
-    console.log("Se ingreso una imagen")
-
-  }, [image])
   return (
     <Form autoComplete="off" className="form-obraAlta">
       <div className="container_Form_Ingredientes">
@@ -50,7 +46,7 @@ export const CompanyFormInputs = () => {
               type="text"
               placeholder="ej. cuit"
             />
-            <UploadImage image={image} setImage={setImage} />
+            <UploadImageCompany image={image} setImage={setImage} />
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 
 .headerC{
-   height: 20vh;
+   height:30%;
    background-color: #d8d8d8 
   }
         
@@ -8,3 +8,10 @@
    font-weight: 700;
    font-size: 2rem;
 }
+
+.openModalInfo {
+   display: flex;
+ }
+ .closeModalInfo {
+   display: none;
+ }

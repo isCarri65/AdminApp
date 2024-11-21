@@ -1,5 +1,4 @@
 import { AbstractBackendClient } from "./AbstractBackendClient";
-
 export abstract class BackendClient<T> extends AbstractBackendClient<T> {
   constructor(baseUrl: string) {
     super(baseUrl);

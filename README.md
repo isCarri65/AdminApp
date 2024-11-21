@@ -33,6 +33,10 @@ cd tu-repositorio
 - npm install @reduxjs/toolkit
 - npm install react-router-dom
 - npm install react-bootstrap bootstrap
+- npm install sweetalert2
+- npm install @mui/material @emotion/react @emotion/styled
+- npm install swiper
+- npm install @fortawesome/fontawesome-free
 
 **Ejecución del proyecto**
 Para ejecutar el proyecto en modo de desarrollo:

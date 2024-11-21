@@ -1,10 +1,11 @@
 import { ILocalidad } from "../types/ILocalidad";
 import { BackendClient } from "./BackendClient";
 
+const API_URL:string = import.meta.env.VITE_URL_API
 
 export class LocalidadesService extends BackendClient<ILocalidad> {
     constructor() {
-        super("http://190.221.207.224:8090/localidades");
+        super(API_URL + "/localidades");
     }
 
     // Obtener localidades por ID de provincia
@@ -13,4 +14,9 @@ export class LocalidadesService extends BackendClient<ILocalidad> {
         const data = await response.json();
         return data as ILocalidad[];
     }
+    async getAll(): Promise<ILocalidad[]> {
+        const response = await fetch(`${this.baseUrl}`);
+        const data = await response.json();
+        return data as ILocalidad[];
+      }
 }
