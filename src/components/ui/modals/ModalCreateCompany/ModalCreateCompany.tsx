@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../../../Hooks/hooks";
 import styles from "./ModalCreateCompany.module.css"
-import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
+import { removeImageStringActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
 import { ICreateEmpresaDto } from "../../../../types/dtos/empresa/ICreateEmpresaDto";
 import { EmpresaService } from "../../../../service/EmpresaService";
 import { IEmpresa } from "../../../../types/dtos/empresa/IEmpresa";
@@ -47,7 +47,7 @@ export const ModalCreateCompany: FC<IModalCreateCompany> = ({
 
   // Función para cerrar el modal
   const handleClose = () => {
-    dispatch(removeImageActivo())
+    dispatch(removeImageStringActivo())
     dispatch(removeEmpresaModalActiva())
     setOpenModal(false);
   };

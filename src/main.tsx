@@ -6,6 +6,8 @@ import { BrowserRouter } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { store } from './redux/Store/Store.ts'
 
+import '@fortawesome/fontawesome-free/css/all.min.css'
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>

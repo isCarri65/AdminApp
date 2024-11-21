@@ -19,7 +19,7 @@ const CategoryTable = () => {
   const empresaActiva = useAppSelector((state) => state.empresa.empresaActiva);
   const categoriaService = new CategoriaService();
   const getCategorias = async () => {
-    await categoriaService.getCategoriasPorSucursal(idSucursal).then((datos) => {
+    await categoriaService.getCategoriasPadrePorSucursal(idSucursal).then((datos) => {
       dispatch(setCategoriaList(datos));
     });
   };

@@ -5,7 +5,7 @@ import noImage from "../../../assets/images/noImage.jpeg";
 import { IImagen } from "../../../types/IImagen";
 import { ImageService } from "../../../service/ImageService";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
-import { removeImageActivo, setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
+import { removeImageObjetoActivo, setImageStringActivo } from "../../../redux/slices/ImageReducer/ImageReducer";
 
 // Definimos la interfaz de las propiedades que recibirá el componente UploadImage
 interface IUploadImage {
@@ -83,7 +83,7 @@ export const UploadImageSucursal: FC<IUploadImage> = ({
         .deleteImgItems(sucursalActiva.id, imageObjeto.url, typeElement)
         .then(() => {
           setImageObjeto(null); // Eliminamos el objeto de imagen
-          dispatch(removeImageActivo())
+          dispatch(removeImageObjetoActivo())
         });
     }
     // Si existe solo la URL de la imagen

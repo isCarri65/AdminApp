@@ -39,7 +39,7 @@ export class CategoriaService extends BackendClient<ICategorias> {
 
   // Obtener categorías por id sucursal
 
-  async getCategoriasPorSucursal(sucursalId: number): Promise<ICategorias[]> {
+  async getCategoriasPadrePorSucursal(sucursalId: number): Promise<ICategorias[]> {
     const response = await fetch(`${this.baseUrl}/allCategoriasPadrePorSucursal/${sucursalId}`);
     const data = await response.json();
     return data as ICategorias[];
