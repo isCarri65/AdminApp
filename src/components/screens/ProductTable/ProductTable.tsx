@@ -11,9 +11,9 @@ import { SucursalService } from "../../../service/SurcusalService";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setSucursalActivo } from "../../../redux/slices/SucursalReducer/SucursalReducer";
 
-const ProductTable = () => {
+export const ProductTable = () => {
 
-  const {sucursalId} = useParams()
+  const {id} = useParams()
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [showModalCrear, setShowModalCrear] = useState(false);
   const [showModalEditar, setShowModalEditar] = useState(false);
@@ -24,18 +24,21 @@ const ProductTable = () => {
   const dispatch = useAppDispatch()
   const sucursalActiva = useAppSelector((state)=>state.sucursal.sucursalActivo)
 
-
   const productService = new ProductService();
   const sucursalService = new SucursalService()
 
-  const getSucursalActiva = async (id:number)=>{
-    await sucursalService.getById(id).then((sucursal)=>{
+  const getSucursalActiva = async ()=>{
+    if(id){
+    await sucursalService.getById(Number.parseInt(id)).then((sucursal)=>{
       if(sucursal){
       dispatch(setSucursalActivo(sucursal))
       } else {
         console.log("No se encontró una sucursal")
       }
     })
+  } else {
+    console.log("id no encontrado")
+  }
   }
   // Función para obtener los productos con paginación
   const fetchProductos = async (page: number) => {
@@ -44,7 +47,7 @@ const ProductTable = () => {
       return;
     }
     try {
-      const response = await productService.getProductosPorSucursalPaged(sucursalActiva.id, page, 2); // 10 productos por página
+      const response = await productService.getProductosPorSucursalPaged(sucursalActiva.id, page, 5); // 10 productos por página
       setProductos(response.content);
       setTotalPages(response.totalPages);
 
@@ -54,13 +57,16 @@ const ProductTable = () => {
   };
 
 useEffect(()=>{
-  if(sucursalId){
-    getSucursalActiva(Number.parseInt(sucursalId))
-  }
+    console.log("id : ",id);
+    getSucursalActiva();
 },[])
 useEffect(()=>{
   fetchProductos(currentPage)
 },[sucursalActiva])
+
+useEffect(()=>{
+  fetchProductos(currentPage)
+},[currentPage])
 
 
   // Manejo de eventos para el modal
@@ -91,6 +97,7 @@ useEffect(()=>{
 
   // Cambiar de página
   const handlePageChange = (page: number) => {
+    console.log(page)
     setCurrentPage(page);
   };
 
@@ -143,7 +150,7 @@ useEffect(()=>{
           </tbody>
         </Table>
         <Pagination>
-          {[...Array(totalPages)].map((_, index) => (
+          {[...Array(totalPages)].map((_,index) => (
             <Pagination.Item
               key={index + 1}
               active={index + 1 === currentPage}

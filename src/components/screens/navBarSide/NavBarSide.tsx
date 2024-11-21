@@ -3,7 +3,7 @@ import { Container, Content, ClosedSideBar, OpenSideBar } from "./styles";
 
 //React icons
 import { FaBars } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 interface NavBarSideProps {
   isOpen: boolean;
@@ -12,7 +12,7 @@ interface NavBarSideProps {
 
 export const NavBarSide: React.FC<NavBarSideProps> = ({ isOpen, toggleMenu }) => {
   const { id } = useParams();
-
+  const navigate = useNavigate()
   return (
     <Container>
       <Content>
@@ -51,7 +51,7 @@ export const NavBarSide: React.FC<NavBarSideProps> = ({ isOpen, toggleMenu }) =>
               </nav>
               <div>
                 <ul>
-                  <a href={`HomeSecundario/${id}`}>
+                  <a onClick={()=> navigate(`/HomeSecundario/${id}`)}>
                     <p> Volver </p>
                   </a>
                 </ul>

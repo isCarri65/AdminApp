@@ -1,10 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IImagen } from "../../../types/IImagen";
 
 interface IinitialState {
   imageStringActivo: string | null,
+  imageObjetoActivo: IImagen | null,
 }
 const initialState: IinitialState = {
   imageStringActivo: null,
+  imageObjetoActivo: null,
 }
 const ImageReducer  = createSlice({
   name:"imageReducer",
@@ -13,14 +16,20 @@ const ImageReducer  = createSlice({
     setImageStringActivo(state, action: PayloadAction<string>){
       state.imageStringActivo = action.payload
     },
-    removeImageActivo(state){
+    removeImageStringActivo(state){
       state.imageStringActivo = null;
+    },
+    setImageObjetoActivo(state, action: PayloadAction<IImagen>){
+      state.imageObjetoActivo = action.payload
+    },
+    removeImageObjetoActivo(state){
+      state.imageObjetoActivo = null;
     }
   }
   
 
 })
 
-export const {setImageStringActivo, removeImageActivo} = ImageReducer.actions
+export const {setImageStringActivo, removeImageStringActivo, setImageObjetoActivo, removeImageObjetoActivo} = ImageReducer.actions
 
 export default ImageReducer.reducer

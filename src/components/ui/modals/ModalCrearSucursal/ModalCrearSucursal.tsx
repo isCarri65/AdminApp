@@ -10,7 +10,7 @@ import { IUpdateSucursal } from "../../../../types/dtos/sucursal/IUpdateSucursal
 import { ICreateSucursal } from "../../../../types/dtos/sucursal/ICreateSucursal";
 import { SucursalFormInputs } from "../../SucursalFormInputs/SucursalFormInputs";
 import styles from "./ModalCreateSucursal.module.css"
-import { removeImageActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
+import { removeImageStringActivo } from "../../../../redux/slices/ImageReducer/ImageReducer";
 interface IModalCrearSucursal {
   openModal: boolean;
   setOpenModal: (state: boolean) => void;
@@ -71,7 +71,7 @@ export const ModalCrearSucursal: FC<IModalCrearSucursal> = ({
   const handleClose = () => {
     setOpenModal(false);
     dispatch(removeSucursalActivo());
-    dispatch(removeImageActivo())
+    dispatch(removeImageStringActivo())
   };
 
   const crearInitialValues = (objOrigen: ISucursal): IinitialValues => {
