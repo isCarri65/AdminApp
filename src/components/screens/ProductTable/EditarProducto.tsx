@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import { Modal, Button, Form } from "react-bootstrap";
 import { IProductos } from "../../../types/dtos/productos/IProductos";
 import { IUpdateProducto } from "../../../types/dtos/productos/IUpdateProducto";
@@ -22,7 +23,7 @@ const EditarProducto: React.FC<EditarProductoProps> = ({ show, onHide, producto,
     descripcion: producto.descripcion,
     idCategoria: producto.categoria?.id || 0,
     habilitado: producto.habilitado,
-    codigo: producto.codigo,
+    codigo: uuidv4(),
     idAlergenos: producto.alergenos.map((alergeno) => alergeno.id),
     imagenes: producto.imagenes.map((img, index) => ({
       url: img.url,
