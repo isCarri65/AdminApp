@@ -45,3 +45,9 @@
 .closeModalInfo {
   display: none;
 }
+
+/* ------- PAGINATION CSS ------*/
+
+.pagination {
+  justify-content: center;
+}

@@ -159,7 +159,7 @@ export const ProductTable = () => {
             ))}
           </tbody>
         </Table>
-        <Pagination>
+        <Pagination className="pagination">
           {[...Array(totalPages)].map((_, index) => (
             <Pagination.Item
               key={index + 1}
