@@ -59,15 +59,16 @@ const AgregarAlergenoModal: React.FC<AgregarAlergenoModalProps> = ({
               onChange={(e) => setNewAlergenoNombre(e.target.value)}
             />
           </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" onClick={handleClose}>
           Cancelar
         </Button>
         <Button variant="primary" type="submit" disabled={loading}>
           {loading ? "Agregando..." : "Agregar"}
         </Button>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+
       </Modal.Footer>
     </Modal>
   );
