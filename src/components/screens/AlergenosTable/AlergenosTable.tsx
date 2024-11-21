@@ -1,245 +1,109 @@
-import React, { useState } from "react";
-import { NavBarSide } from "../navBarSide/NavBarSide";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import "./AlergenosTable.css";
+import { NavBarSide } from "../navBarSide/NavBarSide";
+import { AlergenoService } from "../../../service/AlergenoService";
+import { IAlergenos } from "../../../types/dtos/alergenos/IAlergenos";
+import AgregarAlergenoModal from "./AgregarAlergenoModal";
+import EditarAlergenoModal from "./EditarAlergenoModal";  // Importar el nuevo componente
+import { ICreateAlergeno } from "../../../types/dtos/alergenos/ICreateAlergeno";
+import './AlergenosTable.css';
+import { IUpdateAlergeno } from "../../../types/dtos/alergenos/IUpdateAlergeno";
 
-// Definición de la interfaz para representar un alérgeno
-interface Alergeno {
-  id: number; // Identificador único del alérgeno
-  nombre: string; // Nombre del alérgeno
-}
+const alergenoService = new AlergenoService();
 
-// Definición del estado de la lista de alérgenos con un valor inicial
 const AlergenosTable: React.FC = () => {
-  const [alergenos, setAlergenos] = useState<Alergeno[]>([
-    { id: 1, nombre: "Gluten" },
-    { id: 2, nombre: "Lácteos" },
-    { id: 3, nombre: "Frutos Secos" },
-    { id: 4, nombre: "Mariscos" },
-    { id: 5, nombre: "Huevo" },
-    { id: 6, nombre: "Soja" },
-    { id: 7, nombre: "Pescado" },
-    { id: 8, nombre: "Cacahuetes" },
-    { id: 9, nombre: "Apio" },
-    { id: 10, nombre: "Mostaza" },
-    // Puse estos alergenos como ejemplo
-  ]);
+  const [alergenos, setAlergenos] = useState<IAlergenos[]>([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingAlergenoId, setEditingAlergenoId] = useState<number | null>(null);
 
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [newNombre, setNewNombre] = useState<string>("");
-  const [newAlergenoNombre, setNewAlergenoNombre] = useState<string>("");
+  // Estado para el manejo del menú
+  const [isOpen, setIsOpen] = useState(false);
 
-  // Función para manejar la edicion de un alergeno especifico
-  const handleEdit = (id: number, nombre: string) => {
-    setEditingId(id);
-    setNewNombre(nombre);
+  // Función para alternar el estado del menú
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
   };
 
-  // Función para manejar la eliminación de un alérgeno específico
-  const handleDelete = (id: number) => {
-    const updatedAlergenos = alergenos.filter((alergeno) => alergeno.id !== id);
-    setAlergenos(updatedAlergenos);
+  useEffect(() => {
+    const fetchAlergenos = async () => {
+      const data = await alergenoService.getAllAlergenos();
+      setAlergenos(data);
+    };
+    fetchAlergenos();
+  }, []);
+
+  const handleAddAlergeno = async (newAlergeno: ICreateAlergeno) => {
+    const createdAlergeno = await alergenoService.createAlergeno(newAlergeno);
+    setAlergenos([...alergenos, createdAlergeno]);
   };
 
-  const handleSave = (id: number) => {
-    const updatedAlergenos = alergenos.map((alergeno) =>
-      alergeno.id === id ? { ...alergeno, nombre: newNombre } : alergeno
-    );
-    setAlergenos(updatedAlergenos);
-    setEditingId(null);
-    setNewNombre("");
+  const handleUpdateAlergeno = async (id: number, updatedAlergeno: IUpdateAlergeno) => {
+    const updated = await alergenoService.updateAlergeno(id, updatedAlergeno);
+    setAlergenos(alergenos.map(alergeno => (alergeno.id === id ? updated : alergeno)));
   };
 
-  // Función para agregar un nuevo alérgeno a la lista
-  const handleAddAlergeno = () => {
-    if (newAlergenoNombre.trim() !== "") {
-      const newAlergeno: Alergeno = {
-        id: alergenos.length + 1,
-        nombre: newAlergenoNombre,
-      };
-      setAlergenos([...alergenos, newAlergeno]);
-      setNewAlergenoNombre("");
-    }
+  const handleDeleteAlergeno = async (id: number) => {
+    await alergenoService.deleteAlergenoById(id);
+    setAlergenos(alergenos.filter(alergeno => alergeno.id !== id));
   };
-  /* Header Alergenos */
-  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
 
-  const toggleSideBar = () => {
-    setIsSideBarOpen(!isSideBarOpen);
+  const toggleAddModal = () => setShowAddModal(!showAddModal);
+  const toggleEditModal = (id: number) => {
+    setEditingAlergenoId(id);
+    setShowEditModal(!showEditModal);
   };
 
   return (
     <>
       <header className="header_alergenosTable">
         <div className="div_container_navbarAlergenos">
-          <NavBarSide isOpen={isSideBarOpen} toggleMenu={toggleSideBar} />
+          {/* Pasando las propiedades necesarias al componente NavBarSide */}
+          <NavBarSide isOpen={isOpen} toggleMenu={toggleMenu} />
           <h2 className="title_Product">Alergenos</h2>
-          <Button variant="primary" className="add-product-btn" onClick={() => setOpenModal(true)}>
+          <Button variant="primary" className="add-product-btn" onClick={toggleAddModal}>
             Agregar Alergeno
           </Button>
         </div>
       </header>
-      <div style={styles.container} className={`${isSideBarOpen ? "shifted" : ""}`}>
-        <div style={styles.tableContainer}>
-          <div style={styles.addContainer}>
-            <input
-              type="text"
-              placeholder="Nuevo alérgeno"
-              value={newAlergenoNombre}
-              onChange={(e) => setNewAlergenoNombre(e.target.value)}
-              style={styles.input}
-            />
-            <button style={styles.addButton} onClick={handleAddAlergeno}>
-              Agregar
-            </button>
-          </div>
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th style={styles.header}>Nombre</th>
-                <th style={styles.header}>Acciones</th>
+
+      {/* Modales */}
+      <AgregarAlergenoModal show={showAddModal} handleClose={toggleAddModal} handleAddAlergeno={handleAddAlergeno} />
+      <EditarAlergenoModal 
+        show={showEditModal} 
+        handleClose={() => setShowEditModal(false)} 
+        alergenoId={editingAlergenoId!} 
+        handleUpdateAlergeno={handleUpdateAlergeno} 
+      />
+
+      {/* Tabla de alérgenos */}
+      <div className={`container`}>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {alergenos.map((alergeno) => (
+              <tr key={alergeno.id}>
+                <td>{alergeno.denominacion}</td>
+                <td>
+                  <Button variant="warning" onClick={() => toggleEditModal(alergeno.id)}>
+                    Editar
+                  </Button>
+                  <Button variant="danger" onClick={() => handleDeleteAlergeno(alergeno.id)}>
+                    Eliminar
+                  </Button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {alergenos.map((alergeno) => (
-                <tr key={alergeno.id} style={styles.row}>
-                  <td style={styles.cell}>
-                    {editingId === alergeno.id ? (
-                      <input
-                        type="text"
-                        value={newNombre}
-                        onChange={(e) => setNewNombre(e.target.value)}
-                      />
-                    ) : (
-                      alergeno.nombre
-                    )}
-                  </td>
-                  <td style={styles.cell}>
-                    {editingId === alergeno.id ? (
-                      <button style={styles.saveButton} onClick={() => handleSave(alergeno.id)}>
-                        Guardar
-                      </button>
-                    ) : (
-                      <>
-                        <button
-                          style={styles.editButton}
-                          onClick={() => handleEdit(alergeno.id, alergeno.nombre)}
-                        >
-                          Editar
-                        </button>
-                        <button
-                          style={styles.deleteButton}
-                          onClick={() => handleDelete(alergeno.id)}
-                        >
-                          Eliminar
-                        </button>
-                      </>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   );
-};
-
-//tabla de estilos
-
-const styles = {
-  container: {
-    display: "flex",
-    height: "100vh",
-    width: "80%",
-    backgroundColor: "#f5f5f5",
-  },
-  backButton: {
-    width: "100%",
-    padding: "10px",
-    marginTop: "auto",
-    backgroundColor: "#444444",
-    color: "#ffffff",
-    border: "none",
-    borderRadius: "4px",
-    fontSize: "14px",
-    fontWeight: "bold" as "bold",
-    cursor: "pointer" as "pointer",
-    textAlign: "center" as "center",
-  },
-  addContainer: {
-    display: "flex",
-    marginBottom: "20px",
-  },
-  input: {
-    flex: 1,
-    padding: "8px",
-    marginRight: "10px",
-    fontSize: "14px",
-    backgroundColor: "#ffffff",
-    color: "#000000",
-    border: "1px solid #ddd",
-  },
-  addButton: {
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    padding: "8px 12px",
-    borderRadius: "4px",
-    cursor: "pointer" as "pointer",
-  },
-  tableContainer: {
-    flex: 1,
-    padding: "20px",
-    overflowY: "auto" as "auto",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse" as "collapse",
-  },
-  header: {
-    padding: "12px",
-    backgroundColor: "#f2f2f2",
-    textAlign: "left" as "left",
-    fontWeight: "bold" as "bold",
-    borderBottom: "2px solid #ddd",
-    color: "#333333",
-  },
-  row: {
-    backgroundColor: "#ffffff",
-  },
-  cell: {
-    padding: "12px",
-    borderBottom: "1px solid #ddd",
-    color: "#555555",
-  },
-  editButton: {
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    padding: "5px 10px",
-    marginRight: "5px",
-    borderRadius: "3px",
-    cursor: "pointer" as "pointer",
-  },
-  deleteButton: {
-    backgroundColor: "#f44336",
-    color: "white",
-    border: "none",
-    padding: "5px 10px",
-    borderRadius: "3px",
-    cursor: "pointer" as "pointer",
-  },
-  saveButton: {
-    backgroundColor: "#2196F3",
-    color: "white",
-    border: "none",
-    padding: "5px 10px",
-    borderRadius: "3px",
-    cursor: "pointer" as "pointer",
-  },
 };
 
 export default AlergenosTable;

@@ -8,9 +8,14 @@ import { ISucursal } from "../../../types/dtos/sucursal/ISucursal";
 interface IModalCreateCompany {
   idSucursales: ISucursal[];
   idEmpresa: number;
+  idCategoriaPadre: number | null;
 }
 
-export const CategoryFormInputsEditar: FC<IModalCreateCompany> = ({ idSucursales, idEmpresa }) => {
+export const CategoryFormInputsEditar: FC<IModalCreateCompany> = ({
+  idSucursales,
+  idEmpresa,
+  idCategoriaPadre,
+}) => {
   return (
     <Form autoComplete="off" className="form-obraAlta">
       <div className="container_Form_Ingredientes">
@@ -25,6 +30,7 @@ export const CategoryFormInputsEditar: FC<IModalCreateCompany> = ({ idSucursales
             />
             <Field type="hidden" name="idSucursales" value={idSucursales} />
             <Field type="hidden" name="idEmpresa" value={idEmpresa} />
+            <Field type="hidden" name="idCategoriaPadre" value={idCategoriaPadre} />
           </div>
         </div>
       </div>
