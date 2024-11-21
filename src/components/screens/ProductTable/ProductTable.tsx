@@ -10,36 +10,41 @@ import { useParams } from "react-router-dom";
 import { SucursalService } from "../../../service/SurcusalService";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/hooks";
 import { setSucursalActivo } from "../../../redux/slices/SucursalReducer/SucursalReducer";
+import { ModalInfoAdaptable } from "../../ui/modals/ModalInfoAdaptable/ModalInfoAdaptable";
 
 export const ProductTable = () => {
-
-  const {id} = useParams()
+  const { id } = useParams();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  //estado para abrir y cerrar el modal de mostrar informacion de productos
+  const [openModalInfo, setOpenModalInfo] = useState(false);
+  //estado para guardar  la info de un unico producto
+  const [infoProduct, setInfoProducto] = useState<IProductos>();
+
   const [showModalCrear, setShowModalCrear] = useState(false);
   const [showModalEditar, setShowModalEditar] = useState(false);
   const [productos, setProductos] = useState<IProductos[]>([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState<IProductos | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const dispatch = useAppDispatch()
-  const sucursalActiva = useAppSelector((state)=>state.sucursal.sucursalActivo)
+  const dispatch = useAppDispatch();
+  const sucursalActiva = useAppSelector((state) => state.sucursal.sucursalActivo);
 
   const productService = new ProductService();
-  const sucursalService = new SucursalService()
+  const sucursalService = new SucursalService();
 
-  const getSucursalActiva = async ()=>{
-    if(id){
-    await sucursalService.getById(Number.parseInt(id)).then((sucursal)=>{
-      if(sucursal){
-      dispatch(setSucursalActivo(sucursal))
-      } else {
-        console.log("No se encontró una sucursal")
-      }
-    })
-  } else {
-    console.log("id no encontrado")
-  }
-  }
+  const getSucursalActiva = async () => {
+    if (id) {
+      await sucursalService.getById(Number.parseInt(id)).then((sucursal) => {
+        if (sucursal) {
+          dispatch(setSucursalActivo(sucursal));
+        } else {
+          console.log("No se encontró una sucursal");
+        }
+      });
+    } else {
+      console.log("id no encontrado");
+    }
+  };
   // Función para obtener los productos con paginación
   const fetchProductos = async (page: number) => {
     if (!sucursalActiva) {
@@ -47,27 +52,28 @@ export const ProductTable = () => {
       return;
     }
     try {
-      const response = await productService.getProductosPorSucursalPaged(sucursalActiva.id, page, 5); // 10 productos por página
+      const response = await productService.getProductosPorSucursalPaged(
+        sucursalActiva.id,
+        page,
+        5
+      ); // 10 productos por página
       setProductos(response.content);
       setTotalPages(response.totalPages);
-
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
-useEffect(()=>{
-    console.log("id : ",id);
+  useEffect(() => {
     getSucursalActiva();
-},[])
-useEffect(()=>{
-  fetchProductos(currentPage)
-},[sucursalActiva])
+  }, []);
+  useEffect(() => {
+    fetchProductos(currentPage);
+  }, [sucursalActiva]);
 
-useEffect(()=>{
-  fetchProductos(currentPage)
-},[currentPage])
-
+  useEffect(() => {
+    fetchProductos(currentPage);
+  }, [currentPage]);
 
   // Manejo de eventos para el modal
   const toggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
@@ -97,8 +103,12 @@ useEffect(()=>{
 
   // Cambiar de página
   const handlePageChange = (page: number) => {
-    console.log(page)
     setCurrentPage(page);
+  };
+
+  const handleOpenInfo = (producto: IProductos) => {
+    setOpenModalInfo(true);
+    setInfoProducto(producto);
   };
 
   return (
@@ -129,7 +139,7 @@ useEffect(()=>{
           <tbody>
             {productos.map((producto) => (
               <tr key={producto.id}>
-                <td>👁️</td>
+                <td onClick={() => handleOpenInfo(producto)}>👁️</td>
                 <td>{producto.denominacion}</td>
                 <td>{producto.precioVenta}</td>
                 <td>{producto.descripcion}</td>
@@ -150,7 +160,7 @@ useEffect(()=>{
           </tbody>
         </Table>
         <Pagination>
-          {[...Array(totalPages)].map((_,index) => (
+          {[...Array(totalPages)].map((_, index) => (
             <Pagination.Item
               key={index + 1}
               active={index + 1 === currentPage}
@@ -178,6 +188,16 @@ useEffect(()=>{
           onProductUpdated={handleProductUpdated}
         />
       )}
+      <div className={openModalInfo ? "openModalInfo" : "closeModalInfo"}>
+        {openModalInfo ? (
+          <ModalInfoAdaptable<IProductos>
+            setOpenModalInfo={setOpenModalInfo}
+            objeto={infoProduct}
+          />
+        ) : (
+          <p>Cargando...</p>
+        )}
+      </div>
     </>
   );
 };

@@ -39,3 +39,9 @@
 .product-table-container.shifted {
   margin-left: 220px; /* Ajusta el valor según el ancho del sidebar */
 }
+.openModalInfo {
+  display: flex;
+}
+.closeModalInfo {
+  display: none;
+}

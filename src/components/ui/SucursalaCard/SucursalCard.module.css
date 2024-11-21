@@ -7,7 +7,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.titleContainer{
+.titleContainer {
   height: 50px;
 }
 .cardContainer {
@@ -15,14 +15,14 @@
   width: 100%;
   padding: 8px;
   background-color: #d8d8d8;
-  
+
   transition: 0.2s ease-in;
-  }
-  .cardContainer:hover{
-    cursor: pointer;
-    transform: scale(1.02);
-    filter: grayscale(60%);
-  }
+}
+.cardContainer:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+  filter: grayscale(60%);
+}
 
 .imgContainer {
   min-height: 150px;
@@ -33,47 +33,41 @@
   object-fit: cover;
   height: 100%;
   filter: brightness(0.85) grayscale(40%);
-
 }
 .cardBody {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: space-between;
+
   height: 40%;
+  padding: 1px;
 }
-.buttonDelete{
-  
-  position: absolute;
-  left: 100px;
-  bottom: 8px;
-  background-color: #828690;
-  border: solid 1px #756070
+.cardText {
+  margin: 1px;
+}
+.cardTextVoid {
+  margin-bottom: 30px;
 }
 
 .buttonEdit {
-  position: absolute;
-  bottom: 8px;
   background-color: #828690;
-  border: solid 1px #756070
+  border: solid 1px #756070;
 }
 .buttonEdit:hover {
   background-color: #756070;
-  border: solid 1px #756070
-
+  border: solid 1px #756070;
 }
 .buttonEdit:active {
-  
   background-color: #756070 !important;
   border: solid 1px #6e5c6a !important;
   transform: scale(0.98);
 }
 .buttonShowInfo {
-  
-  position: absolute;
-  bottom: 8px;
-  left: 90px;
   background-color: #828690;
-  border: solid 1px #756070
+  border: solid 1px #756070;
 }
 .buttonShowInfo:hover {
   background-color: #756070;
-  border: solid 1px #756070
-
+  border: solid 1px #756070;
 }

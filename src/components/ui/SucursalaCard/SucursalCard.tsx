@@ -18,42 +18,12 @@ export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal, setOpe
     distpach(setSucursalActivo(sucursal));
     setOpenModal(true);
   };
-  /*
-  const handleDeleteSucursal = () => {
-    Swal.fire({
-      title: "Estas seguro?",
-      text: "No sera posible revertir esto",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, eliminar!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await sucursalService.delete(sucursal.id);
 
-          Swal.fire({
-            
-        title: "Eliminado",
-        text: "operación completada",
-        icon: "success"
-          });
-        } catch (error) {
-          console.error(error);
-        }
-        setOpenModal(false);
-      } else {
-        setOpenModal(false);
-      }
-    });
-  };*/
-
-  const handleShowInfo = (event: React.MouseEvent<HTMLButtonElement>)=>{
-    event.stopPropagation()
-    distpach(setSucursalActivo(sucursal))
-    setOpenModalInfo(true)
-  }
+  const handleShowInfo = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    distpach(setSucursalActivo(sucursal));
+    setOpenModalInfo(true);
+  };
   return (
     <>
       <Card className={styles.cardContainer}>
@@ -66,41 +36,27 @@ export const SucursalCard: FC<ISucursalCard> = ({ sucursal, setOpenModal, setOpe
           <Card.Img
             className={styles.cardImg}
             variant="top"
-            src={
-              sucursal.logo ? sucursal.logo : "../../../Pictures/Empty_img.png"
-            }
+            src={sucursal.logo ? sucursal.logo : "../../../Pictures/Empty_img.png"}
           />
         </div>
         <Card.Body className={styles.cardBody}>
-          <Card.Text className="pt-4">
-            {sucursal.domicilio.localidad.nombre}, {sucursal.domicilio.calle}{" "}
+          <Card.Text className={styles.cardText}>{sucursal.domicilio.localidad.nombre}</Card.Text>
+          <Card.Text className={sucursal.domicilio.numero ? styles.cardText : styles.cardTextVoid}>
             {sucursal.domicilio.numero}
           </Card.Text>
-
-          <Button
-            className={styles.buttonEdit}
-            variant="primary"
-            onClick={handleOpenModal}
-          >
-            <span className="material-symbols-outlined">edit</span>
-          </Button>
-            {/*
-          <Button
-            className={styles.buttonDelete}
-            variant="primary"
-            onClick={handleDeleteSucursal}
-          >
-            <span className="material-symbols-outlined">delete</span>
-          </Button>*/}
-          <Button
-            className={styles.buttonShowInfo}
-            onClick={handleShowInfo}
-          >
-            <span className="material-symbols-outlined">visibility</span>
-          </Button>
+          <Card.Text className={sucursal.domicilio.calle ? styles.cardText : styles.cardTextVoid}>
+            {sucursal.domicilio.calle}
+          </Card.Text>
+          <div>
+            <Button className={styles.buttonEdit} variant="primary" onClick={handleOpenModal}>
+              <span className="material-symbols-outlined">edit</span>
+            </Button>
+            <Button className={styles.buttonShowInfo} onClick={handleShowInfo}>
+              <span className="material-symbols-outlined">visibility</span>
+            </Button>
+          </div>
         </Card.Body>
       </Card>
-      
     </>
   );
 };
